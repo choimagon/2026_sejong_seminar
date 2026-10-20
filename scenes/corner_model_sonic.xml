@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="seminar_turtlebot_sonic">
+  <compiler angle="radian" coordinate="local" autolimits="true" />
+  <option timestep="0.005" gravity="0 0 -9.81" integrator="implicitfast" />
+  <default>
+    <joint damping="0.03" armature="0.001" />
+    <geom condim="3" friction="1.1 0.006 0.0001" />
+  </default>
+  <asset>
+    <material name="frame" rgba="0.13 0.16 0.19 1" />
+    <material name="wheel" rgba="0.055 0.065 0.085 1" />
+    <material name="metal" rgba="0.67 0.73 0.79 1" />
+    <material name="housing" rgba="0.28 0.34 0.39 1" />
+    <material name="pcb" rgba="0.035 0.29 0.88 1" />
+    <material name="chip" rgba="0.08 0.10 0.13 1" />
+    <material name="connector" rgba="0.90 0.93 0.95 1" />
+    <material name="hub" rgba="0.43 0.49 0.55 1" />
+    <material name="lens" rgba="0.06 0.10 0.15 1" />
+  </asset>
+  <worldbody>
+    <light name="main_light" pos="0 0 3" dir="0 0 -1" directional="true" ambient="0.3 0.3 0.3" diffuse="0.45 0.45 0.45" specular="0.1 0.1 0.1" castshadow="false" />
+    <geom name="floor" type="plane" size="5 5 0.1" rgba="0.88 0.90 0.93 1" friction="1.2 0.006 0.0001" />
+    <body name="base" pos="0.0 0.0 0">
+      <freejoint name="base_freejoint" />
+      <inertial pos="0 0 0.104" mass="0.72" diaginertia="0.0024 0.0024 0.0016" />
+      <body name="left_wheel" pos=".030 .087 .038">
+        <joint name="left_wheel_joint" type="hinge" axis="0 1 0" damping="0.015" />
+        <inertial pos="0 0 0" mass="0.10" diaginertia="0.00010 0.00017 0.00010" />
+        <geom name="drive_left_tire" type="cylinder" material="wheel" pos="0 0 0" size="0.038 0.012" euler="1.57079632679 0 0" contype="1" conaffinity="1" />
+        <geom name="drive_left_hub" type="cylinder" material="hub" pos="0 0.0135 0" size="0.019 0.0015" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+        <geom name="drive_left_hub_bolt" type="cylinder" material="metal" pos="0 0.016 0" size="0.006 0.001" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+      </body>
+      <body name="right_wheel" pos=".030 -.087 .038">
+        <joint name="right_wheel_joint" type="hinge" axis="0 1 0" damping="0.015" />
+        <inertial pos="0 0 0" mass="0.10" diaginertia="0.00010 0.00017 0.00010" />
+        <geom name="drive_right_tire" type="cylinder" material="wheel" pos="0 0 0" size="0.038 0.012" euler="1.57079632679 0 0" contype="1" conaffinity="1" />
+        <geom name="drive_right_hub" type="cylinder" material="hub" pos="0 -0.0135 0" size="0.019 0.0015" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+        <geom name="drive_right_hub_bolt" type="cylinder" material="metal" pos="0 -0.016 0" size="0.006 0.001" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+      </body>
+      <geom name="lower_plate" type="box" material="frame" pos="0 0 0.061" size="0.068 0.064 0.005" contype="0" conaffinity="0" />
+      <geom name="central_housing" type="box" material="housing" pos="0 0 0.096" size="0.041 0.038 0.03" contype="0" conaffinity="0" />
+      <geom name="frame_post_0_0" type="cylinder" material="metal" pos="-0.055 -0.05 0.1075" size="0.004 0.0415" contype="0" conaffinity="0" />
+      <geom name="frame_post_0_1" type="cylinder" material="metal" pos="-0.055 0.05 0.1075" size="0.004 0.0415" contype="0" conaffinity="0" />
+      <geom name="frame_post_1_0" type="cylinder" material="metal" pos="0.055 -0.05 0.1075" size="0.004 0.0415" contype="0" conaffinity="0" />
+      <geom name="frame_post_1_1" type="cylinder" material="metal" pos="0.055 0.05 0.1075" size="0.004 0.0415" contype="0" conaffinity="0" />
+      <geom name="upper_plate" type="box" material="frame" pos="0 0 0.154" size="0.068 0.064 0.005" contype="0" conaffinity="0" />
+      <geom name="top_bolt_0_0" type="cylinder" material="metal" pos="-0.055 -0.05 0.161" size="0.0035 0.002" contype="0" conaffinity="0" />
+      <geom name="top_bolt_0_1" type="cylinder" material="metal" pos="-0.055 0.05 0.161" size="0.0035 0.002" contype="0" conaffinity="0" />
+      <geom name="top_bolt_1_0" type="cylinder" material="metal" pos="0.055 -0.05 0.161" size="0.0035 0.002" contype="0" conaffinity="0" />
+      <geom name="top_bolt_1_1" type="cylinder" material="metal" pos="0.055 0.05 0.161" size="0.0035 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_standoff_0_0" type="cylinder" material="metal" pos="-0.014 -0.009 0.128" size="0.002 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_standoff_0_1" type="cylinder" material="metal" pos="-0.014 0.009 0.128" size="0.002 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_standoff_1_0" type="cylinder" material="metal" pos="0.014 -0.009 0.128" size="0.002 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_standoff_1_1" type="cylinder" material="metal" pos="0.014 0.009 0.128" size="0.002 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_blue_pcb" type="box" material="pcb" pos="0 0 0.132" size="0.02 0.014 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_black_chip" type="box" material="chip" pos="-0.004 0 0.135" size="0.007 0.006 0.001" contype="0" conaffinity="0" />
+      <geom name="imu_white_connector" type="box" material="connector" pos="0.014 0 0.135" size="0.004 0.007 0.001" contype="0" conaffinity="0" />
+      <geom name="ultra_mount_arm" type="box" material="metal" pos="0.046 0 0.094" size="0.005 0.028 0.009" contype="0" conaffinity="0" />
+      <geom name="ultra_enclosure" type="box" material="housing" pos="0.058 0 0.094" size="0.007 0.037 0.016" contype="0" conaffinity="0" />
+      <geom name="ultra_face_panel" type="box" material="frame" pos="0.0665 0 0.094" size="0.0015 0.037 0.015" contype="0" conaffinity="0" />
+      <geom name="ultra_top_shroud" type="box" material="frame" pos="0.0545 0 0.1125" size="0.0135 0.041 0.0025" contype="0" conaffinity="0" />
+      <geom name="ultra_left_ring" type="cylinder" material="metal" pos="0.0695 0.022 0.094" size="0.012 0.0015" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
+      <geom name="ultra_left_eye" type="cylinder" material="lens" pos="0.072 0.022 0.094" size="0.009 0.001" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
+      <geom name="ultra_right_ring" type="cylinder" material="metal" pos="0.0695 -0.022 0.094" size="0.012 0.0015" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
+      <geom name="ultra_right_eye" type="cylinder" material="lens" pos="0.072 -0.022 0.094" size="0.009 0.001" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
+      <geom name="motor_left_housing" type="box" material="housing" pos="0.03 0.048 0.042" size="0.024 0.015 0.014" contype="0" conaffinity="0" />
+      <geom name="motor_left_axle" type="cylinder" material="metal" pos="0.03 0.069 0.038" size="0.008 0.006" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+      <geom name="motor_right_housing" type="box" material="housing" pos="0.03 -0.048 0.042" size="0.024 0.015 0.014" contype="0" conaffinity="0" />
+      <geom name="motor_right_axle" type="cylinder" material="metal" pos="0.03 -0.069 0.038" size="0.008 0.006" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+      <geom name="caster_mount_flange" type="box" material="metal" pos="-0.049 0 0.052" size="0.019 0.019 0.004" contype="0" conaffinity="0" />
+      <geom name="caster_vertical_neck" type="box" material="housing" pos="-0.049 0 0.044" size="0.01 0.01 0.004" contype="0" conaffinity="0" />
+      <geom name="caster_fork_bridge" type="box" material="housing" pos="-0.049 0 0.037" size="0.011 0.019 0.003" contype="0" conaffinity="0" />
+      <geom name="caster_fork_left" type="box" material="housing" pos="-0.049 0.0175 0.024" size="0.01 0.0015 0.01" contype="0" conaffinity="0" />
+      <geom name="caster_fork_right" type="box" material="housing" pos="-0.049 -0.0175 0.024" size="0.01 0.0015 0.01" contype="0" conaffinity="0" />
+      <geom name="caster_ball" priority="1" type="sphere" material="metal" pos="-0.049 0 0.016" size="0.016" contype="1" conaffinity="1" friction="0.035 0.001 0.0001" />
+      <site name="imu_site" pos="0 0 0.137" size="0.002" rgba="0 0 0 0" />
+      <site name="ultra_left_ray_site" pos="0.074 0.022000 0.094" size="0.001" quat="0.70710678 0 0.70710678 0" rgba="0 0 0 0" />
+      <site name="ultra_right_ray_site" pos="0.074 -0.022000 0.094" size="0.001" quat="0.70710678 0 0.70710678 0" rgba="0 0 0 0" />
+      <geom name="course_chassis_collision" type="box" pos="0 0 0.10" size="0.068 0.064 0.045" rgba="0 0 0 0" contype="1" conaffinity="1" />
+    </body>
+    <geom name="course_wall_0" type="box" pos="-0.4 0.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_1" type="box" pos="-0.4 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_2" type="box" pos="-0.4 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_3" type="box" pos="0.4 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_4" type="box" pos="0.4 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_5" type="box" pos="1.2000000000000002 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_6" type="box" pos="1.2000000000000002 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_7" type="box" pos="2.0 0.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_8" type="box" pos="2.0 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_9" type="box" pos="2.0 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_10" type="box" pos="0.0 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_11" type="box" pos="0.8 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_12" type="box" pos="1.6 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_13" type="box" pos="0.0 0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_14" type="box" pos="0.8 0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_15" type="box" pos="0.0 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_16" type="box" pos="0.8 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_17" type="box" pos="0.0 2.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_18" type="box" pos="0.8 2.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_19" type="box" pos="1.6 2.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <site name="course_start" type="cylinder" pos="0.0 0.0 0.002" size="0.14 0.002" rgba="0.1 0.4 0.95 0.5" />
+    <site name="course_goal" type="cylinder" pos="1.6 1.6 0.002" size="0.25 0.002" rgba="0.1 0.8 0.3 0.5" />
+  </worldbody>
+  <actuator>
+    <motor name="left_motor" joint="left_wheel_joint" gear="1" ctrlrange="-1 1" />
+    <motor name="right_motor" joint="right_wheel_joint" gear="1" ctrlrange="-1 1" />
+  </actuator>
+  <sensor>
+    <gyro name="gyro" site="imu_site" />
+    <accelerometer name="accelerometer" site="imu_site" />
+    <jointpos name="left_encoder" joint="left_wheel_joint" />
+    <jointvel name="left_wheel_speed" joint="left_wheel_joint" />
+    <rangefinder name="left_ultrasonic_ray" site="ultra_left_ray_site" />
+    <jointpos name="right_encoder" joint="right_wheel_joint" />
+    <jointvel name="right_wheel_speed" joint="right_wheel_joint" />
+    <rangefinder name="right_ultrasonic_ray" site="ultra_right_ray_site" />
+  </sensor>
+  <statistic center="0.8 0.8 0.1" extent="1.5000000000000002" />
+</mujoco>
