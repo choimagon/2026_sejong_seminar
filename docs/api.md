@@ -111,6 +111,22 @@
 미로에서 시간 제한을 끄려면 `max_sim_time=None`을 명시합니다.
 배속 입력 함수는 `from module.playback import ask_speed`로 가져옵니다.
 
+## 원하는 데이터로 그래프 그리기
+
+`from module import graph`로 가져옵니다. 센서 종류에 고정되지 않은 공통 함수입니다.
+
+| 호출 | 의미 |
+| --- | --- |
+| `graph.plot(x, y, labels=..., ylabel=...)` | 한 열·여러 열·이름과 배열의 딕셔너리로 그래프 만들기 |
+| `graph.figure(rows=2, cols=1)` | 여러 패널 준비 |
+| `chart.plot(x, y, panel=1, ...)` | 패널 지정 또는 같은 패널에 선 추가 |
+| `chart.plot(angles, ranges, polar=True)` | 각도(rad)·거리를 극좌표로 표시 |
+| `chart.save("my_plot.png")` | outputs/ 아래 원하는 파일 이름으로 저장 |
+| `graph.show()` | 만든 그래프 창 열기 |
+
+`title`, `xlabel`, `ylabel`, `labels`와 선 옵션을 직접 지정할 수 있습니다.
+그래프 함수는 센서를 읽거나 물리 시간을 진행하지 않습니다. [자세한 사용 예](graphs.md)
+
 ## 바퀴별 제어와 거리 명령
 
 실습 외에 바퀴별 실험을 할 때 사용할 수 있습니다.

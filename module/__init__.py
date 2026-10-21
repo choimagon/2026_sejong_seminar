@@ -10,6 +10,6 @@ Windows are explicit: robot.view(), motion.view("basic") or sensor.view("all").
 """
 
 from .robot import Robot
-from . import motion, move, sensor
+from . import graph, motion, move, sensor
 
-__all__ = ["Robot", "move", "motion", "sensor"]
+__all__ = ["Robot", "move", "motion", "sensor", "graph"]
