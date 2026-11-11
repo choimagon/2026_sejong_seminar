@@ -65,6 +65,8 @@ source seminar_mujoco/bin/activate
 
 ## 4. 실습 실행
 
+번호 파일에는 상단 `if`·`import`·`from` 제공 코드만 있습니다. **PPT를 보고 아래 실습 코드를 채운 뒤 실행하세요.** 작성 전에는 실행해도 창이 뜨지 않습니다.
+
 프로젝트 폴더에서, 사용하는 운영체제 열의 명령을 실행하세요.
 
 | 번호 | 실습 | Windows PowerShell | Mac 터미널 |

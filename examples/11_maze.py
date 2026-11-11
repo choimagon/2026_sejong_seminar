@@ -5,8 +5,3 @@ if __package__ in (None, ""):
 from module import course
 from module.playback import ask_speed
 from examples.maze_policy import Policy
-
-world = course.square_maze("lidar", size=3, seed=7)
-print("3 x 3 cells, 30 cm cells, seed=7; parameters are in maze_policy.py")
-course.view(world, policy="examples.maze_policy:Policy", max_sim_time=None,
-            motor_speed=.30, playback_speed=ask_speed(), playback_controls=True)
