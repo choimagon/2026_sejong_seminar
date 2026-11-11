@@ -195,6 +195,35 @@ class ExamplesCourseTest(unittest.TestCase):
             guide.draw_guide(1040,800,1,object(),latest,'',False,'')
         self.assertTrue(any('1.000 / 2.000 rad/s' in str(c) for c in overlay.call_args_list))
 
+    def test_lidar_accepts_old_and_new_mujoco_signatures(self):
+        def older(m, d, pnt, vec, geomgroup, flg_static, bodyexclude, geomid, dist, nray, cutoff):
+            geomid[:] = 0
+            dist[:] = .5
+        def newer(m, d, pnt, vec, geomgroup, flg_static, bodyexclude, geomid, dist, normal, nray, cutoff):
+            """normal: optional output array in newer MuJoCo bindings."""
+            self.assertIsNone(normal)
+            older(m, d, pnt, vec, geomgroup, flg_static, bodyexclude, geomid, dist, nray, cutoff)
+        with Robot(world('pillar', 'lidar')) as robot:
+            for binding in (older, newer):
+                with self.subTest(binding=binding.__name__), patch('mujoco.mj_multiRay', binding):
+                    scan = sensor.lidar.read(robot, num_rays=4)
+                    np.testing.assert_allclose(scan['ranges_m'], [.5, .5, .5, .5])
+                    np.testing.assert_allclose(scan['points_xy_m'], [[.5,0], [0,.5], [-.5,0], [0,-.5]], atol=1e-15)
+
+    def test_macos_map_saves_then_opens_without_matplotlib_window(self):
+        import examples.runtime as runtime
+        import matplotlib.pyplot as plt
+        with TemporaryDirectory() as folder:
+            lab = SimpleNamespace(lidar_points=[], sonar_points=[(1., 2.)], path=[(0., 0.), (.2, 0.)])
+            with patch.object(runtime, '__file__', str(Path(folder)/'examples/runtime.py')), \
+                 patch.object(runtime.sys, 'platform', 'darwin'), \
+                 patch.object(runtime.subprocess, 'run') as opened, patch.object(plt, 'show') as show:
+                filename = runtime.save_map(lab, show=True, name='regression_map')
+                self.assertTrue(filename.is_file())
+                np.testing.assert_array_equal(np.load(filename.with_suffix('.npz'))['ultrasonic'], [[1., 2.]])
+                opened.assert_called_once_with(['open', str(filename)], check=True)
+                show.assert_not_called()
+
     def test_lidar_maze(self):
         result=run(square_maze('lidar',size=3,seed=7),Policy(),max_sim_time=90,
                    trace_name='test_examples_maze')

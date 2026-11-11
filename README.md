@@ -34,6 +34,7 @@ python show.py
 ```
 
 실행 정책은 현재 PowerShell 창에만 적용됩니다.
+패키지 설치 명령이 운영체제에 맞는 MuJoCo를 자동 선택합니다(Windows 3.3.7, Mac/Linux 3.16.0).
 
 Mac에서 최초 설치합니다.
 
@@ -124,3 +125,5 @@ python -m unittest discover -s tests -v
 
 Windows 파이프 전달 오류 수정과 Mac/Linux 실행 방식을 공통 GUI 실행기에 반영했습니다.
 GitHub Actions는 Windows·Mac·Linux에서 화면 없는 테스트를 실행합니다. 실제 GUI 검증은 데스크톱에서 별도로 진행합니다.
+
+Mac의 지도 실습(09·10)은 지도를 PNG로 저장한 뒤 미리보기에서 자동으로 엽니다.

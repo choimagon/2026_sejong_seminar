@@ -1,6 +1,8 @@
 """Supplied runner: sensor reads, odometry and stepping stay outside student tasks."""
 import argparse
 import math
+import subprocess
+import sys
 from pathlib import Path
 
 import mujoco
@@ -151,6 +153,10 @@ def sensor_route(lab, choose, kind="ultrasonic", *, read_front=None):
 
 
 def save_map(lab, *, show=True, name="sensor_map"):
+    # mjpython owns the macOS UI thread; render the map without a second GUI.
+    if sys.platform == "darwin":
+        import matplotlib
+        matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     folder = Path(__file__).resolve().parents[1] / 'outputs/examples'
     folder.mkdir(parents=True, exist_ok=True)
@@ -168,6 +174,10 @@ def save_map(lab, *, show=True, name="sensor_map"):
     fig.savefig(filename, dpi=160)
     np.savez(folder / f"{name}.npz", lidar=lidar, ultrasonic=sonar, path=path)
     print('Saved:', filename)
-    if show: plt.show()
+    if show:
+        if sys.platform == "darwin":
+            subprocess.run(["open", str(filename)], check=True)
+        else:
+            plt.show()
     plt.close(fig)
     return filename

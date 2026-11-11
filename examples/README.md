@@ -63,7 +63,7 @@ Motion Controls / Sensor Monitor의 **Controls 탭을 먼저 클릭**하고 W/S/
 07·08번은 전진/정지를 센서로 판단하고 우회 단계·엔코더/IMU 이동량 추정은 제공합니다.
 고정된 방의 우회이며 모든 장애물 배치에서 성공하는 범용 회피는 아닙니다.
 09번은 초음파 측정점만, 10번은 라이다 측정점만 엔코더+IMU 추정 좌표에 누적합니다.
-주행 뒤 실제 결과 그래프가 열리고 `outputs/examples/ultrasonic_map.png`, `lidar_map.png`와 `.npz`를 저장합니다.
+주행 뒤 실제 결과 그래프가 열립니다. Mac은 저장된 지도를 미리보기로 열고 Windows/Linux는 그래프 창을 엽니다. `outputs/examples/ultrasonic_map.png`, `lidar_map.png`와 `.npz`를 저장합니다.
 정답 좌표를 쓰지 않으며 누적 오차가 있습니다. SLAM·루프 폐쇄는 구현하지 않습니다.
 11번은 라이다 모델로 3×3셀·seed7 미로를 탐색합니다. 시작 배속을 입력하고 실행 중 [ / ]로 조절합니다.
 GUI 미로에는 주행 제한시간이 없습니다.

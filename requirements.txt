@@ -1,4 +1,5 @@
-mujoco==3.16.0
+mujoco==3.3.7; sys_platform == "win32"
+mujoco==3.16.0; sys_platform != "win32"
 numpy==2.5.4
 glfw==2.10.2
 matplotlib==3.11.2

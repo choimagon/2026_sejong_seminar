@@ -40,9 +40,11 @@ def read_lidar(model, data, num_rays=360, max_range=5.0):
     world_directions = np.ascontiguousarray(local_directions @ rotation.T)
     distances = np.full(num_rays, -1.0)
     geom_ids = np.full(num_rays, -1, dtype=np.int32)
+    # MuJoCo 3.3 has no normal output; newer bindings require that argument.
+    normal_output = {"normal": None} if "normal:" in (mujoco.mj_multiRay.__doc__ or "") else {}
     mujoco.mj_multiRay(
         model, data, origin, world_directions.ravel(), None, True,
-        int(lidar.bodyid[0]), geom_ids, distances, None, num_rays, max_range,
+        int(lidar.bodyid[0]), geom_ids, distances, nray=num_rays, cutoff=max_range, **normal_output,
     )
     valid = (distances >= 0) & (distances <= max_range)
     points = np.full((num_rays, 2), np.nan)
