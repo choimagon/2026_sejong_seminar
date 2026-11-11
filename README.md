@@ -97,6 +97,10 @@ mjpython examples/07_ultrasonic_route.py
 
 ## 조작 방법
 
+> **키로 운전하기 전, 직접 만든 Motion Controls / Sensor Monitor 창의 Controls 탭을 먼저 클릭하세요.**
+> MuJoCo 3D 창이 선택되어 있으면 키 입력이 MuJoCo 단축키로 처리됩니다. 카메라를 조작한 뒤에도 Controls 탭을 다시 클릭하세요.
+
+
 `show.py` 실행 후 실제 3D 창에서 카메라를 먼저 조작해 봅니다.
 왼쪽 드래그는 회전, 오른쪽 드래그는 시점 이동, Shift+오른쪽 드래그는 수평 이동, 휠은 확대·축소입니다.
 `show.py`에는 별도 Motion Controls 창이 뜨지 않습니다.

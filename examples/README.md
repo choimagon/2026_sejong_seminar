@@ -48,6 +48,10 @@ Windows/Linux는 모두 `python`입니다. Mac은 01·03·04·07~10은 `mjpython
 
 ## 직접 운전
 
+> **키로 운전하기 전, 직접 만든 Motion Controls / Sensor Monitor 창의 Controls 탭을 먼저 클릭하세요.**
+> MuJoCo 3D 창이 선택되어 있으면 키 입력이 MuJoCo 단축키로 처리됩니다. 카메라를 조작한 뒤에도 Controls 탭을 다시 클릭하세요.
+
+
 Motion Controls / Sensor Monitor의 **Controls 탭을 먼저 클릭**하고 W/S/Q/E를 누릅니다.
 기본값은 W/S 전진·후진, Q/E 좌·우 회전입니다. 키를 놓거나 다른 창을 클릭하면 정지합니다.
 카메라 조작 뒤에는 GUI를 다시 클릭하세요.

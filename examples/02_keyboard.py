@@ -25,4 +25,6 @@ def keyboard_control(pressed):
     return linear, angular
 
 
+# 키로 운전하기 전 Motion Controls 창의 Controls 탭을 먼저 클릭하세요.
+# MuJoCo 3D 창이 선택되어 있으면 MuJoCo 단축키가 작동합니다.
 view(XML, demo=False, sensors=(), motor_speed=.25, control=keyboard_control, drive_function=move)
