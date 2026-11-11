@@ -119,7 +119,7 @@ Mac 터미널에서는 환경을 활성화하고 MuJoCo 창을 엽니다.
 
 ```bash
 source seminar_mujoco/bin/activate
-mjpython show.py
+python show.py
 ```
 
 Linux도 `source seminar_mujoco/bin/activate`로 활성화하며 모델 확인은 `python show.py`입니다.

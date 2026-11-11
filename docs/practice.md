@@ -72,7 +72,7 @@ Mac 터미널에서 설치하고 테스트합니다. Python 3.12를 사용합니
 python3.12 -m venv seminar_mujoco
 source seminar_mujoco/bin/activate
 python -m pip install -r requirements.txt
-mjpython show.py
+python show.py
 ```
 
 `venv`는 프로젝트 전용 Python 환경을 만들고, `pip install -r requirements.txt`는 필요한 패키지를 설치합니다.
@@ -101,7 +101,7 @@ Mac 터미널에서는 환경을 활성화하고 MuJoCo 창을 엽니다.
 
 ```bash
 source seminar_mujoco/bin/activate
-mjpython show.py
+python show.py
 ```
 
 Linux도 `source seminar_mujoco/bin/activate`로 활성화하며 모델 확인은 `python show.py`입니다.

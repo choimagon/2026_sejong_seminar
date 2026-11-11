@@ -74,7 +74,7 @@ Mac 터미널에서 설치하고 테스트합니다. Python 3.12를 사용합니
 python3.12 -m venv seminar_mujoco
 source seminar_mujoco/bin/activate
 python -m pip install -r requirements.txt
-mjpython show.py
+python show.py
 ```
 
 `venv`는 프로젝트 전용 Python 환경을 만들고, `pip install -r requirements.txt`는 필요한 패키지를 설치합니다.
@@ -103,7 +103,7 @@ Mac 터미널에서는 환경을 활성화하고 MuJoCo 창을 엽니다.
 
 ```bash
 source seminar_mujoco/bin/activate
-mjpython show.py
+python show.py
 ```
 
 Linux도 `source seminar_mujoco/bin/activate`로 활성화하며 모델 확인은 `python show.py`입니다.
@@ -174,7 +174,7 @@ Python·MuJoCo만 사용하므로 ROS·Isaac Sim 설치는 필요하지 않습�
 
 | 확인할 내용 | macOS | Windows / Linux |
 | --- | --- | --- |
-| all 로봇 모델 | `mjpython show.py` | `python show.py` |
+| all 로봇 모델 | `python show.py` | `python show.py` |
 | 네 로봇 모델 비교 | `mjpython show_multi.py` | `python show_multi.py` |
 | 키보드 주행 | `mjpython move.py` | `python move.py` |
 | 센서 GUI | `mjpython sensor_view.py` | `python sensor_view.py` |
@@ -285,3 +285,6 @@ Windows는 `python examples/06_keyboard_gui.py`,
 Mac은 `mjpython examples/06_keyboard_gui.py`,
 Linux는 `python examples/06_keyboard_gui.py`를 사용합니다.
 Motion Controls 창에 포커스를 두고 W/S/Q/E 이동, 키를 놓았을 때 정지, 창 닫기를 확인합니다.
+
+`show.py`는 자체 MuJoCo 창을 여는 모델 확인 도구이므로 Mac도 `python show.py`로 실행합니다.
+Mac의 나머지 GUI 실습 파일은 `mjpython`을 사용합니다.

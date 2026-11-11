@@ -25,7 +25,7 @@ Mac:
 python3.12 -m venv seminar_mujoco
 source seminar_mujoco/bin/activate
 python -m pip install -r requirements.txt
-mjpython show.py
+python show.py
 ```
 
 새 터미널에서는 환경 생성·설치를 반복하지 않고 환경 활성화부터 진행합니다.
@@ -57,7 +57,7 @@ Windows 실행 정책은 현재 창에만 적용됩니다. Linux는 Mac과 같�
 
 | 단계 | Windows / Linux | Mac |
 | --- | --- | --- |
-| 모델 확인 | `python show.py` | `mjpython show.py` |
+| 모델 확인 | `python show.py` | `python show.py` |
 | 1. move 확인 | `python workshop100/01_move.py` | `mjpython workshop100/01_move.py` |
 | 2. GUI 운전 | `python workshop100/02_keyboard.py` | `mjpython workshop100/02_keyboard.py` |
 | 3. 시간 기반 경로 | `python workshop100/03_route.py` | `mjpython workshop100/03_route.py` |
@@ -165,3 +165,6 @@ python workshop100/07_maze.py --headless
 
 `--headless`는 화면 없이 빠르게 검증하는 강사용 옵션입니다. `02_keyboard.py`는 GUI가 필수입니다.
 지도 저장은 창 없이 가능하며, 미로 검증 모드만 180 시뮬레이션 초의 안전 한도를 둡니다.
+
+`show.py`는 자체 MuJoCo 창을 여는 모델 확인 도구이므로 Mac도 `python show.py`로 실행합니다.
+Mac의 나머지 GUI 실습 파일은 `mjpython`을 사용합니다.
