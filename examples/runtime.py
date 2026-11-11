@@ -7,28 +7,27 @@ import mujoco
 import numpy as np
 from module import Robot, sensor
 from module.course import Odometry, sector
-from workshop100.world import world, MAPS
+from examples.world import world, MAPS
 
 
 def arguments(description):
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("--map", choices=MAPS, default="pillar")
     parser.add_argument("--answer", action="store_true", help="use supplied instructor answers")
     parser.add_argument("--headless", action="store_true", help="run without windows or real-time waits")
-    parser.add_argument("--sensor", choices=("ultrasonic", "lidar"), default="ultrasonic")
     return parser.parse_args()
 
 
 def load_move(answer=False):
     """Load the actual move function saved in the numbered first exercise."""
     from importlib import import_module
-    name = "workshop100.reference" if answer else "workshop100.01_move"
+    name = "examples.reference" if answer else "examples.01_move"
     return import_module(name).move
 
 
 class Lab:
-    def __init__(self, map_name="pillar", *, show=False, move=None):
-        self.robot = Robot(world(map_name))
+    def __init__(self, map_name="pillar", *, show=False, move=None, kind="all", xml_path=None):
+        self.robot = Robot(xml_path if xml_path is not None else world(map_name, kind))
+        self.sensors = sensor.available_sensors(self.robot.model)
         self.robot.run_for(.3)
         self.odom = Odometry.for_robot(self.robot)
         self.move = move
@@ -61,17 +60,19 @@ class Lab:
         c, s = math.cos(state.yaw_rad), math.sin(state.yaw_rad)
         rotation = np.array([[c, -s], [s, c]])
         origin = np.array([state.x_m, state.y_m])
-        scan = sensor.lidar.read(self.robot)
-        points = scan['points_xy_m']
-        points = points[np.isfinite(points).all(axis=1)]
-        # lidar_scanner is at base XY=(0,0) in model_all.xml.
-        self.lidar_points.extend(points @ rotation.T + origin)
-        distances = sensor.ultrasonic.read(self.robot)
-        for side, distance in zip(("left", "right"), distances):
-            if np.isfinite(distance):
-                site = self.robot.model.site(f"ultra_{side}_ray_site")
-                point = site.pos[:2] + (distance, 0)
-                self.sonar_points.append(point @ rotation.T + origin)
+        if "lidar" in self.sensors:
+            scan = sensor.lidar.read(self.robot)
+            points = scan['points_xy_m']
+            points = points[np.isfinite(points).all(axis=1)]
+            # The prepared LiDAR model has scanner XY=(0,0) in the base frame.
+            self.lidar_points.extend(points @ rotation.T + origin)
+        if "ultrasonic" in self.sensors:
+            distances = sensor.ultrasonic.read(self.robot)
+            for side, distance in zip(("left", "right"), distances):
+                if np.isfinite(distance):
+                    site = self.robot.model.site(f"ultra_{side}_ray_site")
+                    point = site.pos[:2] + (distance, 0)
+                    self.sonar_points.append(point @ rotation.T + origin)
         self.path.append((state.x_m, state.y_m))
 
     def run_for(self, linear, angular, seconds):
@@ -118,18 +119,19 @@ class Lab:
                 "obstacle_contacts": self.contacts, "simulation_s": self.robot.time}
 
 
-def sensor_route(lab, choose, kind="ultrasonic"):
+def sensor_route(lab, choose, kind="ultrasonic", *, read_front=None):
+    front = (lambda: read_front(lab.robot)) if read_front is not None else (lambda: lab.front(kind))
     # Students supply the approach decision; measured turns/distances are provided.
     deadline = lab.robot.time + 30
     start_distance = lab.odom.state.distance_m
     while True:
-        command = choose(lab.front(kind))
+        command = choose(front())
         if command == (0.0, 0.0):
             if lab.odom.state.distance_m - start_distance < .02:
-                raise RuntimeError("Complete choose(front) in 05_sensor_route.py before running, or use --answer.")
+                raise RuntimeError("Complete choose(front) in 09_ultrasonic_route.py / 10_lidar_route.py before running, or use --answer.")
             break
         if lab.robot.time > deadline:
-            raise RuntimeError("Approach did not finish. Complete 01_move.py and 05_sensor_route.py, or use --answer.")
+            raise RuntimeError("Approach did not finish. Complete 01_move.py and 09_ultrasonic_route.py / 10_lidar_route.py, or use --answer.")
         lab.step(*command)
     lab.stop()
     lab.turn(math.pi / 2)
@@ -140,7 +142,7 @@ def sensor_route(lab, choose, kind="ultrasonic"):
     lab.forward(.8)
     lab.turn(math.pi / 2)
     deadline = lab.robot.time + 30
-    while lab.front(kind) > .45:
+    while front() > .45:
         if lab.robot.time > deadline:
             raise RuntimeError("Goal approach did not finish")
         lab.step(.2, 0)
@@ -148,9 +150,10 @@ def sensor_route(lab, choose, kind="ultrasonic"):
     return lab.result()
 
 
-def save_map(lab, *, show=True):
+def save_map(lab, *, show=True, name="sensor_map"):
     import matplotlib.pyplot as plt
-    folder = Path(__file__).resolve().parents[1] / 'outputs/workshop100'
+    folder = Path(__file__).resolve().parents[1] / 'outputs/examples'
+    folder.mkdir(parents=True, exist_ok=True)
     fig, ax = plt.subplots(figsize=(8, 6))
     lidar = np.asarray(lab.lidar_points).reshape(-1, 2)
     sonar = np.asarray(lab.sonar_points).reshape(-1, 2)
@@ -161,9 +164,9 @@ def save_map(lab, *, show=True):
     ax.set(xlabel='Estimated X (m)', ylabel='Estimated Y (m)',
            title='Accumulated sensor points (no SLAM or ground-truth pose)', aspect='equal')
     ax.legend()
-    filename = folder / 'sensor_map.png'
+    filename = folder / f"{name}.png"
     fig.savefig(filename, dpi=160)
-    np.savez(folder / 'sensor_map.npz', lidar=lidar, ultrasonic=sonar, path=path)
+    np.savez(folder / f"{name}.npz", lidar=lidar, ultrasonic=sonar, path=path)
     print('Saved:', filename)
     if show: plt.show()
     plt.close(fig)

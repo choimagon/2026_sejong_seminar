@@ -1,0 +1,31 @@
+# 파일 경로로 실행할 때도 프로젝트 라이브러리를 찾습니다.
+if __package__ in (None, ""):
+    import _bootstrap
+
+from examples.runtime import arguments, load_move, Lab
+from examples.world import SCENES
+
+XML = SCENES / "pillar_basic.xml"
+# (선속도 m/s, 각속도 rad/s, 시간 s): 기둥의 왼쪽으로 우회합니다.
+ACTIONS = [
+    (0.25, 0.0, 1.0),
+    (0.0, 1.0, 1.9),
+    (0.25, 0.0, 3.5),
+    (0.0, -1.0, 1.9),
+    (0.25, 0.0, 6.0),
+    (0.0, -1.0, 1.9),
+    (0.25, 0.0, 3.5),
+    (0.0, 1.0, 1.9),
+    (0.25, 0.0, 1.5),
+]
+
+if __name__ == "__main__":
+    args = arguments("05: 시간으로 기둥 left 우회")
+    lab = Lab(xml_path=XML, show=not args.headless, move=load_move(args.answer))
+    try:
+        for linear, angular, seconds in ACTIONS:
+            lab.run_for(linear, angular, seconds)
+        lab.stop()
+        print(lab.result())
+    finally:
+        lab.close()

@@ -1,129 +1,80 @@
-# 학생용 실습 01–16
+# 번호별 로봇 실습
 
-각 Python 파일에는 해당 실습에 필요한 **import와 실행 경로 설정만** 있습니다.
-변수 설정, 반복문, 센서 측정, 그래프, 주행 판단과 실행 코드는 수업에서 직접 작성합니다.
-본문 작성 전 실행하면 import 후 바로 종료되는 것이 정상입니다.
+프로젝트 루트에서 `seminar_mujoco` 환경을 켠 뒤 실행합니다.
+Windows/Linux는 `python examples/번호_이름.py`, Mac은 `mjpython examples/번호_이름.py`입니다.
+준비 단계의 `show.py`만 Mac에서도 `python show.py`로 실행합니다.
 
-| 번호 | 파일 | 작성할 내용 |
-| --- | --- | --- |
-| 01 | [01_move.py](01_move.py) | 모델·MuJoCo 창 열기, move의 선속도·각속도와 실행 시간 |
-| 02 | [02_imu.py](02_imu.py) | IMU 측정 → NumPy 배열 → Matplotlib 그래프 |
-| 03 | [03_encoders.py](03_encoders.py) | 엔코더 측정 → NumPy 배열 → Matplotlib 그래프 |
-| 04 | [04_ultrasonic.py](04_ultrasonic.py) | 초음파 측정 → NumPy 배열 → Matplotlib 그래프 |
-| 05 | [05_lidar.py](05_lidar.py) | 라이다 측정 → NumPy 배열 → Matplotlib 그래프 |
-| 06 | [06_keyboard_gui.py](06_keyboard_gui.py) | W/S/Q/E 조작, 이후 센서 GUI 확인 |
-| 07 | [07_move_algorithm.py](07_move_algorithm.py) | 센서값에 따른 move 명령과 직접 그린 그래프 |
-| 08 | [08_lidar_straight.py](08_lidar_straight.py) | 라이다 기반 직선 주행 |
-| 09 | [09_ultrasonic_straight.py](09_ultrasonic_straight.py) | 초음파 기반 직선 주행 |
-| 10 | [10_lidar_corner.py](10_lidar_corner.py) | 라이다 기반 ㄱ자 주행·제자리/곡선 회전 |
-| 11 | [11_ultrasonic_corner.py](11_ultrasonic_corner.py) | 초음파 기반 ㄱ자 주행·제자리/곡선 회전 |
-| 12 | [12_lidar_junction.py](12_lidar_junction.py) | 라이다 기반 T자 주행 |
-| 13 | [13_ultrasonic_junction.py](13_ultrasonic_junction.py) | 초음파 기반 T자 주행 |
-| 14 | [14_lidar_cross.py](14_lidar_cross.py) | 라이다 기반 +자 주행 |
-| 15 | [15_ultrasonic_cross.py](15_ultrasonic_cross.py) | 초음파 기반 +자 주행 |
-| 16 | [16_maze_escape.py](16_maze_escape.py) | 매번 새로운 10×10 미로·직접 선택하는 배속·탈출 판단 |
+| 번호 파일 | 내용 | XML | Windows/Linux | Mac |
+| --- | --- | --- | --- | --- |
+| [01_move.py](01_move.py) | move 함수와 전진·후진·회전·정지 | `pillar_basic.xml` | `python examples/01_move.py` | `mjpython examples/01_move.py` |
+| [02_keyboard_straight.py](02_keyboard_straight.py) | 직선 통로에서 W/S/Q/E 운전 | `straight_basic.xml` | `python examples/02_keyboard_straight.py` | `mjpython examples/02_keyboard_straight.py` |
+| [03_keyboard_left.py](03_keyboard_left.py) | 직진 후 왼쪽으로 꺾이는 통로 | `left_corner_basic.xml` | `python examples/03_keyboard_left.py` | `mjpython examples/03_keyboard_left.py` |
+| [04_keyboard_right.py](04_keyboard_right.py) | 직진 후 오른쪽으로 꺾이는 통로 | `right_corner_basic.xml` | `python examples/04_keyboard_right.py` | `mjpython examples/04_keyboard_right.py` |
+| [05_route_left.py](05_route_left.py) | 시간으로 기둥 왼쪽 우회 | `pillar_basic.xml` | `python examples/05_route_left.py` | `mjpython examples/05_route_left.py` |
+| [06_route_right.py](06_route_right.py) | 시간으로 기둥 오른쪽 우회 | `pillar_basic.xml` | `python examples/06_route_right.py` | `mjpython examples/06_route_right.py` |
+| [07_ultrasonic.py](07_ultrasonic.py) | 초음파 값과 GUI 관찰 | `pillar_sonic.xml` | `python examples/07_ultrasonic.py` | `mjpython examples/07_ultrasonic.py` |
+| [08_lidar.py](08_lidar.py) | 라이다 값과 GUI 관찰 | `pillar_lidar.xml` | `python examples/08_lidar.py` | `mjpython examples/08_lidar.py` |
+| [09_ultrasonic_route.py](09_ultrasonic_route.py) | 초음파로 판단하며 기둥 우회 | `pillar_sonic.xml` | `python examples/09_ultrasonic_route.py` | `mjpython examples/09_ultrasonic_route.py` |
+| [10_lidar_route.py](10_lidar_route.py) | 라이다로 판단하며 기둥 우회 | `pillar_lidar.xml` | `python examples/10_lidar_route.py` | `mjpython examples/10_lidar_route.py` |
+| [11_ultrasonic_mapping.py](11_ultrasonic_mapping.py) | 초음파 측정점으로 지도 누적 | `pillar_sonic.xml` | `python examples/11_ultrasonic_mapping.py` | `mjpython examples/11_ultrasonic_mapping.py` |
+| [12_lidar_mapping.py](12_lidar_mapping.py) | 라이다 측정점으로 지도 누적 | `pillar_lidar.xml` | `python examples/12_lidar_mapping.py` | `mjpython examples/12_lidar_mapping.py` |
+| [13_maze.py](13_maze.py) | 라이다로 작은 미로 탐색 | `라이다 모델로 생성한 3×3 미로 XML` | `python examples/13_maze.py` | `mjpython examples/13_maze.py` |
 
-파일을 작성한 뒤 이 폴더의 상위, 즉 저장소 루트에서 실행합니다.
+## 직접 작성할 부분
 
-```bash
-# macOS: MuJoCo 창을 사용하는 경우
-mjpython examples/01_move.py
+1. `01_move.py`: 바퀴 움직임을 이해하고 `left`, `right` 계산식을 작성합니다.
+2. `05_route_left.py`: 전진·회전·시간을 조합합니다. `06_route_right.py`에서 반대쪽 경로를 비교합니다.
+3. `09_ultrasonic_route.py`: `read_front()`로 실제 센서값을 읽고 `choose(front)` 조건문으로 전진·정지를 선택합니다.
+4. `10_lidar_route.py`에서는 XML과 읽기 함수가 어떻게 달라졌는지 확인합니다.
 
-# 센서 측정과 Matplotlib만 사용하는 경우
-python examples/02_imu.py
+전체 코드가 파일에 들어 있습니다. PPT의 줄 번호를 따라 작성하거나 해당 부분을 바꾸고 저장한 뒤 다시 실행합니다.
+`01_move.py`의 move를 이후 운전·경로·지도 실습이 실제로 재사용합니다.
+`runtime.py`, `world.py`, `maze_policy.py`는 제공 코드입니다. 복잡한 물리·GUI·위치 추정·탐색기를 전부 새로 작성하지 않습니다.
 
-# Windows / Linux
-python examples/01_move.py
-```
+## 맵과 XML
 
-01·06·08–16번처럼 macOS에서 MuJoCo 창을 여는 실습은 `mjpython`을 사용합니다.
-02–05·07번의 측정·그래프 실습은 `python`으로 실행할 수 있습니다.
+- `straight_basic.xml`: 직선 통로.
+- `left_corner_basic.xml`: +X로 약 2.8m 직진한 다음 왼쪽 통로로 진행.
+- `right_corner_basic.xml`: +X로 약 2.8m 직진한 다음 오른쪽 통로로 진행.
+- `pillar_basic.xml`: 넓은 방의 기둥 우회, 거리 센서 없음.
+- `pillar_sonic.xml`: 같은 방·기둥, 초음파 장착.
+- `pillar_lidar.xml`: 같은 방·기둥, 라이다 장착.
 
-[설치·실행](../README.md) · [실습 목표·시간표](../docs/practice.md) · [함수·반환값 안내](../docs/api.md)
+센서는 실제 XML 모델에 장착되어야 읽을 수 있습니다. 초음파 모델에는 라이다가 없고 라이다 모델에는 초음파가 없습니다.
+원본 모델은 `model_xml/model_basic.xml`, `model_sonic.xml`, `model_lidar.xml`이고, 준비된 맵 XML에는 로봇과 벽·기둥이 함께 들어 있습니다.
+`world.py`는 강사용 XML 생성기이며 학생은 준비된 XML을 그대로 불러옵니다.
 
-## MuJoCo 화면과 로봇 조작 방법
+## 직접 운전
 
-실행하면 **MuJoCo 3D 창**과 직접 만든 **Motion Controls / Sensor Monitor GUI 창**이 열립니다.
-3D 창에서 카메라를 움직이고, GUI 창에서 로봇에 주행 명령을 보냅니다.
-`show.py`는 모델 확인용이므로 별도의 조작 GUI는 열리지 않습니다.
+Motion Controls / Sensor Monitor의 **Controls 탭을 먼저 클릭**하고 W/S/Q/E를 누릅니다.
+W/S 전진·후진, Q/E 좌·우 회전이며 A/D는 쓰지 않습니다. 키를 놓거나 다른 창을 클릭하면 정지합니다.
+카메라 조작 뒤에는 GUI를 다시 클릭하세요.
 
-### 3D 화면의 카메라 조작
+## 센서와 지도
 
-마우스 포인터를 MuJoCo 3D 장면 위에 두고 조작합니다. Windows·Mac·Linux에서 공통으로 사용합니다.
+초음파는 전방 두 거리값(m), 라이다는 360방향 거리값(m)을 읽으며 반사가 없는 방향은 `inf`입니다.
+초음파는 이 모델에서 이상적인 단일 광선으로 구현되며 실제 음파 확산·잡음은 재현하지 않습니다.
+09·10번은 전진/정지를 센서로 판단하고 우회 단계·엔코더/IMU 이동량 추정은 제공합니다.
+고정된 방의 우회이며 모든 장애물 배치에서 성공하는 범용 회피는 아닙니다.
+11번은 초음파 측정점만, 12번은 라이다 측정점만 엔코더+IMU 추정 좌표에 누적합니다.
+주행 뒤 실제 결과 그래프가 열리고 `outputs/examples/ultrasonic_map.png`, `lidar_map.png`와 `.npz`를 저장합니다.
+정답 좌표를 쓰지 않으며 누적 오차가 있습니다. SLAM·루프 폐쇄는 구현하지 않습니다.
+13번은 라이다 모델로 3×3셀·seed7 미로를 탐색합니다. 시작 배속을 입력하고 실행 중 [ / ]로 조절합니다.
+GUI 미로에는 주행 제한시간이 없으며 화면 없는 검증 모드에는 180 시뮬레이션 초의 한도를 둡니다.
 
-| 마우스 입력 | 화면 동작 |
-| --- | --- |
-| 왼쪽 버튼을 누른 채 드래그 | 카메라 회전 |
-| 오른쪽 버튼을 누른 채 드래그 | 시점 이동: 수직 평면 |
-| Shift + 오른쪽 버튼을 누른 채 드래그 | 시점 이동: 수평 평면 |
-| 휠 스크롤 또는 가운데 버튼 드래그 | 확대 / 축소 |
-
-Mac 트랙패드는 보조 클릭을 누른 채 드래그하고, 두 손가락 스크롤로 확대·축소합니다.
-보조 클릭 설정을 확인하고, 드래그가 불편하면 마우스를 사용합니다.
-GUI가 있는 실습에서는 F로 로봇 추적 / 전체 보기를 전환하고 H로 전체 보기로 돌아갑니다.
-카메라 조작은 [MuJoCo 공식 안내](https://mujoco.readthedocs.io/en/stable/programming/samples.html#basic)를 참고하세요.
-
-### 주행 전에 직접 만든 GUI 창을 클릭
-
-1. **Motion Controls / Sensor Monitor 창의 Controls 탭이나 빈 공간을 클릭**해 키보드 포커스를 줍니다.
-2. W/S로 전진·후진, Q/E로 제자리 좌회전·우회전합니다. 키를 누르는 동안 주행하고 놓으면 제동합니다.
-3. 3D 창에서 카메라를 조작했거나 터미널을 클릭했다면, **GUI 창을 다시 클릭한 뒤** 주행 키를 누릅니다.
-
-현재 실습의 주행 키는 **W/S/Q/E**입니다. WASD 방식의 A/D 회전은 사용하지 않습니다.
-GUI가 포커스를 잃으면 정지 명령을 보냅니다. 명령 입력 중에는 Enter로 입력을 마친 뒤 주행합니다.
-실습 06에서 `GUI 클릭 → W로 전진 → 키 놓고 정지 → Q/E로 회전`을 먼저 확인하세요.
-
-## 실습별 실행 명령어
-
-프로젝트 루트에서 `seminar_mujoco` 환경을 먼저 활성화합니다. 해당 파일의 본문을 끝까지 작성하고 저장한 뒤 아래 명령을 실행합니다.
-`python examples/파일명.py`처럼 파일 경로를 입력합니다. 실습 파일이 프로젝트 라이브러리를 자동으로 찾으므로 `-m`은 필요 없습니다.
-
-| 실습 파일 | Windows PowerShell | Mac 터미널 |
-| --- | --- | --- |
-| `01_move.py` | `python examples/01_move.py` | `mjpython examples/01_move.py` |
-| `02_imu.py` | `python examples/02_imu.py` | `python examples/02_imu.py` |
-| `03_encoders.py` | `python examples/03_encoders.py` | `python examples/03_encoders.py` |
-| `04_ultrasonic.py` | `python examples/04_ultrasonic.py` | `python examples/04_ultrasonic.py` |
-| `05_lidar.py` | `python examples/05_lidar.py` | `python examples/05_lidar.py` |
-| `06_keyboard_gui.py` | `python examples/06_keyboard_gui.py` | `mjpython examples/06_keyboard_gui.py` |
-| `07_move_algorithm.py` | `python examples/07_move_algorithm.py` | `python examples/07_move_algorithm.py` |
-| `08_lidar_straight.py` | `python examples/08_lidar_straight.py` | `mjpython examples/08_lidar_straight.py` |
-| `09_ultrasonic_straight.py` | `python examples/09_ultrasonic_straight.py` | `mjpython examples/09_ultrasonic_straight.py` |
-| `10_lidar_corner.py` | `python examples/10_lidar_corner.py` | `mjpython examples/10_lidar_corner.py` |
-| `11_ultrasonic_corner.py` | `python examples/11_ultrasonic_corner.py` | `mjpython examples/11_ultrasonic_corner.py` |
-| `12_lidar_junction.py` | `python examples/12_lidar_junction.py` | `mjpython examples/12_lidar_junction.py` |
-| `13_ultrasonic_junction.py` | `python examples/13_ultrasonic_junction.py` | `mjpython examples/13_ultrasonic_junction.py` |
-| `14_lidar_cross.py` | `python examples/14_lidar_cross.py` | `mjpython examples/14_lidar_cross.py` |
-| `15_ultrasonic_cross.py` | `python examples/15_ultrasonic_cross.py` | `mjpython examples/15_ultrasonic_cross.py` |
-| `16_maze_escape.py` | `python examples/16_maze_escape.py` | `mjpython examples/16_maze_escape.py` |
-
-학생용 파일은 import와 실행 경로 설정만 있으므로 본문 작성 전 바로 종료되는 것이 정상입니다.
-
-### 환경 활성화 후 실행하기
-
-환경 이름은 **`seminar_mujoco`**입니다. 아래 명령은 저장소 루트에서 실행합니다.
-새 터미널을 열 때마다 환경을 다시 활성화한 뒤 실습을 실행합니다.
-
-Windows PowerShell에서는 아래 세 줄을 순서대로 실행합니다.
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-.\seminar_mujoco\Scripts\Activate.ps1
-python show.py
-```
-
-실행 정책 설정은 현재 PowerShell 창에만 적용되며 창을 닫으면 해제됩니다.
-[Microsoft 실행 정책 안내](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy#example-6-set-the-execution-policy-for-the-current-powershell-session)
-
-Mac 터미널에서는 환경을 활성화하고 MuJoCo 창을 엽니다.
+## 강사 실행·검증
 
 ```bash
-source seminar_mujoco/bin/activate
-python show.py
+python examples/05_route_left.py --headless
+python examples/06_route_right.py --headless
+python examples/09_ultrasonic_route.py --headless
+python examples/10_lidar_route.py --headless
+python examples/11_ultrasonic_mapping.py --headless
+python examples/12_lidar_mapping.py --headless
+python examples/13_maze.py --headless
 ```
 
-Linux도 `source seminar_mujoco/bin/activate`로 활성화하며 모델 확인은 `python show.py`입니다.
-프롬프트의 `(seminar_mujoco)`를 확인한 뒤 아래 실습별 명령을 실행합니다.
-Windows / Linux는 `python`, Mac에서 MuJoCo 창을 여는 실습은 `mjpython`을 사용합니다.
-Mac의 센서 측정·그래프 실습은 `python`으로 실행합니다. 환경을 종료하려면 `deactivate`를 입력합니다.
-기존 환경 폴더는 이름만 바꾸지 말고 처음 한 번 `seminar_mujoco`로 새로 생성하고 패키지를 설치합니다.
+비교 경로와 대체 센서는 선택 실행입니다. 지도·미로는 제공 코드 데모로 마무리합니다.
+`examples_legacy/`의 이전 실습은 로컬 보관용이며 Git에는 포함하지 않습니다.
+
+[설치·환경 활성화](../README.md) · [공용 함수 안내](../docs/api.md)

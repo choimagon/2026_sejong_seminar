@@ -70,7 +70,16 @@ def load_policy(spec):
             raise ValueError(f"Cannot load policy: {spec}")
         module = importlib.util.module_from_spec(loader)
         sys.modules[loader.name] = module
-        loader.loader.exec_module(module)
+        # Match direct script execution when a submitted file imports a sibling helper.
+        directory = str(path.resolve().parent)
+        added = directory not in sys.path
+        if added:
+            sys.path.insert(0, directory)
+        try:
+            loader.loader.exec_module(module)
+        finally:
+            if added:
+                sys.path.remove(directory)
         policy_type = module.Policy
     else:
         name, _, attribute = str(spec).partition(":")
