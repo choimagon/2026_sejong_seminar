@@ -48,20 +48,22 @@ git clone https://github.com/choimagon/2026_sejong_seminar.git
 cd 2026_sejong_seminar
 ```
 
-Windows PowerShell에서 설치하고 테스트합니다. 가상환경의 실행 파일을 직접 지정하므로 활성화 설정이 필요 없습니다.
+Windows PowerShell에서 `seminar_mujoco` 환경을 만들고 설치·테스트합니다. 활성화 오류가 나면 바로 아래 해결 절차를 먼저 실행합니다.
 
 ```powershell
-py -3.12 -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-.\.venv\Scripts\python.exe show.py
+py -3.12 -m venv seminar_mujoco
+.\seminar_mujoco\Scripts\Activate.ps1
+.\seminar_mujoco\Scripts\python.exe -m pip install -r requirements.txt
+.\seminar_mujoco\Scripts\python.exe show.py
 ```
 
 Mac 터미널에서 설치하고 테스트합니다. Python 3.12를 사용합니다.
 
 ```bash
-python3.12 -m venv .venv
-.venv/bin/python -m pip install -r requirements.txt
-.venv/bin/mjpython show.py
+python3.12 -m venv seminar_mujoco
+source seminar_mujoco/bin/activate
+seminar_mujoco/bin/python -m pip install -r requirements.txt
+seminar_mujoco/bin/mjpython show.py
 ```
 
 `venv`는 프로젝트 전용 Python 환경을 만들고, `pip install -r requirements.txt`는 필요한 패키지를 설치합니다.
@@ -70,6 +72,40 @@ python3.12 -m venv .venv
 Mac에서 MuJoCo 창을 여는 실습은 `mjpython`, 측정·그래프만 사용하는 실습은 `python`을 씁니다.
 새 터미널에서도 저장소 루트로 이동한 뒤 아래 명령을 실행하면 됩니다.
 
+### 가상환경 활성화와 Windows 오류 해결
+
+가상환경 폴더 이름은 **`seminar_mujoco`**로 통일합니다.
+이전 환경 폴더의 이름만 바꾸지 말고, 위 생성 명령으로 새 환경을 만든 뒤 패키지를 설치합니다.
+
+Windows PowerShell에서 활성화합니다.
+
+```powershell
+.\seminar_mujoco\Scripts\Activate.ps1
+```
+
+“이 시스템에서 스크립트를 실행할 수 없습니다”, `PSSecurityException` 또는 `UnauthorizedAccess` 오류가 나오면
+**같은 PowerShell 창에서** 아래 두 줄을 순서대로 실행합니다.
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\seminar_mujoco\Scripts\Activate.ps1
+```
+
+`-Scope Process`는 현재 PowerShell 창에만 적용되며 창을 닫으면 해제됩니다.
+관리자 권한은 필요 없습니다. 조직의 그룹 정책으로 차단되면 활성화 대신 아래의 실행 파일 직접 지정 방식을 사용합니다.
+[Microsoft 실행 정책 안내](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy#example-6-set-the-execution-policy-for-the-current-powershell-session)
+
+Mac / Linux에서는 다음 명령으로 활성화합니다.
+
+```bash
+source seminar_mujoco/bin/activate
+```
+
+활성화 후 프롬프트에 `(seminar_mujoco)`가 표시됩니다. Windows / Linux에서는 `python show.py`,
+Mac에서는 `mjpython show.py`로 설치를 확인합니다. 새 터미널을 열면 다시 활성화합니다.
+환경을 종료하려면 `deactivate`를 입력합니다.
+아래 실습별 명령처럼 `seminar_mujoco` 안의 실행 파일을 직접 지정하면 활성화 없이도 실행할 수 있습니다.
+
 ## 실습별 실행 명령어
 
 프로젝트 루트에서 해당 파일의 본문을 끝까지 작성하고 저장한 뒤 실행합니다.
@@ -77,22 +113,22 @@ Mac에서 MuJoCo 창을 여는 실습은 `mjpython`, 측정·그래프만 사용
 
 | 실습 파일 | Windows PowerShell | Mac 터미널 |
 | --- | --- | --- |
-| `01_move.py` | `.\.venv\Scripts\python.exe -m examples.01_move` | `.venv/bin/mjpython -m examples.01_move` |
-| `02_imu.py` | `.\.venv\Scripts\python.exe -m examples.02_imu` | `.venv/bin/python -m examples.02_imu` |
-| `03_encoders.py` | `.\.venv\Scripts\python.exe -m examples.03_encoders` | `.venv/bin/python -m examples.03_encoders` |
-| `04_ultrasonic.py` | `.\.venv\Scripts\python.exe -m examples.04_ultrasonic` | `.venv/bin/python -m examples.04_ultrasonic` |
-| `05_lidar.py` | `.\.venv\Scripts\python.exe -m examples.05_lidar` | `.venv/bin/python -m examples.05_lidar` |
-| `06_keyboard_gui.py` | `.\.venv\Scripts\python.exe -m examples.06_keyboard_gui` | `.venv/bin/mjpython -m examples.06_keyboard_gui` |
-| `07_move_algorithm.py` | `.\.venv\Scripts\python.exe -m examples.07_move_algorithm` | `.venv/bin/python -m examples.07_move_algorithm` |
-| `08_lidar_straight.py` | `.\.venv\Scripts\python.exe -m examples.08_lidar_straight` | `.venv/bin/mjpython -m examples.08_lidar_straight` |
-| `09_ultrasonic_straight.py` | `.\.venv\Scripts\python.exe -m examples.09_ultrasonic_straight` | `.venv/bin/mjpython -m examples.09_ultrasonic_straight` |
-| `10_lidar_corner.py` | `.\.venv\Scripts\python.exe -m examples.10_lidar_corner` | `.venv/bin/mjpython -m examples.10_lidar_corner` |
-| `11_ultrasonic_corner.py` | `.\.venv\Scripts\python.exe -m examples.11_ultrasonic_corner` | `.venv/bin/mjpython -m examples.11_ultrasonic_corner` |
-| `12_lidar_junction.py` | `.\.venv\Scripts\python.exe -m examples.12_lidar_junction` | `.venv/bin/mjpython -m examples.12_lidar_junction` |
-| `13_ultrasonic_junction.py` | `.\.venv\Scripts\python.exe -m examples.13_ultrasonic_junction` | `.venv/bin/mjpython -m examples.13_ultrasonic_junction` |
-| `14_lidar_cross.py` | `.\.venv\Scripts\python.exe -m examples.14_lidar_cross` | `.venv/bin/mjpython -m examples.14_lidar_cross` |
-| `15_ultrasonic_cross.py` | `.\.venv\Scripts\python.exe -m examples.15_ultrasonic_cross` | `.venv/bin/mjpython -m examples.15_ultrasonic_cross` |
-| `16_maze_escape.py` | `.\.venv\Scripts\python.exe -m examples.16_maze_escape` | `.venv/bin/mjpython -m examples.16_maze_escape` |
+| `01_move.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.01_move` | `seminar_mujoco/bin/mjpython -m examples.01_move` |
+| `02_imu.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.02_imu` | `seminar_mujoco/bin/python -m examples.02_imu` |
+| `03_encoders.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.03_encoders` | `seminar_mujoco/bin/python -m examples.03_encoders` |
+| `04_ultrasonic.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.04_ultrasonic` | `seminar_mujoco/bin/python -m examples.04_ultrasonic` |
+| `05_lidar.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.05_lidar` | `seminar_mujoco/bin/python -m examples.05_lidar` |
+| `06_keyboard_gui.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.06_keyboard_gui` | `seminar_mujoco/bin/mjpython -m examples.06_keyboard_gui` |
+| `07_move_algorithm.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.07_move_algorithm` | `seminar_mujoco/bin/python -m examples.07_move_algorithm` |
+| `08_lidar_straight.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.08_lidar_straight` | `seminar_mujoco/bin/mjpython -m examples.08_lidar_straight` |
+| `09_ultrasonic_straight.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.09_ultrasonic_straight` | `seminar_mujoco/bin/mjpython -m examples.09_ultrasonic_straight` |
+| `10_lidar_corner.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.10_lidar_corner` | `seminar_mujoco/bin/mjpython -m examples.10_lidar_corner` |
+| `11_ultrasonic_corner.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.11_ultrasonic_corner` | `seminar_mujoco/bin/mjpython -m examples.11_ultrasonic_corner` |
+| `12_lidar_junction.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.12_lidar_junction` | `seminar_mujoco/bin/mjpython -m examples.12_lidar_junction` |
+| `13_ultrasonic_junction.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.13_ultrasonic_junction` | `seminar_mujoco/bin/mjpython -m examples.13_ultrasonic_junction` |
+| `14_lidar_cross.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.14_lidar_cross` | `seminar_mujoco/bin/mjpython -m examples.14_lidar_cross` |
+| `15_ultrasonic_cross.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.15_ultrasonic_cross` | `seminar_mujoco/bin/mjpython -m examples.15_ultrasonic_cross` |
+| `16_maze_escape.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.16_maze_escape` | `seminar_mujoco/bin/mjpython -m examples.16_maze_escape` |
 
 학생용 파일은 import만 있으므로 본문 작성 전 바로 종료되는 것이 정상입니다.
 
@@ -122,24 +158,9 @@ Mac에서 MuJoCo 창을 여는 실습은 `mjpython`, 측정·그래프만 사용
 
 ## 설치
 
-Python **3.12** 환경에서 확인했습니다. 모든 명령은 이 README가 있는 폴더에서 실행합니다.
-Python·MuJoCo만으로 실습하며 ROS·Isaac Sim 설치는 필요하지 않습니다.
-
-macOS / Linux:
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -r requirements.txt
-```
-
-Windows PowerShell:
-
-```powershell
-py -3.12 -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-```
+Python 3.12와 Git을 설치한 뒤 위의 **저장소 클론과 설치 후 테스트** 순서대로 진행합니다.
+환경 이름은 `seminar_mujoco`이며, PowerShell 활성화 오류는 **가상환경 활성화와 Windows 오류 해결**을 참고하세요.
+Python·MuJoCo만 사용하므로 ROS·Isaac Sim 설치는 필요하지 않습니다.
 
 ## 먼저 실행해 보기
 
@@ -228,7 +249,7 @@ Windows / Linux에서는 위의 `mjpython`을 `python`으로 바꿉니다.
 | 라이브러리·모델·준비된 코스 | 완성된 실습 예제·이전 예제 archive |
 | import만 있는 실습 16개 | 완성 코드가 포함된 코드북 웹사이트 |
 | 모델 확인·키보드·센서 GUI 도구 | PPT·PDF·발표 대본·동영상·미리보기 |
-| README·실습 목표·함수 안내·설치 목록 | `.venv`·캐시·실행 결과·로컬 설정 |
+| README·실습 목표·함수 안내·설치 목록 | `seminar_mujoco`·캐시·실행 결과·로컬 설정 |
 
 프로젝트 전체를 올리는 대신 이 폴더의 파일만 사용합니다.
 기존 강사용 완성 코드와 발표 자료는 원본 프로젝트에 보관되어 있습니다.
@@ -244,17 +265,17 @@ Windows에서 `AssertionError: pass_fds not supported on Windows`가 발생하�
 
 ```powershell
 # Windows PowerShell
-.\.venv\Scripts\python.exe -m unittest discover -s tests -p test_simulation_start.py -v
+.\seminar_mujoco\Scripts\python.exe -m unittest discover -s tests -p test_simulation_start.py -v
 ```
 
 ```bash
 # Mac / Linux
-.venv/bin/python -m unittest discover -s tests -p test_simulation_start.py -v
+seminar_mujoco/bin/python -m unittest discover -s tests -p test_simulation_start.py -v
 ```
 
 GitHub Actions의 `Desktop platform smoke tests`는 Windows·Mac·Linux에서 이 연결 테스트를 실행합니다.
 화면과 키보드 검증은 각 OS의 데스크톱에서 추가로 실행합니다.
-Windows는 `.\.venv\Scripts\python.exe -m examples.06_keyboard_gui`,
-Mac은 `.venv/bin/mjpython -m examples.06_keyboard_gui`,
-Linux는 `.venv/bin/python -m examples.06_keyboard_gui`를 사용합니다.
+Windows는 `.\seminar_mujoco\Scripts\python.exe -m examples.06_keyboard_gui`,
+Mac은 `seminar_mujoco/bin/mjpython -m examples.06_keyboard_gui`,
+Linux는 `seminar_mujoco/bin/python -m examples.06_keyboard_gui`를 사용합니다.
 Motion Controls 창에 포커스를 두고 W/S/Q/E 이동, 키를 놓았을 때 정지, 창 닫기를 확인합니다.

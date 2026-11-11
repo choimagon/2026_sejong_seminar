@@ -80,21 +80,55 @@ GUI가 포커스를 잃으면 정지 명령을 보냅니다. 명령 입력 중�
 
 | 실습 파일 | Windows PowerShell | Mac 터미널 |
 | --- | --- | --- |
-| `01_move.py` | `.\.venv\Scripts\python.exe -m examples.01_move` | `.venv/bin/mjpython -m examples.01_move` |
-| `02_imu.py` | `.\.venv\Scripts\python.exe -m examples.02_imu` | `.venv/bin/python -m examples.02_imu` |
-| `03_encoders.py` | `.\.venv\Scripts\python.exe -m examples.03_encoders` | `.venv/bin/python -m examples.03_encoders` |
-| `04_ultrasonic.py` | `.\.venv\Scripts\python.exe -m examples.04_ultrasonic` | `.venv/bin/python -m examples.04_ultrasonic` |
-| `05_lidar.py` | `.\.venv\Scripts\python.exe -m examples.05_lidar` | `.venv/bin/python -m examples.05_lidar` |
-| `06_keyboard_gui.py` | `.\.venv\Scripts\python.exe -m examples.06_keyboard_gui` | `.venv/bin/mjpython -m examples.06_keyboard_gui` |
-| `07_move_algorithm.py` | `.\.venv\Scripts\python.exe -m examples.07_move_algorithm` | `.venv/bin/python -m examples.07_move_algorithm` |
-| `08_lidar_straight.py` | `.\.venv\Scripts\python.exe -m examples.08_lidar_straight` | `.venv/bin/mjpython -m examples.08_lidar_straight` |
-| `09_ultrasonic_straight.py` | `.\.venv\Scripts\python.exe -m examples.09_ultrasonic_straight` | `.venv/bin/mjpython -m examples.09_ultrasonic_straight` |
-| `10_lidar_corner.py` | `.\.venv\Scripts\python.exe -m examples.10_lidar_corner` | `.venv/bin/mjpython -m examples.10_lidar_corner` |
-| `11_ultrasonic_corner.py` | `.\.venv\Scripts\python.exe -m examples.11_ultrasonic_corner` | `.venv/bin/mjpython -m examples.11_ultrasonic_corner` |
-| `12_lidar_junction.py` | `.\.venv\Scripts\python.exe -m examples.12_lidar_junction` | `.venv/bin/mjpython -m examples.12_lidar_junction` |
-| `13_ultrasonic_junction.py` | `.\.venv\Scripts\python.exe -m examples.13_ultrasonic_junction` | `.venv/bin/mjpython -m examples.13_ultrasonic_junction` |
-| `14_lidar_cross.py` | `.\.venv\Scripts\python.exe -m examples.14_lidar_cross` | `.venv/bin/mjpython -m examples.14_lidar_cross` |
-| `15_ultrasonic_cross.py` | `.\.venv\Scripts\python.exe -m examples.15_ultrasonic_cross` | `.venv/bin/mjpython -m examples.15_ultrasonic_cross` |
-| `16_maze_escape.py` | `.\.venv\Scripts\python.exe -m examples.16_maze_escape` | `.venv/bin/mjpython -m examples.16_maze_escape` |
+| `01_move.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.01_move` | `seminar_mujoco/bin/mjpython -m examples.01_move` |
+| `02_imu.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.02_imu` | `seminar_mujoco/bin/python -m examples.02_imu` |
+| `03_encoders.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.03_encoders` | `seminar_mujoco/bin/python -m examples.03_encoders` |
+| `04_ultrasonic.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.04_ultrasonic` | `seminar_mujoco/bin/python -m examples.04_ultrasonic` |
+| `05_lidar.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.05_lidar` | `seminar_mujoco/bin/python -m examples.05_lidar` |
+| `06_keyboard_gui.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.06_keyboard_gui` | `seminar_mujoco/bin/mjpython -m examples.06_keyboard_gui` |
+| `07_move_algorithm.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.07_move_algorithm` | `seminar_mujoco/bin/python -m examples.07_move_algorithm` |
+| `08_lidar_straight.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.08_lidar_straight` | `seminar_mujoco/bin/mjpython -m examples.08_lidar_straight` |
+| `09_ultrasonic_straight.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.09_ultrasonic_straight` | `seminar_mujoco/bin/mjpython -m examples.09_ultrasonic_straight` |
+| `10_lidar_corner.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.10_lidar_corner` | `seminar_mujoco/bin/mjpython -m examples.10_lidar_corner` |
+| `11_ultrasonic_corner.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.11_ultrasonic_corner` | `seminar_mujoco/bin/mjpython -m examples.11_ultrasonic_corner` |
+| `12_lidar_junction.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.12_lidar_junction` | `seminar_mujoco/bin/mjpython -m examples.12_lidar_junction` |
+| `13_ultrasonic_junction.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.13_ultrasonic_junction` | `seminar_mujoco/bin/mjpython -m examples.13_ultrasonic_junction` |
+| `14_lidar_cross.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.14_lidar_cross` | `seminar_mujoco/bin/mjpython -m examples.14_lidar_cross` |
+| `15_ultrasonic_cross.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.15_ultrasonic_cross` | `seminar_mujoco/bin/mjpython -m examples.15_ultrasonic_cross` |
+| `16_maze_escape.py` | `.\seminar_mujoco\Scripts\python.exe -m examples.16_maze_escape` | `seminar_mujoco/bin/mjpython -m examples.16_maze_escape` |
 
 학생용 파일은 import만 있으므로 본문 작성 전 바로 종료되는 것이 정상입니다.
+
+### 가상환경 활성화와 Windows 오류 해결
+
+가상환경 폴더 이름은 **`seminar_mujoco`**로 통일합니다.
+이전 환경 폴더의 이름만 바꾸지 말고, 위 생성 명령으로 새 환경을 만든 뒤 패키지를 설치합니다.
+
+Windows PowerShell에서 활성화합니다.
+
+```powershell
+.\seminar_mujoco\Scripts\Activate.ps1
+```
+
+“이 시스템에서 스크립트를 실행할 수 없습니다”, `PSSecurityException` 또는 `UnauthorizedAccess` 오류가 나오면
+**같은 PowerShell 창에서** 아래 두 줄을 순서대로 실행합니다.
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+.\seminar_mujoco\Scripts\Activate.ps1
+```
+
+`-Scope Process`는 현재 PowerShell 창에만 적용되며 창을 닫으면 해제됩니다.
+관리자 권한은 필요 없습니다. 조직의 그룹 정책으로 차단되면 활성화 대신 아래의 실행 파일 직접 지정 방식을 사용합니다.
+[Microsoft 실행 정책 안내](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy#example-6-set-the-execution-policy-for-the-current-powershell-session)
+
+Mac / Linux에서는 다음 명령으로 활성화합니다.
+
+```bash
+source seminar_mujoco/bin/activate
+```
+
+활성화 후 프롬프트에 `(seminar_mujoco)`가 표시됩니다. Windows / Linux에서는 `python show.py`,
+Mac에서는 `mjpython show.py`로 설치를 확인합니다. 새 터미널을 열면 다시 활성화합니다.
+환경을 종료하려면 `deactivate`를 입력합니다.
+아래 실습별 명령처럼 `seminar_mujoco` 안의 실행 파일을 직접 지정하면 활성화 없이도 실행할 수 있습니다.

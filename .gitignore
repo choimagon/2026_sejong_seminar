@@ -1,5 +1,6 @@
 # Python environments and caches
 .venv/
+seminar_mujoco/
 venv/
 __pycache__/
 *.py[cod]
