@@ -19,17 +19,14 @@ def move(robot, linear=0.0, angular=0.0):
     set_velocity(robot, left, right)
 
 
-if __name__ == "__main__":
-    args = arguments("01: move 함수 작성 → 전진·정지·회전 확인")
-    if args.answer:
-        from examples.reference import move
-    lab = Lab(xml_path=XML, show=not args.headless, move=move)
-    try:
-        lab.run_for(.2, 0, 2)
-        lab.run_for(0, 0, .5)
-        lab.run_for(0, 1, 1.5)
-        lab.run_for(.2, 0, 2)
-        lab.stop()
-        print(lab.result())
-    finally:
-        lab.close()
+args = arguments("01: move 함수 작성 → 전진·정지·회전 확인")
+lab = Lab(xml_path=XML, show=not args.headless, move=move)
+try:
+    lab.run_for(.2, 0, 2)
+    lab.run_for(0, 0, .5)
+    lab.run_for(0, 1, 1.5)
+    lab.run_for(.2, 0, 2)
+    lab.stop()
+    print(lab.result())
+finally:
+    lab.close()

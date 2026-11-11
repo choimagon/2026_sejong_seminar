@@ -1,6 +1,8 @@
 # MuJoCo 로봇 시뮬레이터 실습
 
 기초 Python으로 이동 함수를 만들고 직접 운전한 뒤 초음파·라이다로 주행을 판단합니다.
+01번은 move 함수 만들기 연습이며, 뒤 실습은 기존 공용 구현을 `from module.move import move`로 사용합니다.
+번호 파일은 다른 실습에서 import하지 않고 직접 실행합니다.
 새 실습 코드는 **`examples/`**에 있습니다. [번호별 실행·XML 안내](examples/README.md)를 따라 진행하세요.
 이전 16개 실습은 로컬 `examples_legacy/`에 보존하고 `.gitignore`로 제외했습니다.
 

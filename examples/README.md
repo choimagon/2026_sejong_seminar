@@ -28,7 +28,8 @@ Windows/Linux는 `python examples/번호_이름.py`, Mac은 `mjpython examples/�
 4. `10_lidar_route.py`에서는 XML과 읽기 함수가 어떻게 달라졌는지 확인합니다.
 
 전체 코드가 파일에 들어 있습니다. PPT의 줄 번호를 따라 작성하거나 해당 부분을 바꾸고 저장한 뒤 다시 실행합니다.
-`01_move.py`의 move를 이후 운전·경로·지도 실습이 실제로 재사용합니다.
+01번은 move 함수를 만드는 연습입니다. 뒤 실습은 기존 공용 구현을 `from module.move import move`로 가져와 사용합니다.
+번호 파일은 직접 실행하는 전용 파일이며 다른 번호 파일을 import하지 않습니다.
 `runtime.py`, `world.py`, `maze_policy.py`는 제공 코드입니다. 복잡한 물리·GUI·위치 추정·탐색기를 전부 새로 작성하지 않습니다.
 
 ## 맵과 XML

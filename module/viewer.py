@@ -46,6 +46,8 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
     The callback runs while this GUI has focus; releasing keys or switching
     windows sends a stop command. Without it, use MuJoCo's actuator controls.
     """
+    if callable(drive_function):
+        drive_function = f"{drive_function.__module__}:{drive_function.__name__}"
     playback_speed = validate_speed(playback_speed)
     motor_speed = validate_motor_speed(motor_speed)
     xml_path = resolve_xml(xml_kind)

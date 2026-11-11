@@ -1,5 +1,6 @@
 """Numbered files, actual XML sensor selection, routes and mapping."""
-from importlib import import_module
+import ast
+from types import SimpleNamespace
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -12,10 +13,39 @@ from examples.world import world
 from examples.runtime import Lab, sensor_route
 from examples.maze_policy import Policy
 
-move = import_module('examples.01_move').move
+from module.move import move
+from module.course import sector
+
+
+def lesson(name):
+    # Inspect reusable definitions without importing an intentionally executable script.
+    filename = Path(__file__).resolve().parents[1] / 'examples' / f'{name}.py'
+    tree = ast.parse(filename.read_text())
+    values = {'sensor': sensor, 'sector': sector}
+    for node in tree.body:
+        if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
+            key = node.targets[0].id
+            if key == 'XML':
+                values[key] = filename.parent / 'scenes' / ast.literal_eval(node.value.right)
+            elif key in ('ACTIONS', 'STOP_DISTANCE'):
+                values[key] = ast.literal_eval(node.value)
+        elif isinstance(node, ast.FunctionDef) and node.name in ('choose', 'read_front'):
+            exec(compile(ast.Module(body=[node], type_ignores=[]), str(filename), 'exec'), values)
+    return SimpleNamespace(**values)
 
 
 class ExamplesCourseTest(unittest.TestCase):
+    def test_scripts_have_no_main_guard_and_use_the_public_move(self):
+        root = Path(__file__).resolve().parents[1]
+        for filename in (root / 'examples').glob('[0-9][0-9]_*.py'):
+            source = filename.read_text()
+            self.assertNotIn('__main__', source)
+            self.assertNotIn('import_module', source)
+            if filename.name[:2] not in ('01', '13'):
+                tree = ast.parse(source)
+                self.assertTrue(any(isinstance(n, ast.ImportFrom) and n.module == 'module.move'
+                                    and any(a.name == 'move' for a in n.names) for n in tree.body), filename)
+
     def test_policy_file_can_import_sibling_helper_and_restores_path(self):
         from module.course import load_policy
         before = list(sys.path)
@@ -38,7 +68,7 @@ class ExamplesCourseTest(unittest.TestCase):
             '10_lidar_route':'lidar','11_ultrasonic_mapping':'sonic','12_lidar_mapping':'lidar'}
         for name, model in assignments.items():
             with self.subTest(file=name):
-                xml=import_module(f'examples.{name}').XML
+                xml=lesson(name).XML
                 self.assertTrue(xml.is_file())
                 self.assertTrue(xml.stem.endswith(model))
                 with Robot(xml) as robot:
@@ -61,7 +91,7 @@ class ExamplesCourseTest(unittest.TestCase):
 
     def test_timed_left_and_right_reach_goal(self):
         for name in ['05_route_left','06_route_right']:
-            module=import_module(f'examples.{name}')
+            module=lesson(name)
             lab=Lab(xml_path=module.XML,move=move)
             try:
                 for v,w,t in module.ACTIONS:lab.run_for(v,w,t)
@@ -74,7 +104,7 @@ class ExamplesCourseTest(unittest.TestCase):
 
     def test_sensor_routes_and_mapping_only_use_present_sensor(self):
         for name,kind in [('09_ultrasonic_route','ultrasonic'),('10_lidar_route','lidar')]:
-            module=import_module(f'examples.{name}')
+            module=lesson(name)
             lab=Lab(xml_path=module.XML,move=move)
             try:
                 result=sensor_route(lab,module.choose,kind,read_front=module.read_front)

@@ -2,9 +2,10 @@
 if __package__ in (None, ""):
     import _bootstrap
 
+from module.move import move
 from module import sensor
 from module.course import sector
-from examples.runtime import arguments, load_move, Lab, sensor_route
+from examples.runtime import arguments, Lab, sensor_route
 from examples.world import SCENES
 
 XML = SCENES / "pillar_lidar.xml"
@@ -22,10 +23,9 @@ def choose(front):
     return 0.0, 0.0
 
 
-if __name__ == "__main__":
-    args = arguments("10: lidar 거리로 기둥 우회")
-    lab = Lab(xml_path=XML, show=not args.headless, move=load_move(args.answer))
-    try:
-        print(sensor_route(lab, choose, "lidar", read_front=read_front))
-    finally:
-        lab.close()
+args = arguments("10: lidar 거리로 기둥 우회")
+lab = Lab(xml_path=XML, show=not args.headless, move=move)
+try:
+    print(sensor_route(lab, choose, "lidar", read_front=read_front))
+finally:
+    lab.close()

@@ -2,7 +2,8 @@
 if __package__ in (None, ""):
     import _bootstrap
 
-from examples.runtime import arguments, load_move, Lab
+from module.move import move
+from examples.runtime import arguments, Lab
 from examples.world import SCENES
 
 XML = SCENES / "pillar_basic.xml"
@@ -19,13 +20,12 @@ ACTIONS = [
     (0.25, 0.0, 1.5),
 ]
 
-if __name__ == "__main__":
-    args = arguments("06: 시간으로 기둥 right 우회")
-    lab = Lab(xml_path=XML, show=not args.headless, move=load_move(args.answer))
-    try:
-        for linear, angular, seconds in ACTIONS:
-            lab.run_for(linear, angular, seconds)
-        lab.stop()
-        print(lab.result())
-    finally:
-        lab.close()
+args = arguments("06: 시간으로 기둥 right 우회")
+lab = Lab(xml_path=XML, show=not args.headless, move=move)
+try:
+    for linear, angular, seconds in ACTIONS:
+        lab.run_for(linear, angular, seconds)
+    lab.stop()
+    print(lab.result())
+finally:
+    lab.close()

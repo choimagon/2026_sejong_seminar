@@ -12,16 +12,14 @@ from examples.world import world, MAPS
 
 def arguments(description):
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument("--answer", action="store_true", help="use supplied instructor answers")
     parser.add_argument("--headless", action="store_true", help="run without windows or real-time waits")
     return parser.parse_args()
 
 
-def load_move(answer=False):
-    """Load the actual move function saved in the numbered first exercise."""
-    from importlib import import_module
-    name = "examples.reference" if answer else "examples.01_move"
-    return import_module(name).move
+def load_move():
+    """Compatibility for instructor capture helpers; return the user's public move."""
+    from module.move import move
+    return move
 
 
 class Lab:
@@ -128,10 +126,10 @@ def sensor_route(lab, choose, kind="ultrasonic", *, read_front=None):
         command = choose(front())
         if command == (0.0, 0.0):
             if lab.odom.state.distance_m - start_distance < .02:
-                raise RuntimeError("Complete choose(front) in 09_ultrasonic_route.py / 10_lidar_route.py before running, or use --answer.")
+                raise RuntimeError("Complete choose(front) in 09_ultrasonic_route.py / 10_lidar_route.py before running,.")
             break
         if lab.robot.time > deadline:
-            raise RuntimeError("Approach did not finish. Complete 01_move.py and 09_ultrasonic_route.py / 10_lidar_route.py, or use --answer.")
+            raise RuntimeError("Approach did not finish. Complete 01_move.py and 09_ultrasonic_route.py / 10_lidar_route.py,.")
         lab.step(*command)
     lab.stop()
     lab.turn(math.pi / 2)
