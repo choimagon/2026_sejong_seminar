@@ -76,10 +76,10 @@ class ManualMappingTest(unittest.TestCase):
             mapper.update(packet(reading=2.))
             filename = mapper.save(folder)
             self.assertTrue(filename.is_file())
-            arrays = np.load(filename.with_suffix('.npz'))
-            np.testing.assert_allclose(arrays['ultrasonic'], [(2.074, 0.)])
-            np.testing.assert_allclose(arrays['path'], [(0., 0.)])
-            self.assertEqual(arrays['lidar'].shape, (0, 2))
+            with np.load(filename.with_suffix('.npz')) as arrays:
+                np.testing.assert_allclose(arrays['ultrasonic'], [(2.074, 0.)])
+                np.testing.assert_allclose(arrays['path'], [(0., 0.)])
+                self.assertEqual(arrays['lidar'].shape, (0, 2))
 
     def test_live_preview_decimates_without_discarding_saved_points(self):
         with Robot(world('pillar', 'lidar')) as robot:
