@@ -12,9 +12,8 @@ from examples.world import SCENES
 XML = SCENES / "pillar_sonic.xml"
 
 with Robot(XML) as robot:
-    distances = sensor.ultrasonic.read(robot)
-    print("type:", type(distances).__name__, "shape:", distances.shape, "dtype:", distances.dtype)
-    print("[left, right] metres:", distances)
-    print("left = distances[0]:", distances[0])
-    print("right = distances[1]:", distances[1])
+    distance = sensor.ultrasonic.read(robot)
+    print("type:", type(distance).__name__)
+    print("front distance (m):", distance)
+
 view(XML, demo=False, sensors=("ultrasonic",), motor_speed=.25, control=keyboard_control, drive_function=move)

@@ -59,10 +59,10 @@
       <geom name="ultra_enclosure" type="box" material="housing" pos="0.058 0 0.094" size="0.007 0.037 0.016" contype="0" conaffinity="0" />
       <geom name="ultra_face_panel" type="box" material="frame" pos="0.0665 0 0.094" size="0.0015 0.037 0.015" contype="0" conaffinity="0" />
       <geom name="ultra_top_shroud" type="box" material="frame" pos="0.0545 0 0.1125" size="0.0135 0.041 0.0025" contype="0" conaffinity="0" />
-      <geom name="ultra_left_ring" type="cylinder" material="metal" pos="0.0695 0.022 0.094" size="0.012 0.0015" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
-      <geom name="ultra_left_eye" type="cylinder" material="lens" pos="0.072 0.022 0.094" size="0.009 0.001" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
-      <geom name="ultra_right_ring" type="cylinder" material="metal" pos="0.0695 -0.022 0.094" size="0.012 0.0015" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
-      <geom name="ultra_right_eye" type="cylinder" material="lens" pos="0.072 -0.022 0.094" size="0.009 0.001" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
+      <geom name="ultra_tx_ring" type="cylinder" material="metal" pos="0.0695 0.022 0.094" size="0.012 0.0015" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
+      <geom name="ultra_tx_eye" type="cylinder" material="lens" pos="0.072 0.022 0.094" size="0.009 0.001" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
+      <geom name="ultra_rx_ring" type="cylinder" material="metal" pos="0.0695 -0.022 0.094" size="0.012 0.0015" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
+      <geom name="ultra_rx_eye" type="cylinder" material="lens" pos="0.072 -0.022 0.094" size="0.009 0.001" euler="0 1.57079632679 0" contype="0" conaffinity="0" />
       <geom name="motor_left_housing" type="box" material="housing" pos="0.03 0.048 0.042" size="0.024 0.015 0.014" contype="0" conaffinity="0" />
       <geom name="motor_left_axle" type="cylinder" material="metal" pos="0.03 0.069 0.038" size="0.008 0.006" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
       <geom name="motor_right_housing" type="box" material="housing" pos="0.03 -0.048 0.042" size="0.024 0.015 0.014" contype="0" conaffinity="0" />
@@ -76,8 +76,7 @@
       <geom name="lidar_scanner" type="cylinder" material="housing" pos="0 0 0.176" size="0.031 0.017" contype="0" conaffinity="0" />
       <geom name="lidar_cap" type="cylinder" material="frame" pos="0 0 0.195" size="0.028 0.002" contype="0" conaffinity="0" />
       <site name="imu_site" pos="0 0 0.137" size="0.002" rgba="0 0 0 0" />
-      <site name="ultra_left_ray_site" pos="0.074 0.022000 0.094" size="0.001" quat="0.70710678 0 0.70710678 0" rgba="0 0 0 0" />
-      <site name="ultra_right_ray_site" pos="0.074 -0.022000 0.094" size="0.001" quat="0.70710678 0 0.70710678 0" rgba="0 0 0 0" />
+      <site name="ultra_front_ray_site" pos="0.074 0 0.094" size="0.001" quat="0.70710678 0 0.70710678 0" rgba="0 0 0 0" />
       <geom name="course_chassis_collision" type="box" pos="0 0 .10" size=".068 .064 .045" rgba="0 0 0 0" />
     </body>
     <geom name="course_wall_outer_lower" type="box" pos="1.35 0.45 .16" size="1.92 0.02 .16" rgba=".25 .34 .43 1" />
@@ -113,10 +112,9 @@
     <accelerometer name="accelerometer" site="imu_site" />
     <jointpos name="left_encoder" joint="left_wheel_joint" />
     <jointvel name="left_wheel_speed" joint="left_wheel_joint" />
-    <rangefinder name="left_ultrasonic_ray" site="ultra_left_ray_site" />
+    <rangefinder name="front_ultrasonic_ray" site="ultra_front_ray_site" />
     <jointpos name="right_encoder" joint="right_wheel_joint" />
     <jointvel name="right_wheel_speed" joint="right_wheel_joint" />
-    <rangefinder name="right_ultrasonic_ray" site="ultra_right_ray_site" />
   </sensor>
   <statistic center="1.35 -0.9 .1" extent="2.4" />
 </mujoco>

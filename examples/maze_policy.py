@@ -132,7 +132,7 @@ class Policy:
         if abs(heading_error) > 0.4:
             linear = 0.0
         # Extra stopping clearance for the forward ultrasonic face.
-        if observation.ultrasonic is not None and min(observation.ultrasonic) < 0.025 and linear > 0:
+        if observation.ultrasonic is not None and observation.ultrasonic < 0.025 and linear > 0:
             linear = 0.0
         return linear, angular
 

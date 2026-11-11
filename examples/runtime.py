@@ -67,12 +67,11 @@ class Lab:
             # The prepared LiDAR model has scanner XY=(0,0) in the base frame.
             self.lidar_points.extend(points @ rotation.T + origin)
         if "ultrasonic" in self.sensors:
-            distances = sensor.ultrasonic.read(self.robot)
-            for side, distance in zip(("left", "right"), distances):
-                if np.isfinite(distance):
-                    site = self.robot.model.site(f"ultra_{side}_ray_site")
-                    point = site.pos[:2] + (distance, 0)
-                    self.sonar_points.append(point @ rotation.T + origin)
+            distance = sensor.ultrasonic.read(self.robot)
+            if np.isfinite(distance):
+                site = self.robot.model.site("ultra_front_ray_site")
+                point = site.pos[:2] + (distance, 0)
+                self.sonar_points.append(point @ rotation.T + origin)
         self.path.append((state.x_m, state.y_m))
 
     def run_for(self, linear, angular, seconds):
@@ -82,7 +81,7 @@ class Lab:
 
     def front(self, kind):
         if kind == "ultrasonic":
-            return float(min(sensor.ultrasonic.read(self.robot)))
+            return sensor.ultrasonic.read(self.robot)
         return float(sector(sensor.lidar.read(self.robot), 0, 8))
 
     def turn(self, radians):
@@ -130,10 +129,10 @@ def sensor_route(lab, choose, kind="ultrasonic", *, read_front=None):
         command = choose(front())
         if command == (0.0, 0.0):
             if lab.odom.state.distance_m - start_distance < .02:
-                raise RuntimeError("Complete choose(front) in 10_ultrasonic_route.py / 11_lidar_route.py before running,.")
+                raise RuntimeError("Complete choose(front) in 07_ultrasonic_route.py / 08_lidar_route.py before running,.")
             break
         if lab.robot.time > deadline:
-            raise RuntimeError("Approach did not finish. Complete 01_move.py and 10_ultrasonic_route.py / 11_lidar_route.py,.")
+            raise RuntimeError("Approach did not finish. Complete 01_move.py and 07_ultrasonic_route.py / 08_lidar_route.py,.")
         lab.step(*command)
     lab.stop()
     lab.turn(math.pi / 2)

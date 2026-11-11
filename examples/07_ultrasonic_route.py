@@ -13,7 +13,7 @@ STOP_DISTANCE = 0.55
 
 
 def read_front(robot):
-    return float(min(sensor.ultrasonic.read(robot)))
+    return sensor.ultrasonic.read(robot)
 
 
 def choose(front):

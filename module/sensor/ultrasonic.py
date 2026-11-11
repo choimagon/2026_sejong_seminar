@@ -6,7 +6,7 @@ from ._common import require_sensor
 
 
 def read(robot, max_range=4.0):
-    """Return left/right distances in metres; inf means no return."""
+    """Return one forward distance as a float in metres; inf means no return."""
     require_sensor(robot, "ultrasonic")
     return read_ultrasonic(robot.data, max_range)
 
@@ -18,16 +18,12 @@ def view(xml_kind="sonic", **options):
 
 
 def read_ultrasonic(data, max_range=4.0):
-    """Read the XML's ideal single-ray ultrasonic sensors, [left, right], in m.
+    """Read one HC-SR04-style module, represented by a front-facing ray.
 
-    np.inf means no return within max_range. These are not acoustic cone or
-    noise simulations; their directions come from the XML rangefinder sites.
+    The transmitter and receiver are two parts of one module, not two ranges.
+    This ideal ray does not model acoustic spread, travel time or noise.
     """
     if not np.isfinite(max_range) or max_range <= 0:
         raise ValueError("max_range must be finite and positive")
-    ranges = np.array([
-        data.sensor("left_ultrasonic_ray").data[0],
-        data.sensor("right_ultrasonic_ray").data[0],
-    ])
-    return np.where((ranges >= 0) & (ranges <= max_range), ranges, np.inf)
-
+    distance = float(data.sensor("front_ultrasonic_ray").data[0])
+    return distance if 0 <= distance <= max_range else float("inf")

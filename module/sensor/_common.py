@@ -17,7 +17,7 @@ def available_sensors(model):
     groups = {
         "imu": ("gyro", "accelerometer"),
         "encoders": ("left_encoder", "right_encoder", "left_wheel_speed", "right_wheel_speed"),
-        "ultrasonic": ("left_ultrasonic_ray", "right_ultrasonic_ray"),
+        "ultrasonic": ("front_ultrasonic_ray",),
     }
     present = [group for group, names in groups.items()
                if all(mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_SENSOR, name) >= 0 for name in names)]

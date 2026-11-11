@@ -32,7 +32,7 @@ class Observation:
     estimate: Estimate
     imu: dict
     encoders: dict
-    ultrasonic: np.ndarray | None = None
+    ultrasonic: float | None = None
     lidar: dict | None = None
 
 
@@ -53,11 +53,11 @@ def sector(scan, center_deg=0, width_deg=20):
 
 
 def front_distance(observation):
-    """Front sector from LiDAR when present, otherwise the ultrasonic pair."""
+    """Front sector from LiDAR when present, otherwise the forward ultrasonic distance."""
     if observation.lidar is not None:
         return sector(observation.lidar, 0)
     if observation.ultrasonic is not None:
-        return float(np.min(observation.ultrasonic))
+        return float(observation.ultrasonic)
     raise ValueError("Select the sonic, lidar, or all model")
 
 

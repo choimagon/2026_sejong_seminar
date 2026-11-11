@@ -2,7 +2,7 @@
 
     sensor.imu.read(robot)                 # dict of XYZ acceleration/gyro
     sensor.encoders.read(robot)            # dict of left/right wheel arrays
-    sensor.ultrasonic.read(robot)          # left/right distances, m
+    sensor.ultrasonic.read(robot)          # one forward distance (float), m
     sensor.lidar.read(robot, num_rays=180)  # angles, ranges, XY points
     sensor.available(robot)                # only groups present in this XML
     sensor.read(robot, sensors=("imu",))    # selected groups only

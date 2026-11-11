@@ -28,7 +28,7 @@ def sensor_tab_at(x, y, width, count):
 
 def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=None, demo=True,
          course=False, policy=None, max_sim_time=600, playback_speed=1.0, motor_speed=FORWARD_SPEED,
-         playback_controls=False, drive_function=None):
+         playback_controls=False, drive_function=None, mapping=None):
     """Open the selected model and only its sensor tabs; block until GUI closes.
 
     xml_kind: all/basic/lidar/sonic, model_all.xml, or an existing XML path.
@@ -45,6 +45,8 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
     playback_controls: enable speed <multiplier> and [/] during this session.
     The callback runs while this GUI has focus; releasing keys or switching
     windows sends a stop command. Without it, use MuJoCo's actuator controls.
+    mapping: add_points(reading, x, y, yaw, points), using estimated sensor pose.
+             Adds a live Map tab; P saves PNG/NPZ, Reset clears accumulated data.
     """
     if callable(drive_function):
         drive_function = f"{drive_function.__module__}:{drive_function.__name__}"
@@ -54,8 +56,16 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
     commands = normalize_commands(commands)
     model = load_sensor_scene(xml_path, demo=demo)
     sensors = select_sensors(model, sensors)
-    tabs = ("controls", *sensors)
-    tab_labels = {"controls": "Controls", **SENSOR_LABELS}
+    mapper = None
+    if mapping is not None:
+        from .mapping import MappingSession
+        kinds = [kind for kind in sensors if kind in ("ultrasonic", "lidar")]
+        if len(kinds) != 1:
+            raise ValueError("Live mapping requires exactly one selected ultrasonic or lidar sensor")
+        mapper = MappingSession(model, kinds[0], mapping)
+        course = True  # Provides encoder/IMU odometry; no automatic policy is selected.
+    tabs = ("controls", *sensors, *(("map",) if mapper is not None else ()))
+    tab_labels = {"controls": "Controls", "map": "Map", **SENSOR_LABELS}
     if not glfw.init():
         raise RuntimeError("GLFW could not initialize the display")
     work_x, work_y, work_width, work_height = glfw.get_monitor_workarea(glfw.get_primary_monitor())
@@ -100,7 +110,7 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
     gyro = make_figure("Angular velocity (rad/s)", ("X", "Y", "Z"), xyz) if "imu" in sensors else None
     encoder_angle = make_figure("Wheel angle (rad)", ("Left", "Right"), lr) if "encoders" in sensors else None
     encoder_velocity = make_figure("Wheel angular velocity (rad/s)", ("Left", "Right"), lr) if "encoders" in sensors else None
-    ultrasonic = make_figure("Ultrasonic distance (m) - gaps mean no return", ("Left", "Right"), lr) if "ultrasonic" in sensors else None
+    ultrasonic = make_figure("Ultrasonic distance (m) - gaps mean no return", ("Front",), (lr[0],)) if "ultrasonic" in sensors else None
     lidar = (make_figure("2D LiDAR - scanner frame", ("Returns", "Robot", "Forward"),
                          ((0.3, 1.0, 0.6), (1.0, 0.6, 0.2), (1.0, 0.6, 0.2)))
              if "lidar" in sensors else None)
@@ -112,6 +122,20 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
         lidar.linepnt[1:3] = 2
         lidar.linedata[1, :4] = (-0.06, 0, 0.06, 0)
         lidar.linedata[2, :4] = (0, 0, 0.25, 0)
+    map_figure = None
+    if mapper is not None:
+        map_figure = make_figure("Accumulated endpoints - estimated map frame",
+                                 ("Measured points", "Estimated path", "Robot"),
+                                 ((.25, .85, .65), (.75, .8, .9), (1., .6, .2)))
+        map_figure.xlabel = "Estimated X (m); Y (m)"
+        map_figure.flg_barplot = 1
+        map_figure.range[:] = ((-1., 3.), (-2., 2.))
+
+    def save_mapping():
+        if mapper is not None:
+            filename = mapper.save()
+            state["message"] = f"Saved {filename.name} and .npz"
+            print("Saved:", filename, flush=True)
     def send(action, **values):
         if state["connected"]:
             try:
@@ -187,6 +211,12 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
             send("pause")
         elif key == glfw.KEY_R:
             send("reset")
+            if mapper is not None:
+                mapper.clear()
+        elif mapper is not None and key == glfw.KEY_M:
+            state["tab"] = tabs.index("map")
+        elif mapper is not None and key == glfw.KEY_P:
+            save_mapping()
         elif key == glfw.KEY_F:
             send("camera", mode="follow")
         elif key == glfw.KEY_H:
@@ -212,10 +242,14 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
                 send("pause")
             elif 144 <= x < 244:
                 send("reset")
+                if mapper is not None:
+                    mapper.clear()
             elif 256 <= x < 356:
                 send("stop")
             elif width - 132 <= x < width - 12:
                 change_speed(wrap=True)
+            elif mapper is not None and width - 272 <= x < width - 144:
+                save_mapping()
             elif playback_controls and width - 272 <= x < width - 144:
                 state["tab"] = 0
                 state["entry"] = f"speed {state['playback_speed']:g}"
@@ -251,6 +285,8 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
             try:
                 while state["connected"] and connection.poll():
                     latest = connection.recv()
+                    if mapper is not None:
+                        mapper.update(latest)
                     if not state["focused_once"]:
                         glfw.focus_window(window)
                         state["focused_once"] = True
@@ -265,7 +301,7 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
                             sample["encoder_velocity"] = latest["encoders"]["velocity_rad_s"]
                             sample["encoder_angle"] = latest["encoders"]["position_rad"]
                         if "ultrasonic" in sensors:
-                            sample["ultrasonic"] = latest["ultrasonic"]
+                            sample["ultrasonic"] = [latest["ultrasonic"]]
                         history.append(sample)
                         for figure, key in ((acceleration, "acceleration"), (gyro, "gyro"),
                                             (encoder_velocity, "encoder_velocity"),
@@ -340,9 +376,10 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
                         y1 = plot_bottom + plot_height * (row + 1) // 2
                         mujoco.mjr_figure(mujoco.MjrRect(px(12), y0, plot_width, y1 - y0), figure, context)
                 elif selected == "ultrasonic":
-                    ranges = latest["ultrasonic"]
-                    formatted = [f"{value:.3f} m" if np.isfinite(value) else "no return" for value in ranges]
-                    text(summary, "Left ultrasonic\nRight ultrasonic\nRange model", "\n".join(formatted) + "\nIdeal single ray; max 4 m")
+                    distance = latest["ultrasonic"]
+                    formatted = f"{distance:.3f} m" if np.isfinite(distance) else "no return"
+                    text(summary, "Forward distance\nSensor module\nRange model",
+                         formatted + "\nOne transmitter + one receiver\nIdeal single ray; max 4 m")
                     mujoco.mjr_figure(mujoco.MjrRect(px(12), plot_bottom, plot_width, plot_height), ultrasonic, context)
                 elif selected == "lidar":
                     scan = latest["lidar"]
@@ -362,6 +399,15 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
                     lidar.range[:] = ((-extent, extent), (-extent, extent))
                     side = min(plot_width, plot_height)
                     mujoco.mjr_figure(mujoco.MjrRect((width - side) // 2, plot_bottom, side, side), lidar, context)
+                elif selected == "map":
+                    mapper.draw(map_figure)
+                    x, y, yaw = mapper.sensor_pose
+                    text(summary, "Accumulated points / samples\nEstimated sensor X / Y / yaw\nKeys / status",
+                         f"{len(mapper.points):,} / {len(mapper.path):,}\n"
+                         f"{x:+.2f} m / {y:+.2f} m / {np.rad2deg(yaw):+.1f} deg\n"
+                         + (state["message"] or "W/S forward/back; Q/E turn; P save; R clear/reset"))
+                    side = min(plot_width, plot_height)
+                    mujoco.mjr_figure(mujoco.MjrRect((width - side) // 2, plot_bottom, side, side), map_figure, context)
             else:
                 text(summary, "Starting the separate native MuJoCo viewer...")
 
@@ -369,7 +415,10 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
             label(rect(144, 10, 100, 44), "Reset")
             label(rect(256, 10, 100, 44), "Stop")
             label(rect(logical_width - 132, 10, 120, 44), f"Motor {state['motor_speed']:.2f}")
-            if playback_controls:
+            if mapper is not None:
+                label(rect(logical_width - 272, 10, 128, 44), "Save Map / P")
+                text(rect(372, 10, logical_width - 660, 44), "WSQE drive\nM map / P save")
+            elif playback_controls:
                 label(rect(logical_width - 272, 10, 128, 44), f"Playback {state['playback_speed']:g}x")
                 text(rect(372, 10, logical_width - 660, 44), "[] replay\nSpace pause")
             else:
@@ -393,4 +442,6 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
         context.free()
         glfw.destroy_window(window)
         glfw.terminate()
+        if mapper is not None:
+            save_mapping()
 

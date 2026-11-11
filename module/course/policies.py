@@ -48,7 +48,7 @@ class SonicPolicy:
             return self.pending.popleft()
         if observation.ultrasonic is None:
             raise ValueError("SonicPolicy requires the ultrasonic sensor")
-        distance = float(min(observation.ultrasonic))
+        distance = float(observation.ultrasonic)
         if self.phase == "front":
             self.front = distance
             self.phase = "left"

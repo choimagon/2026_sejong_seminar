@@ -46,7 +46,7 @@
 | `sensor.available(robot)` | 장착된 센서 그룹 이름 | 모델에 있는 센서만 반환 |
 | `sensor.imu.read(robot)` | `acceleration_m_s2`, `angular_velocity_rad_s` | 각각 `[X, Y, Z]`, m/s²·rad/s |
 | `sensor.encoders.read(robot)` | `position_rad`, `velocity_rad_s`, `distance_m` | 각각 `[왼쪽, 오른쪽]`, rad·rad/s·m |
-| `sensor.ultrasonic.read(robot)` | 거리 배열 | `[왼쪽, 오른쪽]`, m |
+| `sensor.ultrasonic.read(robot)` | 전방 거리 `float` 하나 | m, 미반사 `inf` |
 | `sensor.lidar.read(robot)` | `angles_rad`, `ranges_m`, `points_xy_m` | 각도 rad, 거리·스캔 좌표 m |
 | `sensor.read(robot)` | 장착 센서들의 측정값과 `time` | 한 시점의 묶음 |
 
@@ -141,3 +141,10 @@
 
 `motion`의 거리·회전 명령은 기본적으로 완료까지 물리를 진행합니다.
 코스 실습의 엔코더·IMU 추정 기반 행동과는 제어 방식이 다르므로 해당 실습에서는 `course` 실행기를 사용합니다.
+
+## 직접 운전하며 지도 누적
+
+`module.viewer.view(..., mapping=add_points)`가 Controls·센서·Map 탭을 엽니다.
+`add_points(reading, x, y, yaw, points)`에서 추정 센서 원점과 거리·각도를 이용해 `points.append((point_x, point_y))`로 누적합니다.
+초음파 reading은 float 하나, 라이다 reading은 각도·거리 배열을 가진 dict입니다.
+WSQE 운전, M 지도 보기, P PNG/NPZ 저장, R 로봇·지도 초기화입니다.

@@ -2,22 +2,24 @@
 if __package__ in (None, ""):
     import _bootstrap
 
+from math import cos, sin, isfinite
 from module.move import move
-from examples.runtime import Lab, sensor_route, save_map
+from module.viewer import view
 from examples.world import SCENES
 
 XML = SCENES / "pillar_lidar.xml"
 
 
-def choose(front):
-    if front > 0.55:
-        return 0.25, 0.0
-    return 0.0, 0.0
+# 각 광선의 상대 각도에 로봇의 추정 방향 yaw를 더합니다.
+def add_points(scan, x, y, yaw, points):
+    for angle, distance in zip(scan["angles_rad"], scan["ranges_m"]):
+        if isfinite(distance):
+            direction = yaw + angle
+            point_x = x + distance * cos(direction)
+            point_y = y + distance * sin(direction)
+            points.append((point_x, point_y))
 
 
-lab = Lab(xml_path=XML, show=True, move=move)
-try:
-    print(sensor_route(lab, choose, "lidar"))
-    save_map(lab, show=True, name="lidar_map")
-finally:
-    lab.close()
+# Controls 탭을 클릭하고 WSQE로 운전합니다. M: 지도, P: 저장, R: 초기화.
+view(XML, demo=False, sensors=("lidar",), motor_speed=.25,
+     drive_function=move, mapping=add_points)

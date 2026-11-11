@@ -13,8 +13,8 @@
 | 06 | 라이다 출력 확인 | `python examples/06_lidar.py` | `python examples/06_lidar.py` |
 | 07 | 초음파로 주행 판단 | `python examples/07_ultrasonic_route.py` | `mjpython examples/07_ultrasonic_route.py` |
 | 08 | 라이다로 주행 판단 | `python examples/08_lidar_route.py` | `mjpython examples/08_lidar_route.py` |
-| 09 | 초음파 지도 | `python examples/09_ultrasonic_mapping.py` | `mjpython examples/09_ultrasonic_mapping.py` |
-| 10 | 라이다 지도 | `python examples/10_lidar_mapping.py` | `mjpython examples/10_lidar_mapping.py` |
+| 09 | 직접 운전·초음파 지도 | `python examples/09_ultrasonic_mapping.py` | `python examples/09_ultrasonic_mapping.py` |
+| 10 | 직접 운전·라이다 지도 | `python examples/10_lidar_mapping.py` | `python examples/10_lidar_mapping.py` |
 | 11 | 미로 탐색 | `python examples/11_maze.py` | `python examples/11_maze.py` |
 
 > **키로 운전하기 전, Motion Controls / Sensor Monitor 창의 Controls 탭을 클릭하세요.**

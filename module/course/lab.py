@@ -29,7 +29,7 @@ def practice(case, kind, policy, *, view=True, motor_speed=0.30, show_plot=True)
                 wheels = observation.encoders["velocity_rad_s"]
                 distances = ([sector(observation.lidar, angle, 10) for angle in (0, 90, -90)]
                              if observation.lidar is not None else
-                             [float(min(observation.ultrasonic)), math.nan, math.nan])
+                             [float(observation.ultrasonic), math.nan, math.nan])
                 rows.append([observation.time_s, session.estimate.x_m, session.estimate.y_m,
                              math.degrees(session.estimate.yaw_rad), *wheels, *distances])
                 following = robot.time + 0.05

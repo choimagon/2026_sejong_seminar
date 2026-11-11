@@ -109,11 +109,10 @@ class ExamplesCourseTest(unittest.TestCase):
     def test_sensor_output_types_shapes_and_missing_values(self):
         with Robot(world('pillar', 'sonic')) as robot:
             distances = sensor.ultrasonic.read(robot)
-            self.assertIsInstance(distances, np.ndarray)
-            self.assertEqual(distances.shape, (2,))
-            self.assertTrue(np.isfinite(distances).all())
+            self.assertIsInstance(distances, float)
+            self.assertTrue(np.isfinite(distances))
         with Robot('sonic') as robot:
-            self.assertTrue(np.isinf(sensor.ultrasonic.read(robot)).all())
+            self.assertTrue(np.isinf(sensor.ultrasonic.read(robot)))
         with Robot(world('pillar', 'lidar')) as robot:
             scan = sensor.lidar.read(robot)
             shapes = {'angles_rad': (360,), 'ranges_m': (360,), 'points_xy_m': (360, 2),
