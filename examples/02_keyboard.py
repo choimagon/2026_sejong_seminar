@@ -3,29 +3,26 @@ if __package__ in (None, ""):
     import _bootstrap
 
 from module.move import move
-from module.motion.commands import FORWARD_SPEED, TURN_SPEED
 from module.viewer import view
-from examples.runtime import arguments
 from examples.world import SCENES
 
 # model_basic.xml 기반: 거리 센서 없는 맵에서 직접 운전합니다.
-XML = SCENES / "straight_basic.xml"
+XML = SCENES / "obstacle_basic.xml"
 
+# 따옴표 속 키를 바꾸면 조작 키가 바뀝니다. 예: w→i, s→k, q→j, e→l
+# 0.35는 전후진 속도(m/s), 2.0은 회전 속도(rad/s)입니다.
 def keyboard_control(pressed):
     linear = 0.0
     angular = 0.0
     if pressed("w"):
-        linear += FORWARD_SPEED
+        linear += 0.35
     if pressed("s"):
-        linear -= FORWARD_SPEED
+        linear -= 0.35
     if pressed("q"):
-        angular += TURN_SPEED
+        angular += 2.0
     if pressed("e"):
-        angular -= TURN_SPEED
+        angular -= 2.0
     return linear, angular
 
 
-args = arguments("02: straight 맵에서 W/S/Q/E 운전")
-if args.headless:
-    raise SystemExit("Keyboard practice needs a desktop; omit --headless")
 view(XML, demo=False, sensors=(), motor_speed=.25, control=keyboard_control, drive_function=move)

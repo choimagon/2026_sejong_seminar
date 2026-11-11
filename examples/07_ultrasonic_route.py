@@ -5,16 +5,15 @@ if __package__ in (None, ""):
 from module.move import move
 from module import sensor
 from module.course import sector
-from examples.runtime import arguments, Lab, sensor_route
+from examples.runtime import Lab, sensor_route
 from examples.world import SCENES
 
-XML = SCENES / "pillar_lidar.xml"
+XML = SCENES / "pillar_sonic.xml"
 STOP_DISTANCE = 0.55
 
 
 def read_front(robot):
-    scan = sensor.lidar.read(robot)
-    return float(sector(scan, 0, 8))
+    return float(min(sensor.ultrasonic.read(robot)))
 
 
 def choose(front):
@@ -23,9 +22,8 @@ def choose(front):
     return 0.0, 0.0
 
 
-args = arguments("11: lidar 거리로 기둥 우회")
-lab = Lab(xml_path=XML, show=not args.headless, move=move)
+lab = Lab(xml_path=XML, show=True, move=move)
 try:
-    print(sensor_route(lab, choose, "lidar", read_front=read_front))
+    print(sensor_route(lab, choose, "ultrasonic", read_front=read_front))
 finally:
     lab.close()

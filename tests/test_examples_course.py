@@ -41,18 +41,32 @@ class ExamplesCourseTest(unittest.TestCase):
         for filename in (root / 'examples').glob('[0-9][0-9]_*.py'):
             source = filename.read_text()
             self.assertNotIn('__main__', source)
+            self.assertNotIn('args', source)
+            self.assertNotIn('arguments', source)
             self.assertNotIn('import_module', source)
-            if filename.name[:2] not in ('01', '14'):
+            if filename.name[:2] not in ('01', '11'):
                 tree = ast.parse(source)
                 self.assertTrue(any(isinstance(n, ast.ImportFrom) and n.module == 'module.move'
                                     and any(a.name == 'move' for a in n.names) for n in tree.body), filename)
 
     def test_keyboard_callback_matches_shared_mapping(self):
         from module.motion.keyboard import keyboard_control
-        custom = lesson('02_keyboard_straight').keyboard_control
+        custom = lesson('02_keyboard').keyboard_control
         for keys in [set(), {'w'}, {'s'}, {'q'}, {'e'}, {'w', 'q'}, {'w', 's'}, {'q', 'e'}]:
             pressed = lambda key: key in keys
             self.assertEqual(custom(pressed), keyboard_control(pressed))
+
+    def test_students_can_change_keyboard_letters(self):
+        filename = Path(__file__).resolve().parents[1] / 'examples/02_keyboard.py'
+        source = filename.read_text()
+        for original, replacement in [('w', 'i'), ('s', 'k'), ('q', 'j'), ('e', 'l')]:
+            source = source.replace(f'pressed("{original}")', f'pressed("{replacement}")')
+        function = next(n for n in ast.parse(source).body if isinstance(n, ast.FunctionDef))
+        namespace = {}
+        exec(compile(ast.Module(body=[function], type_ignores=[]), str(filename), 'exec'), namespace)
+        control = namespace['keyboard_control']
+        for key, expected in [('i', (.35, 0)), ('k', (-.35, 0)), ('j', (0, 2)), ('l', (0, -2)), ('w', (0, 0))]:
+            self.assertEqual(control(lambda pressed: pressed == key), expected)
 
     def test_middle_pillar_requires_and_allows_both_detours(self):
         xml = world('obstacle', 'basic')
@@ -119,10 +133,10 @@ class ExamplesCourseTest(unittest.TestCase):
 
     def test_files_select_actual_sensor_xml(self):
         assignments = {
-            '01_move':'basic','02_keyboard_straight':'basic','03_keyboard_left':'basic',
-            '04_keyboard_right':'basic','05_keyboard_obstacle':'basic','06_route_left':'basic','07_route_right':'basic',
-            '08_ultrasonic':'sonic','09_lidar':'lidar','10_ultrasonic_route':'sonic',
-            '11_lidar_route':'lidar','12_ultrasonic_mapping':'sonic','13_lidar_mapping':'lidar'}
+            '01_move':'basic','02_keyboard':'basic',
+            '03_route_left':'basic','04_route_right':'basic',
+            '05_ultrasonic':'sonic','06_lidar':'lidar','07_ultrasonic_route':'sonic',
+            '08_lidar_route':'lidar','09_ultrasonic_mapping':'sonic','10_lidar_mapping':'lidar'}
         for name, model in assignments.items():
             with self.subTest(file=name):
                 xml=lesson(name).XML
@@ -147,7 +161,7 @@ class ExamplesCourseTest(unittest.TestCase):
                 self.assertLess(abs(delta[1]),.02)
 
     def test_timed_left_and_right_reach_goal(self):
-        for name in ['06_route_left','07_route_right']:
+        for name in ['03_route_left','04_route_right']:
             module=lesson(name)
             lab=Lab(xml_path=module.XML,move=move)
             try:
@@ -160,7 +174,7 @@ class ExamplesCourseTest(unittest.TestCase):
             finally:lab.close()
 
     def test_sensor_routes_and_mapping_only_use_present_sensor(self):
-        for name,kind in [('10_ultrasonic_route','ultrasonic'),('11_lidar_route','lidar')]:
+        for name,kind in [('07_ultrasonic_route','ultrasonic'),('08_lidar_route','lidar')]:
             module=lesson(name)
             lab=Lab(xml_path=module.XML,move=move)
             try:

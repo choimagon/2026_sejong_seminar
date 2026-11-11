@@ -3,7 +3,7 @@ if __package__ in (None, ""):
     import _bootstrap
 
 from module.motion.wheels import set_velocity
-from examples.runtime import arguments, Lab
+from examples.runtime import Lab
 from examples.world import SCENES
 
 XML = SCENES / "pillar_basic.xml"
@@ -19,8 +19,7 @@ def move(robot, linear=0.0, angular=0.0):
     set_velocity(robot, left, right)
 
 
-args = arguments("01: move 함수 작성 → 전진·정지·회전 확인")
-lab = Lab(xml_path=XML, show=not args.headless, move=move)
+lab = Lab(xml_path=XML, show=True, move=move)
 try:
     lab.run_for(.2, 0, 2)
     lab.run_for(0, 0, .5)
