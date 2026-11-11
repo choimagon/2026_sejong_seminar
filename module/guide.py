@@ -61,6 +61,10 @@ def draw_guide(width, height, scale, context, latest, entry, editing, message, *
     if status.get("state") == "running" and status.get("kind") == "velocity":
         description = status.get("message", "Sensor-guided driving")
         progress = f"{status['linear']:.3f} m/s, {status['angular']:.3f} rad/s"
+    elif status.get("state") == "running" and status.get("kind") == "wheel_velocity":
+        description = "Student move: left / right wheel targets"
+        left, right = status["target_rad_s"]
+        progress = f"{left:.3f} / {right:.3f} rad/s"
     elif status.get("state") == "running":
         description = f"{status['kind']} {status['amount']:g} {status['unit']}"
         progress = f"{status['progress']:.3f} / {status['amount']:g} {status['unit']}"

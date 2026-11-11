@@ -28,7 +28,7 @@ def sensor_tab_at(x, y, width, count):
 
 def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=None, demo=True,
          course=False, policy=None, max_sim_time=600, playback_speed=1.0, motor_speed=FORWARD_SPEED,
-         playback_controls=False):
+         playback_controls=False, drive_function=None):
     """Open the selected model and only its sensor tabs; block until GUI closes.
 
     xml_kind: all/basic/lidar/sonic, model_all.xml, or an existing XML path.
@@ -74,6 +74,8 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
     try:
         simulation_options = {"sensors": sensors, "demo": demo, "playback_speed": playback_speed,
                               "motor_speed": motor_speed}
+        if drive_function is not None:
+            simulation_options["drive_function"] = drive_function
         if course:
             simulation_options.update(course=True, policy=policy, max_sim_time=max_sim_time)
         process, connection = start_simulation(xml_path, control_enabled=control is not None,

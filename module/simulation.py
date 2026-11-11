@@ -21,9 +21,14 @@ from .playback import validate_speed
 
 def run_simulation(connection, xml_path="all", control_enabled=False, *, sensors=None, demo=True,
                    course=False, policy=None, max_sim_time=600, playback_speed=1.0,
-                   motor_speed=FORWARD_SPEED):
+                   motor_speed=FORWARD_SPEED, drive_function=None):
     """Own the physics and native MuJoCo viewer; publish sensor snapshots."""
     playback_speed = validate_speed(playback_speed)
+    custom_move = None
+    if drive_function is not None:
+        from importlib import import_module
+        module_name, function_name = drive_function.split(":", 1)
+        custom_move = getattr(import_module(module_name), function_name)
     robot = Robot(xml_path, demo=demo, motor_speed=motor_speed)
     model, data = robot.model, robot.data
     sensors = select_sensors(model, sensors)
@@ -140,7 +145,9 @@ def run_simulation(connection, xml_path="all", control_enabled=False, *, sensors
                             if lesson is not None:
                                 lesson.advance(manual=manual)
                             else:
-                                if robot._mode == "velocity":
+                                if custom_move is not None:
+                                    custom_move(robot, linear=float(manual[0]), angular=float(manual[1]))
+                                elif robot._mode == "velocity":
                                     robot._manual = tuple(manual)
                                 robot.step()
                             accumulator -= model.opt.timestep
@@ -177,7 +184,7 @@ def run_simulation(connection, xml_path="all", control_enabled=False, *, sensors
 
 def start_simulation(xml_path="all", control_enabled=False, *, sensors=None, demo=True,
                      course=False, policy=None, max_sim_time=600, playback_speed=1.0,
-                     motor_speed=FORWARD_SPEED):
+                     motor_speed=FORWARD_SPEED, drive_function=None):
     """Start one native viewer process and connect its telemetry to the GUI."""
     playback_speed = validate_speed(playback_speed)
     xml_path = str(resolve_xml(xml_path))
@@ -192,7 +199,7 @@ def start_simulation(xml_path="all", control_enabled=False, *, sensors=None, dem
             f"run_simulation({endpoint_type}({handle}), {xml_path!r}, "
             f"{control_enabled!r}, sensors={sensors!r}, demo={demo!r}, "
             f"course={course!r}, policy={policy!r}, max_sim_time={max_sim_time!r}, "
-            f"playback_speed={playback_speed!r}, motor_speed={motor_speed!r})")
+            f"playback_speed={playback_speed!r}, motor_speed={motor_speed!r}, drive_function={drive_function!r})")
     try:
         options = {"close_fds": True}
         if sys.platform == "win32":
