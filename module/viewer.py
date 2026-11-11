@@ -64,6 +64,7 @@ def view(xml_kind="all", *, sensors=None, control=keyboard_control, commands=Non
             raise ValueError("Live mapping requires exactly one selected ultrasonic or lidar sensor")
         mapper = MappingSession(model, kinds[0], mapping)
         course = True  # Provides encoder/IMU odometry; no automatic policy is selected.
+        max_sim_time = None  # Manual driving continues until the user closes the window.
     tabs = ("controls", *sensors, *(("map",) if mapper is not None else ()))
     tab_labels = {"controls": "Controls", "map": "Map", **SENSOR_LABELS}
     if not glfw.init():
