@@ -21,7 +21,7 @@ from module.motion.commands import FORWARD_SPEED, TURN_SPEED
 def lesson(name):
     # Inspect reusable definitions without importing an intentionally executable script.
     filename = Path(__file__).resolve().parents[1] / 'examples' / f'{name}.py'
-    tree = ast.parse(filename.read_text())
+    tree = ast.parse(filename.read_text(encoding="utf-8"))
     values = {'sensor': sensor, 'sector': sector, 'FORWARD_SPEED': FORWARD_SPEED, 'TURN_SPEED': TURN_SPEED}
     for node in tree.body:
         if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
@@ -39,7 +39,7 @@ class ExamplesCourseTest(unittest.TestCase):
     def test_scripts_have_no_main_guard_and_use_the_public_move(self):
         root = Path(__file__).resolve().parents[1]
         for filename in (root / 'examples').glob('[0-9][0-9]_*.py'):
-            source = filename.read_text()
+            source = filename.read_text(encoding="utf-8")
             self.assertNotIn('__main__', source)
             self.assertNotIn('args', source)
             self.assertNotIn('arguments', source)
@@ -58,7 +58,7 @@ class ExamplesCourseTest(unittest.TestCase):
 
     def test_students_can_change_keyboard_letters(self):
         filename = Path(__file__).resolve().parents[1] / 'examples/02_keyboard.py'
-        source = filename.read_text()
+        source = filename.read_text(encoding="utf-8")
         for original, replacement in [('w', 'i'), ('s', 'k'), ('q', 'j'), ('e', 'l')]:
             source = source.replace(f'pressed("{original}")', f'pressed("{replacement}")')
         function = next(n for n in ast.parse(source).body if isinstance(n, ast.FunctionDef))

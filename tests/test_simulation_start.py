@@ -72,8 +72,9 @@ class SimulationStartTest(unittest.TestCase):
             self.assertEqual(connection.recv(), message)
             process.wait(timeout=10)
             self.assertEqual(process.returncode, 0)
-            self.assertTrue(connection.poll(2))
-            with self.assertRaises(EOFError):
+            # A closed Windows named pipe can report EOF from poll itself.
+            with self.assertRaises((EOFError, BrokenPipeError)):
+                self.assertTrue(connection.poll(2))
                 connection.recv()
         finally:
             connection.close()
