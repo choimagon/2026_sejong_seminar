@@ -6,6 +6,96 @@
 **`examples/`의 실습 파일 16개는 필요한 import만 들어 있는 학생 작성용 파일입니다.**
 수업을 따라 실행 본문을 직접 작성합니다. 작성 전에는 실행해도 창이나 그래프가 뜨지 않고 종료됩니다.
 
+## MuJoCo 화면과 로봇 조작 방법
+
+실행하면 **MuJoCo 3D 창**과 직접 만든 **Motion Controls / Sensor Monitor GUI 창**이 열립니다.
+3D 창에서 카메라를 움직이고, GUI 창에서 로봇에 주행 명령을 보냅니다.
+`show.py`는 모델 확인용이므로 별도의 조작 GUI는 열리지 않습니다.
+
+### 3D 화면의 카메라 조작
+
+마우스 포인터를 MuJoCo 3D 장면 위에 두고 조작합니다. Windows·Mac·Linux에서 공통으로 사용합니다.
+
+| 마우스 입력 | 화면 동작 |
+| --- | --- |
+| 왼쪽 버튼을 누른 채 드래그 | 카메라 회전 |
+| 오른쪽 버튼을 누른 채 드래그 | 시점 이동: 수직 평면 |
+| Shift + 오른쪽 버튼을 누른 채 드래그 | 시점 이동: 수평 평면 |
+| 휠 스크롤 또는 가운데 버튼 드래그 | 확대 / 축소 |
+
+Mac 트랙패드는 보조 클릭을 누른 채 드래그하고, 두 손가락 스크롤로 확대·축소합니다.
+보조 클릭 설정을 확인하고, 드래그가 불편하면 마우스를 사용합니다.
+GUI가 있는 실습에서는 F로 로봇 추적 / 전체 보기를 전환하고 H로 전체 보기로 돌아갑니다.
+카메라 조작은 [MuJoCo 공식 안내](https://mujoco.readthedocs.io/en/stable/programming/samples.html#basic)를 참고하세요.
+
+### 주행 전에 직접 만든 GUI 창을 클릭
+
+1. **Motion Controls / Sensor Monitor 창의 Controls 탭이나 빈 공간을 클릭**해 키보드 포커스를 줍니다.
+2. W/S로 전진·후진, Q/E로 제자리 좌회전·우회전합니다. 키를 누르는 동안 주행하고 놓으면 제동합니다.
+3. 3D 창에서 카메라를 조작했거나 터미널을 클릭했다면, **GUI 창을 다시 클릭한 뒤** 주행 키를 누릅니다.
+
+현재 실습의 주행 키는 **W/S/Q/E**입니다. WASD 방식의 A/D 회전은 사용하지 않습니다.
+GUI가 포커스를 잃으면 정지 명령을 보냅니다. 명령 입력 중에는 Enter로 입력을 마친 뒤 주행합니다.
+실습 06에서 `GUI 클릭 → W로 전진 → 키 놓고 정지 → Q/E로 회전`을 먼저 확인하세요.
+
+## 저장소 클론과 설치 후 테스트
+
+Git과 Python 3.12를 먼저 설치합니다. Windows는 PowerShell, Mac은 터미널을 엽니다.
+아래 두 줄은 두 운영체제에서 같습니다. `git clone`은 실습 파일을 내려받고, `cd`는 내려받은 프로젝트 폴더로 이동합니다.
+
+```bash
+git clone https://github.com/choimagon/2026_sejong_seminar.git
+cd 2026_sejong_seminar
+```
+
+Windows PowerShell에서 설치하고 테스트합니다. 가상환경의 실행 파일을 직접 지정하므로 활성화 설정이 필요 없습니다.
+
+```powershell
+py -3.12 -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe show.py
+```
+
+Mac 터미널에서 설치하고 테스트합니다. Python 3.12를 사용합니다.
+
+```bash
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/mjpython show.py
+```
+
+`venv`는 프로젝트 전용 Python 환경을 만들고, `pip install -r requirements.txt`는 필요한 패키지를 설치합니다.
+`show.py`를 실행해 MuJoCo 3D 창에 로봇이 보이면 설치 테스트 성공입니다. 창을 닫은 뒤 실습을 시작합니다.
+파일을 찾지 못하면 `cd 2026_sejong_seminar`로 이동했는지 확인합니다.
+Mac에서 MuJoCo 창을 여는 실습은 `mjpython`, 측정·그래프만 사용하는 실습은 `python`을 씁니다.
+새 터미널에서도 저장소 루트로 이동한 뒤 아래 명령을 실행하면 됩니다.
+
+## 실습별 실행 명령어
+
+프로젝트 루트에서 해당 파일의 본문을 끝까지 작성하고 저장한 뒤 실행합니다.
+`-m examples.파일명`은 `module` 라이브러리를 찾을 수 있게 모듈로 실행하는 옵션이며 `.py`는 붙이지 않습니다.
+
+| 실습 파일 | Windows PowerShell | Mac 터미널 |
+| --- | --- | --- |
+| `01_move.py` | `.\.venv\Scripts\python.exe -m examples.01_move` | `.venv/bin/mjpython -m examples.01_move` |
+| `02_imu.py` | `.\.venv\Scripts\python.exe -m examples.02_imu` | `.venv/bin/python -m examples.02_imu` |
+| `03_encoders.py` | `.\.venv\Scripts\python.exe -m examples.03_encoders` | `.venv/bin/python -m examples.03_encoders` |
+| `04_ultrasonic.py` | `.\.venv\Scripts\python.exe -m examples.04_ultrasonic` | `.venv/bin/python -m examples.04_ultrasonic` |
+| `05_lidar.py` | `.\.venv\Scripts\python.exe -m examples.05_lidar` | `.venv/bin/python -m examples.05_lidar` |
+| `06_keyboard_gui.py` | `.\.venv\Scripts\python.exe -m examples.06_keyboard_gui` | `.venv/bin/mjpython -m examples.06_keyboard_gui` |
+| `07_move_algorithm.py` | `.\.venv\Scripts\python.exe -m examples.07_move_algorithm` | `.venv/bin/python -m examples.07_move_algorithm` |
+| `08_lidar_straight.py` | `.\.venv\Scripts\python.exe -m examples.08_lidar_straight` | `.venv/bin/mjpython -m examples.08_lidar_straight` |
+| `09_ultrasonic_straight.py` | `.\.venv\Scripts\python.exe -m examples.09_ultrasonic_straight` | `.venv/bin/mjpython -m examples.09_ultrasonic_straight` |
+| `10_lidar_corner.py` | `.\.venv\Scripts\python.exe -m examples.10_lidar_corner` | `.venv/bin/mjpython -m examples.10_lidar_corner` |
+| `11_ultrasonic_corner.py` | `.\.venv\Scripts\python.exe -m examples.11_ultrasonic_corner` | `.venv/bin/mjpython -m examples.11_ultrasonic_corner` |
+| `12_lidar_junction.py` | `.\.venv\Scripts\python.exe -m examples.12_lidar_junction` | `.venv/bin/mjpython -m examples.12_lidar_junction` |
+| `13_ultrasonic_junction.py` | `.\.venv\Scripts\python.exe -m examples.13_ultrasonic_junction` | `.venv/bin/mjpython -m examples.13_ultrasonic_junction` |
+| `14_lidar_cross.py` | `.\.venv\Scripts\python.exe -m examples.14_lidar_cross` | `.venv/bin/mjpython -m examples.14_lidar_cross` |
+| `15_ultrasonic_cross.py` | `.\.venv\Scripts\python.exe -m examples.15_ultrasonic_cross` | `.venv/bin/mjpython -m examples.15_ultrasonic_cross` |
+| `16_maze_escape.py` | `.\.venv\Scripts\python.exe -m examples.16_maze_escape` | `.venv/bin/mjpython -m examples.16_maze_escape` |
+
+학생용 파일은 import만 있으므로 본문 작성 전 바로 종료되는 것이 정상입니다.
+
 ## 폴더 구성
 
 ```text
@@ -142,3 +232,29 @@ Windows / Linux에서는 위의 `mjpython`을 `python`으로 바꿉니다.
 
 프로젝트 전체를 올리는 대신 이 폴더의 파일만 사용합니다.
 기존 강사용 완성 코드와 발표 자료는 원본 프로젝트에 보관되어 있습니다.
+
+## Windows·Mac·Linux GUI 호환 수정
+
+조작 창·센서 창·코스 GUI는 공통 시뮬레이터 실행기를 사용합니다.
+Windows는 파이프 핸들을 명시적으로 상속하고, Mac·Linux는 파일 디스크립터를 전달합니다.
+Windows에서 `AssertionError: pass_fds not supported on Windows`가 발생하는 이전 버전은 최신 `module/simulation.py`로 교체해야 합니다.
+실습 06뿐 아니라 센서 GUI와 08–16번 GUI에도 같은 수정이 적용됩니다.
+
+프로젝트 루트에서 연결 회귀 테스트를 실행합니다. 테스트는 실제 자식 프로세스와 양방향 통신하며 화면을 열지 않습니다.
+
+```powershell
+# Windows PowerShell
+.\.venv\Scripts\python.exe -m unittest discover -s tests -p test_simulation_start.py -v
+```
+
+```bash
+# Mac / Linux
+.venv/bin/python -m unittest discover -s tests -p test_simulation_start.py -v
+```
+
+GitHub Actions의 `Desktop platform smoke tests`는 Windows·Mac·Linux에서 이 연결 테스트를 실행합니다.
+화면과 키보드 검증은 각 OS의 데스크톱에서 추가로 실행합니다.
+Windows는 `.\.venv\Scripts\python.exe -m examples.06_keyboard_gui`,
+Mac은 `.venv/bin/mjpython -m examples.06_keyboard_gui`,
+Linux는 `.venv/bin/python -m examples.06_keyboard_gui`를 사용합니다.
+Motion Controls 창에 포커스를 두고 W/S/Q/E 이동, 키를 놓았을 때 정지, 창 닫기를 확인합니다.

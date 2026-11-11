@@ -40,3 +40,61 @@ python -m examples.01_move
 02–05·07번의 측정·그래프 실습은 `python`으로 실행할 수 있습니다.
 
 [설치·실행](../README.md) · [실습 목표·시간표](../docs/practice.md) · [함수·반환값 안내](../docs/api.md)
+
+## MuJoCo 화면과 로봇 조작 방법
+
+실행하면 **MuJoCo 3D 창**과 직접 만든 **Motion Controls / Sensor Monitor GUI 창**이 열립니다.
+3D 창에서 카메라를 움직이고, GUI 창에서 로봇에 주행 명령을 보냅니다.
+`show.py`는 모델 확인용이므로 별도의 조작 GUI는 열리지 않습니다.
+
+### 3D 화면의 카메라 조작
+
+마우스 포인터를 MuJoCo 3D 장면 위에 두고 조작합니다. Windows·Mac·Linux에서 공통으로 사용합니다.
+
+| 마우스 입력 | 화면 동작 |
+| --- | --- |
+| 왼쪽 버튼을 누른 채 드래그 | 카메라 회전 |
+| 오른쪽 버튼을 누른 채 드래그 | 시점 이동: 수직 평면 |
+| Shift + 오른쪽 버튼을 누른 채 드래그 | 시점 이동: 수평 평면 |
+| 휠 스크롤 또는 가운데 버튼 드래그 | 확대 / 축소 |
+
+Mac 트랙패드는 보조 클릭을 누른 채 드래그하고, 두 손가락 스크롤로 확대·축소합니다.
+보조 클릭 설정을 확인하고, 드래그가 불편하면 마우스를 사용합니다.
+GUI가 있는 실습에서는 F로 로봇 추적 / 전체 보기를 전환하고 H로 전체 보기로 돌아갑니다.
+카메라 조작은 [MuJoCo 공식 안내](https://mujoco.readthedocs.io/en/stable/programming/samples.html#basic)를 참고하세요.
+
+### 주행 전에 직접 만든 GUI 창을 클릭
+
+1. **Motion Controls / Sensor Monitor 창의 Controls 탭이나 빈 공간을 클릭**해 키보드 포커스를 줍니다.
+2. W/S로 전진·후진, Q/E로 제자리 좌회전·우회전합니다. 키를 누르는 동안 주행하고 놓으면 제동합니다.
+3. 3D 창에서 카메라를 조작했거나 터미널을 클릭했다면, **GUI 창을 다시 클릭한 뒤** 주행 키를 누릅니다.
+
+현재 실습의 주행 키는 **W/S/Q/E**입니다. WASD 방식의 A/D 회전은 사용하지 않습니다.
+GUI가 포커스를 잃으면 정지 명령을 보냅니다. 명령 입력 중에는 Enter로 입력을 마친 뒤 주행합니다.
+실습 06에서 `GUI 클릭 → W로 전진 → 키 놓고 정지 → Q/E로 회전`을 먼저 확인하세요.
+
+## 실습별 실행 명령어
+
+프로젝트 루트에서 해당 파일의 본문을 끝까지 작성하고 저장한 뒤 실행합니다.
+`-m examples.파일명`은 `module` 라이브러리를 찾을 수 있게 모듈로 실행하는 옵션이며 `.py`는 붙이지 않습니다.
+
+| 실습 파일 | Windows PowerShell | Mac 터미널 |
+| --- | --- | --- |
+| `01_move.py` | `.\.venv\Scripts\python.exe -m examples.01_move` | `.venv/bin/mjpython -m examples.01_move` |
+| `02_imu.py` | `.\.venv\Scripts\python.exe -m examples.02_imu` | `.venv/bin/python -m examples.02_imu` |
+| `03_encoders.py` | `.\.venv\Scripts\python.exe -m examples.03_encoders` | `.venv/bin/python -m examples.03_encoders` |
+| `04_ultrasonic.py` | `.\.venv\Scripts\python.exe -m examples.04_ultrasonic` | `.venv/bin/python -m examples.04_ultrasonic` |
+| `05_lidar.py` | `.\.venv\Scripts\python.exe -m examples.05_lidar` | `.venv/bin/python -m examples.05_lidar` |
+| `06_keyboard_gui.py` | `.\.venv\Scripts\python.exe -m examples.06_keyboard_gui` | `.venv/bin/mjpython -m examples.06_keyboard_gui` |
+| `07_move_algorithm.py` | `.\.venv\Scripts\python.exe -m examples.07_move_algorithm` | `.venv/bin/python -m examples.07_move_algorithm` |
+| `08_lidar_straight.py` | `.\.venv\Scripts\python.exe -m examples.08_lidar_straight` | `.venv/bin/mjpython -m examples.08_lidar_straight` |
+| `09_ultrasonic_straight.py` | `.\.venv\Scripts\python.exe -m examples.09_ultrasonic_straight` | `.venv/bin/mjpython -m examples.09_ultrasonic_straight` |
+| `10_lidar_corner.py` | `.\.venv\Scripts\python.exe -m examples.10_lidar_corner` | `.venv/bin/mjpython -m examples.10_lidar_corner` |
+| `11_ultrasonic_corner.py` | `.\.venv\Scripts\python.exe -m examples.11_ultrasonic_corner` | `.venv/bin/mjpython -m examples.11_ultrasonic_corner` |
+| `12_lidar_junction.py` | `.\.venv\Scripts\python.exe -m examples.12_lidar_junction` | `.venv/bin/mjpython -m examples.12_lidar_junction` |
+| `13_ultrasonic_junction.py` | `.\.venv\Scripts\python.exe -m examples.13_ultrasonic_junction` | `.venv/bin/mjpython -m examples.13_ultrasonic_junction` |
+| `14_lidar_cross.py` | `.\.venv\Scripts\python.exe -m examples.14_lidar_cross` | `.venv/bin/mjpython -m examples.14_lidar_cross` |
+| `15_ultrasonic_cross.py` | `.\.venv\Scripts\python.exe -m examples.15_ultrasonic_cross` | `.venv/bin/mjpython -m examples.15_ultrasonic_cross` |
+| `16_maze_escape.py` | `.\.venv\Scripts\python.exe -m examples.16_maze_escape` | `.venv/bin/mjpython -m examples.16_maze_escape` |
+
+학생용 파일은 import만 있으므로 본문 작성 전 바로 종료되는 것이 정상입니다.

@@ -2,6 +2,7 @@
 
 from multiprocessing import Pipe
 from pathlib import Path
+import os
 import subprocess
 import sys
 import time
@@ -179,21 +180,37 @@ def start_simulation(xml_path="all", control_enabled=False, *, sensors=None, dem
                      motor_speed=FORWARD_SPEED):
     """Start one native viewer process and connect its telemetry to the GUI."""
     playback_speed = validate_speed(playback_speed)
+    xml_path = str(resolve_xml(xml_path))
     connection, child_connection = Pipe()
     interpreter = Path(sys.executable)
     if sys.platform == "darwin":
         interpreter = interpreter.with_name("mjpython")
-    code = ("from multiprocessing.connection import Connection; "
+    endpoint_type = type(child_connection).__name__
+    handle = child_connection.fileno()
+    code = (f"from multiprocessing.connection import {endpoint_type}; "
             "from module.simulation import run_simulation; "
-            f"run_simulation(Connection({child_connection.fileno()}), {str(resolve_xml(xml_path))!r}, "
+            f"run_simulation({endpoint_type}({handle}), {xml_path!r}, "
             f"{control_enabled!r}, sensors={sensors!r}, demo={demo!r}, "
             f"course={course!r}, policy={policy!r}, max_sim_time={max_sim_time!r}, "
             f"playback_speed={playback_speed!r}, motor_speed={motor_speed!r})")
     try:
-        process = subprocess.Popen(
-            [str(interpreter), "-c", code], cwd=Path(__file__).resolve().parent.parent,
-            pass_fds=(child_connection.fileno(),),
-        )
+        options = {"close_fds": True}
+        if sys.platform == "win32":
+            # Windows Pipe uses a named-pipe HANDLE, not a POSIX file descriptor.
+            # Inherit only the child endpoint; keep unrelated handles private.
+            options["startupinfo"] = subprocess.STARTUPINFO(
+                lpAttributeList={"handle_list": [handle]})
+            os.set_handle_inheritable(handle, True)
+        else:
+            options["pass_fds"] = (handle,)
+        try:
+            process = subprocess.Popen(
+                [str(interpreter), "-c", code], cwd=Path(__file__).resolve().parent.parent,
+                **options,
+            )
+        finally:
+            if sys.platform == "win32":
+                os.set_handle_inheritable(handle, False)
     except Exception:
         connection.close()
         raise
