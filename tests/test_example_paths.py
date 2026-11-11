@@ -17,22 +17,22 @@ class ExamplePathsTest(unittest.TestCase):
         self.assertEqual(result.returncode,0,result.stderr)
         return result.stdout
 
-    def test_all_thirteen_files_accept_direct_paths(self):
+    def test_all_fourteen_files_accept_direct_paths(self):
         scripts=sorted((ROOT/'examples').glob('[0-9][0-9]_*.py'))
-        self.assertEqual([int(p.name[:2]) for p in scripts],list(range(1,14)))
+        self.assertEqual([int(p.name[:2]) for p in scripts],list(range(1,15)))
         for script in scripts:
             with self.subTest(file=script.name):
                 self.run_file(script.relative_to(ROOT),ROOT,'--help')
 
     def test_default_routes_run_without_selection_flags(self):
-        for name in ['05_route_left','06_route_right','09_ultrasonic_route','10_lidar_route']:
+        for name in ['06_route_left','07_route_right','10_ultrasonic_route','11_lidar_route']:
             with self.subTest(file=name):
                 output=self.run_file(Path('examples')/f'{name}.py',ROOT,'--headless')
                 self.assertIn("'goal_reached': True",output)
                 self.assertIn("'obstacle_contacts': 0",output)
 
     def test_from_examples_and_unrelated_folder(self):
-        script=ROOT/'examples/08_lidar.py'
+        script=ROOT/'examples/09_lidar.py'
         self.run_file(Path(script.name),script.parent,'--headless')
         with tempfile.TemporaryDirectory(prefix='lesson path with spaces ') as folder:
             self.run_file(script,folder,'--headless')

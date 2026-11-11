@@ -20,7 +20,7 @@ ACTIONS = [
     (0.25, 0.0, 1.5),
 ]
 
-args = arguments("06: 시간으로 기둥 right 우회")
+args = arguments("07: 시간으로 기둥 right 우회")
 lab = Lab(xml_path=XML, show=not args.headless, move=move)
 try:
     for linear, angular, seconds in ACTIONS:

@@ -7,7 +7,7 @@ from module.playback import ask_speed
 from examples.runtime import arguments
 from examples.maze_policy import Policy
 
-args = arguments("13: 라이다 모델로 작은 미로 탐색")
+args = arguments("14: 라이다 모델로 작은 미로 탐색")
 world = course.square_maze("lidar", size=3, seed=7)
 print("3 x 3 cells, 30 cm cells, seed=7; parameters are in maze_policy.py")
 if args.headless:

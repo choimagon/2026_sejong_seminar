@@ -15,13 +15,14 @@ from examples.maze_policy import Policy
 
 from module.move import move
 from module.course import sector
+from module.motion.commands import FORWARD_SPEED, TURN_SPEED
 
 
 def lesson(name):
     # Inspect reusable definitions without importing an intentionally executable script.
     filename = Path(__file__).resolve().parents[1] / 'examples' / f'{name}.py'
     tree = ast.parse(filename.read_text())
-    values = {'sensor': sensor, 'sector': sector}
+    values = {'sensor': sensor, 'sector': sector, 'FORWARD_SPEED': FORWARD_SPEED, 'TURN_SPEED': TURN_SPEED}
     for node in tree.body:
         if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name):
             key = node.targets[0].id
@@ -29,7 +30,7 @@ def lesson(name):
                 values[key] = filename.parent / 'scenes' / ast.literal_eval(node.value.right)
             elif key in ('ACTIONS', 'STOP_DISTANCE'):
                 values[key] = ast.literal_eval(node.value)
-        elif isinstance(node, ast.FunctionDef) and node.name in ('choose', 'read_front'):
+        elif isinstance(node, ast.FunctionDef) and node.name in ('choose', 'read_front', 'keyboard_control'):
             exec(compile(ast.Module(body=[node], type_ignores=[]), str(filename), 'exec'), values)
     return SimpleNamespace(**values)
 
@@ -41,10 +42,41 @@ class ExamplesCourseTest(unittest.TestCase):
             source = filename.read_text()
             self.assertNotIn('__main__', source)
             self.assertNotIn('import_module', source)
-            if filename.name[:2] not in ('01', '13'):
+            if filename.name[:2] not in ('01', '14'):
                 tree = ast.parse(source)
                 self.assertTrue(any(isinstance(n, ast.ImportFrom) and n.module == 'module.move'
                                     and any(a.name == 'move' for a in n.names) for n in tree.body), filename)
+
+    def test_keyboard_callback_matches_shared_mapping(self):
+        from module.motion.keyboard import keyboard_control
+        custom = lesson('02_keyboard_straight').keyboard_control
+        for keys in [set(), {'w'}, {'s'}, {'q'}, {'e'}, {'w', 'q'}, {'w', 's'}, {'q', 'e'}]:
+            pressed = lambda key: key in keys
+            self.assertEqual(custom(pressed), keyboard_control(pressed))
+
+    def test_middle_pillar_requires_and_allows_both_detours(self):
+        xml = world('obstacle', 'basic')
+        with Robot(xml) as robot:
+            self.assertAlmostEqual(robot.model.geom('workshop_pillar').pos[0], 1.75)
+            self.assertAlmostEqual(robot.model.geom('workshop_pillar').size[0], .14)
+        for sign in (1, -1):
+            lab = Lab(xml_path=xml, move=move)
+            try:
+                lab.forward(1.05)
+                lab.turn(sign * np.pi / 2)
+                lab.forward(.42)
+                lab.turn(-sign * np.pi / 2)
+                lab.forward(1.25)
+                lab.turn(-sign * np.pi / 2)
+                lab.forward(.42)
+                lab.turn(sign * np.pi / 2)
+                lab.forward(1.2)
+                lab.stop()
+                result = lab.result()
+                self.assertTrue(result['goal_reached'], result)
+                self.assertEqual(result['obstacle_contacts'], 0, result)
+            finally:
+                lab.close()
 
     def test_policy_file_can_import_sibling_helper_and_restores_path(self):
         from module.course import load_policy
@@ -60,12 +92,37 @@ class ExamplesCourseTest(unittest.TestCase):
             finally:
                 sys.modules.pop('_path_policy_helper', None)
 
+    def test_sensor_output_types_shapes_and_missing_values(self):
+        with Robot(world('pillar', 'sonic')) as robot:
+            distances = sensor.ultrasonic.read(robot)
+            self.assertIsInstance(distances, np.ndarray)
+            self.assertEqual(distances.shape, (2,))
+            self.assertTrue(np.isfinite(distances).all())
+        with Robot('sonic') as robot:
+            self.assertTrue(np.isinf(sensor.ultrasonic.read(robot)).all())
+        with Robot(world('pillar', 'lidar')) as robot:
+            scan = sensor.lidar.read(robot)
+            shapes = {'angles_rad': (360,), 'ranges_m': (360,), 'points_xy_m': (360, 2),
+                      'origin_world_m': (3,), 'directions_world': (360, 3), 'geom_ids': (360,)}
+            self.assertEqual(set(scan), set(shapes))
+            for key, shape in shapes.items():
+                self.assertEqual(scan[key].shape, shape)
+            np.testing.assert_allclose(scan['angles_rad'][[0, 90, 180, 270]], np.deg2rad([0, 90, 180, 270]))
+            valid = np.isfinite(scan['ranges_m'])
+            expected = scan['ranges_m'][valid, None] * np.column_stack((np.cos(scan['angles_rad'][valid]), np.sin(scan['angles_rad'][valid])))
+            np.testing.assert_allclose(scan['points_xy_m'][valid], expected)
+        with Robot('lidar') as robot:
+            scan = sensor.lidar.read(robot)
+            self.assertTrue(np.isinf(scan['ranges_m']).all())
+            self.assertTrue(np.isnan(scan['points_xy_m']).all())
+            self.assertTrue((scan['geom_ids'] == -1).all())
+
     def test_files_select_actual_sensor_xml(self):
         assignments = {
             '01_move':'basic','02_keyboard_straight':'basic','03_keyboard_left':'basic',
-            '04_keyboard_right':'basic','05_route_left':'basic','06_route_right':'basic',
-            '07_ultrasonic':'sonic','08_lidar':'lidar','09_ultrasonic_route':'sonic',
-            '10_lidar_route':'lidar','11_ultrasonic_mapping':'sonic','12_lidar_mapping':'lidar'}
+            '04_keyboard_right':'basic','05_keyboard_obstacle':'basic','06_route_left':'basic','07_route_right':'basic',
+            '08_ultrasonic':'sonic','09_lidar':'lidar','10_ultrasonic_route':'sonic',
+            '11_lidar_route':'lidar','12_ultrasonic_mapping':'sonic','13_lidar_mapping':'lidar'}
         for name, model in assignments.items():
             with self.subTest(file=name):
                 xml=lesson(name).XML
@@ -90,7 +147,7 @@ class ExamplesCourseTest(unittest.TestCase):
                 self.assertLess(abs(delta[1]),.02)
 
     def test_timed_left_and_right_reach_goal(self):
-        for name in ['05_route_left','06_route_right']:
+        for name in ['06_route_left','07_route_right']:
             module=lesson(name)
             lab=Lab(xml_path=module.XML,move=move)
             try:
@@ -103,7 +160,7 @@ class ExamplesCourseTest(unittest.TestCase):
             finally:lab.close()
 
     def test_sensor_routes_and_mapping_only_use_present_sensor(self):
-        for name,kind in [('09_ultrasonic_route','ultrasonic'),('10_lidar_route','lidar')]:
+        for name,kind in [('10_ultrasonic_route','ultrasonic'),('11_lidar_route','lidar')]:
             module=lesson(name)
             lab=Lab(xml_path=module.XML,move=move)
             try:

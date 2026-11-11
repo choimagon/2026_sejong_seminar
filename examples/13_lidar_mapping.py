@@ -3,29 +3,22 @@ if __package__ in (None, ""):
     import _bootstrap
 
 from module.move import move
-from module import sensor
-from module.course import sector
-from examples.runtime import arguments, Lab, sensor_route
+from examples.runtime import arguments, Lab, sensor_route, save_map
 from examples.world import SCENES
 
 XML = SCENES / "pillar_lidar.xml"
-STOP_DISTANCE = 0.55
-
-
-def read_front(robot):
-    scan = sensor.lidar.read(robot)
-    return float(sector(scan, 0, 8))
 
 
 def choose(front):
-    if front > STOP_DISTANCE:
+    if front > 0.55:
         return 0.25, 0.0
     return 0.0, 0.0
 
 
-args = arguments("10: lidar 거리로 기둥 우회")
+args = arguments("13: lidar 측정점으로 2D 지도 누적")
 lab = Lab(xml_path=XML, show=not args.headless, move=move)
 try:
-    print(sensor_route(lab, choose, "lidar", read_front=read_front))
+    print(sensor_route(lab, choose, "lidar"))
+    save_map(lab, show=not args.headless, name="lidar_map")
 finally:
     lab.close()

@@ -112,8 +112,10 @@ class Lab:
     def result(self):
         # Truth is used only for a teacher's validation/result, never control or mapping.
         xy = self.robot.data.qpos[:2].copy()
+        goal_name = "course_goal" if mujoco.mj_name2id(self.robot.model, mujoco.mjtObj.mjOBJ_SITE, "course_goal") >= 0 else "workshop_goal"
+        goal = self.robot.model.site(goal_name).pos[:2]
         return {"x_m": float(xy[0]), "y_m": float(xy[1]),
-                "goal_reached": bool(np.linalg.norm(xy - (2.2, 0)) < .28),
+                "goal_reached": bool(np.linalg.norm(xy - goal) < .28),
                 "obstacle_contacts": self.contacts, "simulation_s": self.robot.time}
 
 
@@ -126,10 +128,10 @@ def sensor_route(lab, choose, kind="ultrasonic", *, read_front=None):
         command = choose(front())
         if command == (0.0, 0.0):
             if lab.odom.state.distance_m - start_distance < .02:
-                raise RuntimeError("Complete choose(front) in 09_ultrasonic_route.py / 10_lidar_route.py before running,.")
+                raise RuntimeError("Complete choose(front) in 10_ultrasonic_route.py / 11_lidar_route.py before running,.")
             break
         if lab.robot.time > deadline:
-            raise RuntimeError("Approach did not finish. Complete 01_move.py and 09_ultrasonic_route.py / 10_lidar_route.py,.")
+            raise RuntimeError("Approach did not finish. Complete 01_move.py and 10_ultrasonic_route.py / 11_lidar_route.py,.")
         lab.step(*command)
     lab.stop()
     lab.turn(math.pi / 2)

@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 from module.models import resolve_xml
 
 SCENES = Path(__file__).resolve().parent / "scenes"
-MAPS = ("pillar", "straight", "left_corner", "right_corner")
+MAPS = ("pillar", "straight", "left_corner", "right_corner", "obstacle")
 MODELS = ("basic", "sonic", "lidar", "all")
 
 
@@ -27,13 +27,13 @@ def build_world(name="pillar", kind="all"):
         robot = body.find("body[@name='base']")
         ET.SubElement(robot, "geom", name="course_chassis_collision", type="box",
                       pos="0 0 .10", size=".068 .064 .045", rgba="0 0 0 0")
-        half, start_x, turn_x, end_y = .45, -.55, 2.8, 1.8
+        half, start_x, turn_x, end_y = (.7 if name == "obstacle" else .45), -.55, 2.8, 1.8
         def wall(label, x1, y1, x2, y2):
             ET.SubElement(body, "geom", name=f"course_wall_{label}", type="box",
                           pos=f"{(x1+x2)/2} {(y1+y2)/2} .16",
                           size=f"{abs(x2-x1)/2+.02} {abs(y2-y1)/2+.02} .16",
                           rgba=".25 .34 .43 1")
-        if name == "straight":
+        if name in ("straight", "obstacle"):
             end_x = 4.05
             wall("lower",start_x,-half,end_x,-half)
             wall("upper",start_x,half,end_x,half)
@@ -42,6 +42,9 @@ def build_world(name="pillar", kind="all"):
             goal=(3.5,0)
             center=(1.75,0);extent=2.5
             segments=[(0,0,3.5,0)]
+            if name == "obstacle":
+                ET.SubElement(body,"geom",name="workshop_pillar",type="cylinder",
+                              pos="1.75 0 .22",size=".14 .22",rgba=".72 .51 .24 1")
         else:
             sign=1 if name=="left_corner" else -1
             def mirrored(label,x1,y1,x2,y2):wall(label,x1,sign*y1,x2,sign*y2)
@@ -61,6 +64,7 @@ def build_world(name="pillar", kind="all"):
             for i in range(int(length/.28)):
                 ratio=(i+.5)*.28/length
                 x,y=x1+(x2-x1)*ratio,y1+(y2-y1)*ratio
+                if name == "obstacle" and abs(x-1.75) < .3:continue
                 size=".065 .012 .001" if x1!=x2 else ".012 .065 .001"
                 ET.SubElement(body,"geom",name=f"lane_{section}_{i}",type="box",
                               pos=f"{x} {y} .002",size=size,rgba=".64 .68 .72 1",
