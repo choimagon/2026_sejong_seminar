@@ -2,6 +2,22 @@
 
 Git과 Python 3.12를 설치한 뒤, 아래 순서대로 실행하세요.
 
+## Windows에서 `git` 또는 `py`가 안 될 때
+
+`git` 명령이 없으면 Git을 설치합니다.
+
+```powershell
+winget install --id Git.Git -e --source winget
+```
+
+`py` 명령이 없으면 Python 3.12를 설치합니다.
+
+```powershell
+winget install --id Python.Python.3.12 -e --source winget
+```
+
+설치 후 **PowerShell을 닫고 새로 열어** 아래 순서로 진행하세요.
+
 ## 1. 다운로드
 
 ```bash
