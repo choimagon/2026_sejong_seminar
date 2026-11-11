@@ -2,11 +2,24 @@
 if __package__ in (None, ""):
     import _bootstrap
 
-from workshop100.runtime import arguments, selected, Lab
+from module.motion.wheels import set_velocity
+from workshop100.runtime import arguments, Lab
+
+
+def move(robot, linear=0.0, angular=0.0):
+    radius = float(robot.model.geom("drive_left_tire").size[0])
+    track = float(robot.model.body("left_wheel").pos[1]
+                  - robot.model.body("right_wheel").pos[1])
+    # 실습: 바퀴 동작 그림을 보고 이 두 계산식을 작성합니다.
+    left = (linear - angular * track / 2) / radius
+    right = (linear + angular * track / 2) / radius
+    set_velocity(robot, left, right)
+
 
 if __name__ == "__main__":
-    args = arguments("my_move.py의 두 줄을 작성하고 기본 동작 확인")
-    move, _, _ = selected(args.answer)
+    args = arguments("01: move 함수 작성 → 전진·정지·회전 확인")
+    if args.answer:
+        from workshop100.reference import move
     lab = Lab(args.map, show=not args.headless, move=move)
     try:
         lab.run_for(.2, 0, 2)

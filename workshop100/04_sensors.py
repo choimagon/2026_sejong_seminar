@@ -15,5 +15,5 @@ if __name__ == "__main__":
         scan = sensor.lidar.read(robot)
         print("LiDAR rays:", len(scan["ranges_m"]), "| front m:", scan["ranges_m"][0])
     if not args.headless:
-        target = "workshop100.reference:move" if args.answer else "workshop100.my_move:move"
+        target = "workshop100.reference:move" if args.answer else "workshop100.01_move:move"
         view(path, demo=False, sensors=("ultrasonic", "lidar"), motor_speed=.25, drive_function=target)

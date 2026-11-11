@@ -19,14 +19,11 @@ def arguments(description):
     return parser.parse_args()
 
 
-def selected(answer=False):
-    if answer:
-        from workshop100 import reference
-        return reference.move, reference.ACTIONS, reference.choose
-    from workshop100.my_move import move
-    from workshop100.my_route import ACTIONS
-    from workshop100.my_sensor import choose
-    return move, ACTIONS, choose
+def load_move(answer=False):
+    """Load the actual move function saved in the numbered first exercise."""
+    from importlib import import_module
+    name = "workshop100.reference" if answer else "workshop100.01_move"
+    return import_module(name).move
 
 
 class Lab:
@@ -92,7 +89,7 @@ class Lab:
         deadline = self.robot.time + 12
         while abs(target - self.odom.state.yaw_rad) > .015:
             if self.robot.time > deadline:
-                raise RuntimeError("Rotation did not finish; complete the two lines in my_move.py")
+                raise RuntimeError("Rotation did not finish; complete the two lines in 01_move.py")
             error = target - self.odom.state.yaw_rad
             self.step(0, float(np.clip(3 * error, -1, 1)))
         self.run_for(0, 0, .3)
@@ -102,7 +99,7 @@ class Lab:
         deadline = self.robot.time + metres / .1 + 5
         while target - self.odom.state.distance_m > .008:
             if self.robot.time > deadline:
-                raise RuntimeError("Movement did not finish; check my_move.py or obstacle clearance")
+                raise RuntimeError("Movement did not finish; check 01_move.py or obstacle clearance")
             left = target - self.odom.state.distance_m
             self.step(min(.25, 1.5 * left), 0)
         self.run_for(0, 0, .3)
@@ -129,10 +126,10 @@ def sensor_route(lab, choose, kind="ultrasonic"):
         command = choose(lab.front(kind))
         if command == (0.0, 0.0):
             if lab.odom.state.distance_m - start_distance < .02:
-                raise RuntimeError("Complete choose(front) in my_sensor.py before running, or use --answer.")
+                raise RuntimeError("Complete choose(front) in 05_sensor_route.py before running, or use --answer.")
             break
         if lab.robot.time > deadline:
-            raise RuntimeError("Approach did not finish. Complete my_move.py and my_sensor.py, or use --answer.")
+            raise RuntimeError("Approach did not finish. Complete 01_move.py and 05_sensor_route.py, or use --answer.")
         lab.step(*command)
     lab.stop()
     lab.turn(math.pi / 2)

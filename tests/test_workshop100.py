@@ -6,7 +6,11 @@ from unittest.mock import patch
 from module import Robot
 from module.course import run, square_maze
 from workshop100.world import world
-from workshop100.reference import move, choose, ACTIONS
+from importlib import import_module
+
+move = import_module("workshop100.01_move").move
+choose = import_module("workshop100.05_sensor_route").choose
+ACTIONS = import_module("workshop100.03_route").ACTIONS
 from workshop100.runtime import Lab, sensor_route
 from workshop100.maze_policy import Policy
 

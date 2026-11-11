@@ -6,7 +6,7 @@
 [100분 실습 안내와 실행 명령](workshop100/README.md)을 먼저 확인하세요.
 
 `show.py` 확인 → move 함수 두 줄 작성 → W/S/Q/E 운전 → 센서 없는 기둥 우회 → 초음파·라이다 → 센서로 우회 → 누적 2D 지도·미로 데모 순서입니다.
-직접 작성은 `workshop100/my_move.py`, `my_route.py`, `my_sensor.py` 세 파일입니다.
+직접 작성은 `workshop100/01_move.py`, `03_route.py`, `05_sensor_route.py` 세 파일입니다.
 기존 `examples/`의 16개 실습과 상세 설명은 심화·추가 과제로 유지합니다.
 
 

@@ -3,7 +3,11 @@ if __package__ in (None, ""):
     import _bootstrap
 
 from workshop100.runtime import arguments, Lab, sensor_route, save_map
-from workshop100.reference import move, choose
+from importlib import import_module
+
+# 01의 move와 05의 choose를 재사용합니다.
+move = import_module("workshop100.01_move").move
+choose = import_module("workshop100.05_sensor_route").choose
 
 if __name__ == "__main__":
     args = arguments("제공 데모: 엔코더+IMU 위치 추정에 초음파/라이다 측정점을 누적")
