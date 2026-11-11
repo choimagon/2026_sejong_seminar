@@ -1,6 +1,6 @@
 # 학생용 실습 01–16
 
-각 Python 파일에는 해당 실습에 필요한 **import만** 있습니다.
+각 Python 파일에는 해당 실습에 필요한 **import와 실행 경로 설정만** 있습니다.
 변수 설정, 반복문, 센서 측정, 그래프, 주행 판단과 실행 코드는 수업에서 직접 작성합니다.
 본문 작성 전 실행하면 import 후 바로 종료되는 것이 정상입니다.
 
@@ -27,13 +27,13 @@
 
 ```bash
 # macOS: MuJoCo 창을 사용하는 경우
-mjpython -m examples.01_move
+mjpython examples/01_move.py
 
 # 센서 측정과 Matplotlib만 사용하는 경우
-python -m examples.02_imu
+python examples/02_imu.py
 
 # Windows / Linux
-python -m examples.01_move
+python examples/01_move.py
 ```
 
 01·06·08–16번처럼 macOS에서 MuJoCo 창을 여는 실습은 `mjpython`을 사용합니다.
@@ -76,28 +76,28 @@ GUI가 포커스를 잃으면 정지 명령을 보냅니다. 명령 입력 중�
 ## 실습별 실행 명령어
 
 프로젝트 루트에서 `seminar_mujoco` 환경을 먼저 활성화합니다. 해당 파일의 본문을 끝까지 작성하고 저장한 뒤 아래 명령을 실행합니다.
-`-m examples.파일명`은 `module` 라이브러리를 찾을 수 있게 모듈로 실행하는 옵션이며 `.py`는 붙이지 않습니다.
+`python examples/파일명.py`처럼 파일 경로를 입력합니다. 실습 파일이 프로젝트 라이브러리를 자동으로 찾으므로 `-m`은 필요 없습니다.
 
 | 실습 파일 | Windows PowerShell | Mac 터미널 |
 | --- | --- | --- |
-| `01_move.py` | `python -m examples.01_move` | `mjpython -m examples.01_move` |
-| `02_imu.py` | `python -m examples.02_imu` | `python -m examples.02_imu` |
-| `03_encoders.py` | `python -m examples.03_encoders` | `python -m examples.03_encoders` |
-| `04_ultrasonic.py` | `python -m examples.04_ultrasonic` | `python -m examples.04_ultrasonic` |
-| `05_lidar.py` | `python -m examples.05_lidar` | `python -m examples.05_lidar` |
-| `06_keyboard_gui.py` | `python -m examples.06_keyboard_gui` | `mjpython -m examples.06_keyboard_gui` |
-| `07_move_algorithm.py` | `python -m examples.07_move_algorithm` | `python -m examples.07_move_algorithm` |
-| `08_lidar_straight.py` | `python -m examples.08_lidar_straight` | `mjpython -m examples.08_lidar_straight` |
-| `09_ultrasonic_straight.py` | `python -m examples.09_ultrasonic_straight` | `mjpython -m examples.09_ultrasonic_straight` |
-| `10_lidar_corner.py` | `python -m examples.10_lidar_corner` | `mjpython -m examples.10_lidar_corner` |
-| `11_ultrasonic_corner.py` | `python -m examples.11_ultrasonic_corner` | `mjpython -m examples.11_ultrasonic_corner` |
-| `12_lidar_junction.py` | `python -m examples.12_lidar_junction` | `mjpython -m examples.12_lidar_junction` |
-| `13_ultrasonic_junction.py` | `python -m examples.13_ultrasonic_junction` | `mjpython -m examples.13_ultrasonic_junction` |
-| `14_lidar_cross.py` | `python -m examples.14_lidar_cross` | `mjpython -m examples.14_lidar_cross` |
-| `15_ultrasonic_cross.py` | `python -m examples.15_ultrasonic_cross` | `mjpython -m examples.15_ultrasonic_cross` |
-| `16_maze_escape.py` | `python -m examples.16_maze_escape` | `mjpython -m examples.16_maze_escape` |
+| `01_move.py` | `python examples/01_move.py` | `mjpython examples/01_move.py` |
+| `02_imu.py` | `python examples/02_imu.py` | `python examples/02_imu.py` |
+| `03_encoders.py` | `python examples/03_encoders.py` | `python examples/03_encoders.py` |
+| `04_ultrasonic.py` | `python examples/04_ultrasonic.py` | `python examples/04_ultrasonic.py` |
+| `05_lidar.py` | `python examples/05_lidar.py` | `python examples/05_lidar.py` |
+| `06_keyboard_gui.py` | `python examples/06_keyboard_gui.py` | `mjpython examples/06_keyboard_gui.py` |
+| `07_move_algorithm.py` | `python examples/07_move_algorithm.py` | `python examples/07_move_algorithm.py` |
+| `08_lidar_straight.py` | `python examples/08_lidar_straight.py` | `mjpython examples/08_lidar_straight.py` |
+| `09_ultrasonic_straight.py` | `python examples/09_ultrasonic_straight.py` | `mjpython examples/09_ultrasonic_straight.py` |
+| `10_lidar_corner.py` | `python examples/10_lidar_corner.py` | `mjpython examples/10_lidar_corner.py` |
+| `11_ultrasonic_corner.py` | `python examples/11_ultrasonic_corner.py` | `mjpython examples/11_ultrasonic_corner.py` |
+| `12_lidar_junction.py` | `python examples/12_lidar_junction.py` | `mjpython examples/12_lidar_junction.py` |
+| `13_ultrasonic_junction.py` | `python examples/13_ultrasonic_junction.py` | `mjpython examples/13_ultrasonic_junction.py` |
+| `14_lidar_cross.py` | `python examples/14_lidar_cross.py` | `mjpython examples/14_lidar_cross.py` |
+| `15_ultrasonic_cross.py` | `python examples/15_ultrasonic_cross.py` | `mjpython examples/15_ultrasonic_cross.py` |
+| `16_maze_escape.py` | `python examples/16_maze_escape.py` | `mjpython examples/16_maze_escape.py` |
 
-학생용 파일은 import만 있으므로 본문 작성 전 바로 종료되는 것이 정상입니다.
+학생용 파일은 import와 실행 경로 설정만 있으므로 본문 작성 전 바로 종료되는 것이 정상입니다.
 
 ### 환경 활성화 후 실행하기
 
