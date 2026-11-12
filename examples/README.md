@@ -9,15 +9,16 @@
 | --- | --- | --- | --- |
 | 01 | move 함수 만들기 | `python examples/01_move.py` | `mjpython examples/01_move.py` |
 | 02 | 키 연결·직접 운전 | `python examples/02_keyboard.py` | `python examples/02_keyboard.py` |
-| 03 | 기둥 왼쪽 우회 | `python examples/03_route_left.py` | `mjpython examples/03_route_left.py` |
-| 04 | 기둥 오른쪽 우회 | `python examples/04_route_right.py` | `mjpython examples/04_route_right.py` |
-| 05 | 초음파 출력 확인 | `python examples/05_ultrasonic.py` | `python examples/05_ultrasonic.py` |
-| 06 | 라이다 출력 확인 | `python examples/06_lidar.py` | `python examples/06_lidar.py` |
-| 07 | 초음파로 주행 판단 | `python examples/07_ultrasonic_route.py` | `mjpython examples/07_ultrasonic_route.py` |
-| 08 | 라이다로 주행 판단 | `python examples/08_lidar_route.py` | `mjpython examples/08_lidar_route.py` |
-| 09 | 직접 운전·초음파 지도 | `python examples/09_ultrasonic_mapping.py` | `python examples/09_ultrasonic_mapping.py` |
-| 10 | 직접 운전·라이다 지도 | `python examples/10_lidar_mapping.py` | `python examples/10_lidar_mapping.py` |
-| 11 | 미로 탐색 | `python examples/11_maze.py` | `python examples/11_maze.py` |
+| 03 | ACTIONS 배열로 직선 주행 | `python examples/03_route_straight.py` | `mjpython examples/03_route_straight.py` |
+| 04 | 기둥 왼쪽 우회 | `python examples/04_route_left.py` | `mjpython examples/04_route_left.py` |
+| 05 | 기둥 오른쪽 우회 | `python examples/05_route_right.py` | `mjpython examples/05_route_right.py` |
+| 06 | 초음파 출력 확인 | `python examples/06_ultrasonic.py` | `python examples/06_ultrasonic.py` |
+| 07 | 라이다 출력 확인 | `python examples/07_lidar.py` | `python examples/07_lidar.py` |
+| 08 | 초음파로 주행 판단 | `python examples/08_ultrasonic_route.py` | `mjpython examples/08_ultrasonic_route.py` |
+| 09 | 라이다로 주행 판단 | `python examples/09_lidar_route.py` | `mjpython examples/09_lidar_route.py` |
+| 10 | 직접 운전·초음파 지도 | `python examples/10_ultrasonic_mapping.py` | `python examples/10_ultrasonic_mapping.py` |
+| 11 | 직접 운전·라이다 지도 | `python examples/11_lidar_mapping.py` | `python examples/11_lidar_mapping.py` |
+| 12 | 미로 탐색 | `python examples/12_maze.py` | `python examples/12_maze.py` |
 
 > **키로 운전하기 전, Motion Controls / Sensor Monitor 창의 Controls 탭을 클릭하세요.**
 > MuJoCo 3D 창에서는 MuJoCo 단축키가 작동합니다. 카메라 조작 후 Controls 탭을 다시 클릭하세요.

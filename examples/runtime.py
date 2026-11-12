@@ -48,7 +48,7 @@ class Lab:
         state = self.odom.sample(self.robot)
         for contact in self.robot.data.contact:
             names = [self.robot.model.geom(int(g)).name for g in (contact.geom1, contact.geom2)]
-            if any(n.startswith("workshop_wall") or n == "workshop_pillar" for n in names):
+            if any(n.startswith(("workshop_wall", "course_wall")) or n == "workshop_pillar" for n in names):
                 self.contacts += 1
         if self.robot.time >= self._next_sample:
             self.sample()
@@ -129,10 +129,10 @@ def sensor_route(lab, choose, kind="ultrasonic", *, read_front=None):
         command = choose(front())
         if command == (0.0, 0.0):
             if lab.odom.state.distance_m - start_distance < .02:
-                raise RuntimeError("Complete choose(front) in 07_ultrasonic_route.py / 08_lidar_route.py before running,.")
+                raise RuntimeError("Complete choose(front) in 08_ultrasonic_route.py / 09_lidar_route.py before running,.")
             break
         if lab.robot.time > deadline:
-            raise RuntimeError("Approach did not finish. Complete 01_move.py and 07_ultrasonic_route.py / 08_lidar_route.py,.")
+            raise RuntimeError("Approach did not finish. Complete 01_move.py and 08_ultrasonic_route.py / 09_lidar_route.py,.")
         lab.step(*command)
     lab.stop()
     lab.turn(math.pi / 2)

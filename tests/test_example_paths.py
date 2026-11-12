@@ -19,9 +19,9 @@ class ExamplePathsTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout, '')
 
-    def test_all_eleven_starters_preserve_setup_and_imports_only(self):
+    def test_all_twelve_starters_preserve_setup_and_imports_only(self):
         files = sorted((ROOT/'examples').glob('[0-9][0-9]_*.py'))
-        self.assertEqual([int(p.name[:2]) for p in files], list(range(1, 12)))
+        self.assertEqual([int(p.name[:2]) for p in files], list(range(1, 13)))
         for path in files:
             with self.subTest(file=path.name):
                 tree = ast.parse(path.read_text(encoding='utf-8'))
@@ -40,7 +40,7 @@ class ExamplePathsTest(unittest.TestCase):
                 self.run_file(path.relative_to(ROOT), ROOT)
 
     def test_direct_paths_from_examples_and_an_unrelated_folder(self):
-        script = ROOT/'examples/06_lidar.py'
+        script = ROOT/'examples/07_lidar.py'
         self.run_file(Path(script.name), script.parent)
         with tempfile.TemporaryDirectory(prefix='student starter path ') as folder:
             self.run_file(script, folder)

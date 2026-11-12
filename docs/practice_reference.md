@@ -3,6 +3,23 @@
 실행 명령은 [README](../README.md)의 Windows/Mac 표를 따릅니다.
 01번 이후에는 기존 `from module.move import move`를 사용합니다.
 
+## 03: ACTIONS 배열로 직선 주행 연습
+
+PPT의 가리지 않은 예제를 보고 `03_route_straight.py`를 작성합니다. 기둥이 없는 `straight_basic.xml` 코스를 사용합니다.
+
+각 행은 **(선속도, 각속도, 유지 시간)**입니다. 단위는 차례로 **m/s, rad/s, s**입니다.
+
+| 자리 | 넣는 값 | 뜻 |
+| --- | --- | --- |
+| 첫 번째 | 양수 / 0 / 음수 | 전진 / 정지 / 후진 속도 |
+| 두 번째 | 0 / 양수 / 음수 | 직진 / 왼쪽 회전 / 오른쪽 회전 속도 |
+| 세 번째 | 0보다 큰 초 | 해당 속도를 유지하는 시간 |
+
+`(0.25, 0.0, 6.0)`은 초속 0.25m로 회전 없이 6초 전진, `(0.0, 0.0, 1.0)`은 1초 정지입니다.
+`for linear, angular, seconds in ACTIONS:`가 위에서부터 한 행씩 꺼내 `lab.run_for(...)`로 실행합니다.
+직진 거리는 속도×시간으로 대략 예상할 수 있지만 실제로는 가속·마찰 때문에 차이가 납니다.
+03번 배열은 PPT에 전부 공개하며, 다음 04·05번 기둥 우회 과제의 숫자만 가려둡니다.
+
 ## 초음파: 송신부 + 수신부 = 센서 모듈 하나
 
 HC-SR04 앞의 둥근 두 부품은 송신부(TX)와 수신부(RX)입니다. 왼쪽·오른쪽 거리 센서 두 개가 아닙니다.
@@ -55,13 +72,13 @@ point = scan["points_xy_m"][90]
 나머지 `origin_world_m (3,)`, `directions_world (360,3)`, `geom_ids (360,)`는 부가 검증 정보입니다.
 이 실제 세계 좌표·물체 번호를 지도나 주행의 정답으로 사용하지 않습니다.
 
-## 09·10: 내가 운전하면 지도가 누적됩니다
+## 10·11: 내가 운전하면 지도가 누적됩니다
 
 자동으로 정해진 경로를 달리는 실습이 아닙니다. 두 파일 모두 **Windows와 Mac에서 `python`**으로 실행합니다.
 
 ```bash
-python examples/09_ultrasonic_mapping.py
-python examples/10_lidar_mapping.py
+python examples/10_ultrasonic_mapping.py
+python examples/11_lidar_mapping.py
 ```
 
 1. 직접 만든 Motion Controls / Sensor Monitor의 **Controls 탭을 먼저 클릭**합니다. MuJoCo 창에서는 MuJoCo 단축키가 작동합니다.
