@@ -47,6 +47,10 @@ class Lab:
 
     def step(self, linear=0.0, angular=0.0):
         self.move(self.robot, linear, angular)
+        return self.tick()
+
+    def tick(self):
+        """Advance physics and measurements without changing the current move target."""
         self.robot.step()
         if self.robot.time < self._last_time:
             # A native viewer reset also resets the encoder/IMU reference.
@@ -90,6 +94,17 @@ class Lab:
         end = self.robot.time + seconds
         while self.robot.time < end:
             self.step(linear, angular)
+
+    def wait(self, seconds):
+        """Advance the requested simulation time with the student's current move target."""
+        seconds = float(seconds)
+        if not math.isfinite(seconds) or seconds < 0:
+            raise ValueError("seconds must be finite and nonnegative")
+        elapsed = 0.
+        while elapsed + 1e-10 < seconds:
+            before = self.robot.time
+            self.tick()
+            elapsed += max(0., self.robot.time - before)
 
     def front(self, kind):
         if kind == "ultrasonic":
