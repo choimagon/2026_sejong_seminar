@@ -3,6 +3,7 @@ import argparse
 import math
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import mujoco
@@ -35,16 +36,27 @@ class Lab:
         self.path = []
         self.lidar_points, self.sonar_points = [], []
         self._next_sample = 0
+        self._was_viewed = bool(show)
+        self._last_time = self.robot.time
         if show:
             viewer = self.robot.view()
             viewer.cam.type = mujoco.mjtCamera.mjCAMERA_FREE
-            viewer.cam.lookat[:] = (1.1, 0, .1)
+            viewer.cam.lookat[:] = self.robot.model.stat.center
             viewer.cam.distance = 4.8
             viewer.cam.azimuth, viewer.cam.elevation = 90, -70
 
     def step(self, linear=0.0, angular=0.0):
         self.move(self.robot, linear, angular)
         self.robot.step()
+        if self.robot.time < self._last_time:
+            # A native viewer reset also resets the encoder/IMU reference.
+            self.odom = Odometry.for_robot(self.robot)
+            self.contacts = 0
+            self.path.clear()
+            self.lidar_points.clear()
+            self.sonar_points.clear()
+            self._next_sample = 0
+        self._last_time = self.robot.time
         state = self.odom.sample(self.robot)
         for contact in self.robot.data.contact:
             names = [self.robot.model.geom(int(g)).name for g in (contact.geom1, contact.geom2)]
@@ -106,6 +118,33 @@ class Lab:
 
     def stop(self):
         self.run_for(0, 0, .5)
+
+    def running(self):
+        """Provided window/goal termination only; students choose every movement."""
+        viewer = self.robot._viewer
+        if self._was_viewed and (viewer is None or not viewer.is_running()):
+            return False
+        if self.robot.time > 240:
+            raise RuntimeError("Maze did not finish within 240 simulation seconds; check the sensor if statements")
+        return not self.result()["goal_reached"]
+
+    def finish(self):
+        """Stop, show success for two seconds at the goal, then let finally close."""
+        self.stop()
+        result = self.result()
+        if result["goal_reached"]:
+            print("SUCCESS! Goal reached.", flush=True)
+            viewer = self.robot._viewer
+            if viewer is not None and viewer.is_running():
+                viewer.set_texts((mujoco.mjtFont.mjFONT_BIG, mujoco.mjtGridPos.mjGRID_TOPLEFT,
+                                  "SUCCESS!\nGoal reached", "Closing automatically"))
+                end = time.monotonic() + 2.
+                while viewer.is_running() and time.monotonic() < end:
+                    viewer.sync()
+                    time.sleep(.05)
+        else:
+            print("Stopped before the goal.", flush=True)
+        return result
 
     def close(self):
         self.robot.close()

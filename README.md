@@ -82,7 +82,8 @@ source seminar_mujoco/bin/activate
 | 09 | 라이다로 주행 판단 | `python examples/09_lidar_route.py` | `mjpython examples/09_lidar_route.py` |
 | 10 | 직접 운전·초음파 지도 | `python examples/10_ultrasonic_mapping.py` | `python examples/10_ultrasonic_mapping.py` |
 | 11 | 직접 운전·라이다 지도 | `python examples/11_lidar_mapping.py` | `python examples/11_lidar_mapping.py` |
-| 12 | 미로 탐색 | `python examples/12_maze.py` | `python examples/12_maze.py` |
+| 12 | 초음파 if문 미로 주행 | `python examples/12_ultrasonic_maze.py` | `mjpython examples/12_ultrasonic_maze.py` |
+| 13 | 라이다 if문 미로 주행 | `python examples/13_lidar_maze.py` | `mjpython examples/13_lidar_maze.py` |
 
 ## 키로 운전하기
 

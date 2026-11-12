@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 from module.models import resolve_xml
 
 SCENES = Path(__file__).resolve().parent / "scenes"
-MAPS = ("pillar", "straight", "left_corner", "right_corner", "obstacle")
+MAPS = ("pillar", "straight", "left_corner", "right_corner", "obstacle", "maze")
 MODELS = ("basic", "sonic", "lidar", "all")
 
 
@@ -18,6 +18,17 @@ def build_world(name="pillar", kind="all"):
         raise ValueError("Unknown route or model")
     SCENES.mkdir(exist_ok=True)
     path = SCENES / f"{name}_{kind}.xml"
+    if name == "maze":
+        from module.course import random_maze
+        prepared = random_maze(kind, seed=7, width=3, height=3, cell_size=.8)
+        maze = ET.parse(prepared.path)
+        for label in ("start", "goal"):
+            marker = maze.getroot().find(f"worldbody/site[@name='course_{label}']")
+            marker.set("type", "box")
+            marker.set("size", ".12 .12 .002")
+        ET.indent(maze)
+        maze.write(path, encoding="utf-8", xml_declaration=True)
+        return path
     if name != "pillar":
         root = ET.parse(resolve_xml(kind)).getroot()
         root.set("model", f"examples_{name}_{kind}")

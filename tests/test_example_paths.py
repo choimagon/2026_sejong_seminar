@@ -19,9 +19,9 @@ class ExamplePathsTest(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout, '')
 
-    def test_all_twelve_starters_preserve_setup_and_imports_only(self):
+    def test_all_thirteen_starters_preserve_setup_and_imports_only(self):
         files = sorted((ROOT/'examples').glob('[0-9][0-9]_*.py'))
-        self.assertEqual([int(p.name[:2]) for p in files], list(range(1, 13)))
+        self.assertEqual([int(p.name[:2]) for p in files], list(range(1, 14)))
         for path in files:
             with self.subTest(file=path.name):
                 tree = ast.parse(path.read_text(encoding='utf-8'))

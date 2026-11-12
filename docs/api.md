@@ -89,7 +89,7 @@
 
 `case`는 `straight`·`corner`·`junction`·`cross`, `kind`는 `basic`·`lidar`·`sonic`·`all`입니다.
 `world.path`로 XML 경로를 얻습니다.
-`policy`는 작성한 정책 객체 또는 `examples.maze_policy:Policy` 형식의 import 경로입니다.
+`policy`는 고급 선택 기능으로 외부 객체 또는 `module_name:ClassName` 형식의 import 경로를 받습니다. 12·13번 실습에서는 사용하지 않고 센서 읽기와 if문을 직접 작성합니다.
 `course.view`의 `policy`에는 import 경로를 사용합니다.
 
 정책은 `decide(observation)`에서 아래 행동 중 하나를 반환하거나,

@@ -18,7 +18,8 @@
 | 09 | 라이다로 주행 판단 | `python examples/09_lidar_route.py` | `mjpython examples/09_lidar_route.py` |
 | 10 | 직접 운전·초음파 지도 | `python examples/10_ultrasonic_mapping.py` | `python examples/10_ultrasonic_mapping.py` |
 | 11 | 직접 운전·라이다 지도 | `python examples/11_lidar_mapping.py` | `python examples/11_lidar_mapping.py` |
-| 12 | 미로 탐색 | `python examples/12_maze.py` | `python examples/12_maze.py` |
+| 12 | 초음파 if문 미로 주행 | `python examples/12_ultrasonic_maze.py` | `mjpython examples/12_ultrasonic_maze.py` |
+| 13 | 라이다 if문 미로 주행 | `python examples/13_lidar_maze.py` | `mjpython examples/13_lidar_maze.py` |
 
 > **키로 운전하기 전, Motion Controls / Sensor Monitor 창의 Controls 탭을 클릭하세요.**
 > MuJoCo 3D 창에서는 MuJoCo 단축키가 작동합니다. 카메라 조작 후 Controls 탭을 다시 클릭하세요.
