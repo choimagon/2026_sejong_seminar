@@ -95,3 +95,5 @@ source seminar_mujoco/bin/activate
 - 10·11번은 직접 운전하며 지도를 만듭니다. **M: 지도 보기 / P: 저장 / R: 초기화**. 창을 닫아도 저장됩니다.
 
 [실습 참고 설명](docs/practice_reference.md)
+
+[5×5·10×10 미로로 바꾸기](examples/README.md#더-큰-미로로-바꾸기)

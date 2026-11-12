@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mujoco model="examples_maze_10x10_basic">
+  <compiler angle="radian" coordinate="local" autolimits="true" />
+  <option timestep="0.005" gravity="0 0 -9.81" integrator="implicitfast" />
+  <default>
+    <joint damping="0.03" armature="0.001" />
+    <geom condim="3" friction="1.1 0.006 0.0001" />
+  </default>
+  <asset>
+    <material name="frame" rgba="0.13 0.16 0.19 1" />
+    <material name="wheel" rgba="0.055 0.065 0.085 1" />
+    <material name="metal" rgba="0.67 0.73 0.79 1" />
+    <material name="housing" rgba="0.28 0.34 0.39 1" />
+    <material name="pcb" rgba="0.035 0.29 0.88 1" />
+    <material name="chip" rgba="0.08 0.10 0.13 1" />
+    <material name="connector" rgba="0.90 0.93 0.95 1" />
+    <material name="hub" rgba="0.43 0.49 0.55 1" />
+    <material name="lens" rgba="0.06 0.10 0.15 1" />
+  </asset>
+  <worldbody>
+    <light name="main_light" pos="0 0 3" dir="0 0 -1" directional="true" ambient="0.3 0.3 0.3" diffuse="0.45 0.45 0.45" specular="0.1 0.1 0.1" castshadow="false" />
+    <geom name="floor" type="plane" size="5.0 5.0 .1" rgba="0.88 0.90 0.93 1" friction="1.2 0.006 0.0001" pos="3.6 3.6 0" />
+    <body name="base" pos="0.0 0.0 0">
+      <freejoint name="base_freejoint" />
+      <inertial pos="0 0 0.104" mass="0.72" diaginertia="0.0024 0.0024 0.0016" />
+      <body name="left_wheel" pos=".030 .087 .038">
+        <joint name="left_wheel_joint" type="hinge" axis="0 1 0" damping="0.015" />
+        <inertial pos="0 0 0" mass="0.10" diaginertia="0.00010 0.00017 0.00010" />
+        <geom name="drive_left_tire" type="cylinder" material="wheel" pos="0 0 0" size="0.038 0.012" euler="1.57079632679 0 0" contype="1" conaffinity="1" />
+        <geom name="drive_left_hub" type="cylinder" material="hub" pos="0 0.0135 0" size="0.019 0.0015" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+        <geom name="drive_left_hub_bolt" type="cylinder" material="metal" pos="0 0.016 0" size="0.006 0.001" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+      </body>
+      <body name="right_wheel" pos=".030 -.087 .038">
+        <joint name="right_wheel_joint" type="hinge" axis="0 1 0" damping="0.015" />
+        <inertial pos="0 0 0" mass="0.10" diaginertia="0.00010 0.00017 0.00010" />
+        <geom name="drive_right_tire" type="cylinder" material="wheel" pos="0 0 0" size="0.038 0.012" euler="1.57079632679 0 0" contype="1" conaffinity="1" />
+        <geom name="drive_right_hub" type="cylinder" material="hub" pos="0 -0.0135 0" size="0.019 0.0015" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+        <geom name="drive_right_hub_bolt" type="cylinder" material="metal" pos="0 -0.016 0" size="0.006 0.001" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+      </body>
+      <geom name="lower_plate" type="box" material="frame" pos="0 0 0.061" size="0.068 0.064 0.005" contype="0" conaffinity="0" />
+      <geom name="central_housing" type="box" material="housing" pos="0 0 0.096" size="0.041 0.038 0.03" contype="0" conaffinity="0" />
+      <geom name="frame_post_0_0" type="cylinder" material="metal" pos="-0.055 -0.05 0.1075" size="0.004 0.0415" contype="0" conaffinity="0" />
+      <geom name="frame_post_0_1" type="cylinder" material="metal" pos="-0.055 0.05 0.1075" size="0.004 0.0415" contype="0" conaffinity="0" />
+      <geom name="frame_post_1_0" type="cylinder" material="metal" pos="0.055 -0.05 0.1075" size="0.004 0.0415" contype="0" conaffinity="0" />
+      <geom name="frame_post_1_1" type="cylinder" material="metal" pos="0.055 0.05 0.1075" size="0.004 0.0415" contype="0" conaffinity="0" />
+      <geom name="upper_plate" type="box" material="frame" pos="0 0 0.154" size="0.068 0.064 0.005" contype="0" conaffinity="0" />
+      <geom name="top_bolt_0_0" type="cylinder" material="metal" pos="-0.055 -0.05 0.161" size="0.0035 0.002" contype="0" conaffinity="0" />
+      <geom name="top_bolt_0_1" type="cylinder" material="metal" pos="-0.055 0.05 0.161" size="0.0035 0.002" contype="0" conaffinity="0" />
+      <geom name="top_bolt_1_0" type="cylinder" material="metal" pos="0.055 -0.05 0.161" size="0.0035 0.002" contype="0" conaffinity="0" />
+      <geom name="top_bolt_1_1" type="cylinder" material="metal" pos="0.055 0.05 0.161" size="0.0035 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_standoff_0_0" type="cylinder" material="metal" pos="-0.014 -0.009 0.128" size="0.002 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_standoff_0_1" type="cylinder" material="metal" pos="-0.014 0.009 0.128" size="0.002 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_standoff_1_0" type="cylinder" material="metal" pos="0.014 -0.009 0.128" size="0.002 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_standoff_1_1" type="cylinder" material="metal" pos="0.014 0.009 0.128" size="0.002 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_blue_pcb" type="box" material="pcb" pos="0 0 0.132" size="0.02 0.014 0.002" contype="0" conaffinity="0" />
+      <geom name="imu_black_chip" type="box" material="chip" pos="-0.004 0 0.135" size="0.007 0.006 0.001" contype="0" conaffinity="0" />
+      <geom name="imu_white_connector" type="box" material="connector" pos="0.014 0 0.135" size="0.004 0.007 0.001" contype="0" conaffinity="0" />
+      <geom name="motor_left_housing" type="box" material="housing" pos="0.03 0.048 0.042" size="0.024 0.015 0.014" contype="0" conaffinity="0" />
+      <geom name="motor_left_axle" type="cylinder" material="metal" pos="0.03 0.069 0.038" size="0.008 0.006" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+      <geom name="motor_right_housing" type="box" material="housing" pos="0.03 -0.048 0.042" size="0.024 0.015 0.014" contype="0" conaffinity="0" />
+      <geom name="motor_right_axle" type="cylinder" material="metal" pos="0.03 -0.069 0.038" size="0.008 0.006" euler="1.57079632679 0 0" contype="0" conaffinity="0" />
+      <geom name="caster_mount_flange" type="box" material="metal" pos="-0.049 0 0.052" size="0.019 0.019 0.004" contype="0" conaffinity="0" />
+      <geom name="caster_vertical_neck" type="box" material="housing" pos="-0.049 0 0.044" size="0.01 0.01 0.004" contype="0" conaffinity="0" />
+      <geom name="caster_fork_bridge" type="box" material="housing" pos="-0.049 0 0.037" size="0.011 0.019 0.003" contype="0" conaffinity="0" />
+      <geom name="caster_fork_left" type="box" material="housing" pos="-0.049 0.0175 0.024" size="0.01 0.0015 0.01" contype="0" conaffinity="0" />
+      <geom name="caster_fork_right" type="box" material="housing" pos="-0.049 -0.0175 0.024" size="0.01 0.0015 0.01" contype="0" conaffinity="0" />
+      <geom name="caster_ball" priority="1" type="sphere" material="metal" pos="-0.049 0 0.016" size="0.016" contype="1" conaffinity="1" friction="0.035 0.001 0.0001" />
+      <site name="imu_site" pos="0 0 0.137" size="0.002" rgba="0 0 0 0" />
+      <geom name="course_chassis_collision" type="box" pos="0 0 0.10" size="0.068 0.064 0.045" rgba="0 0 0 0" contype="1" conaffinity="1" />
+    </body>
+    <geom name="course_wall_0" type="box" pos="-0.4 0.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_1" type="box" pos="-0.4 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_2" type="box" pos="-0.4 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_3" type="box" pos="-0.4 2.4000000000000004 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_4" type="box" pos="-0.4 3.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_5" type="box" pos="-0.4 4.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_6" type="box" pos="-0.4 4.800000000000001 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_7" type="box" pos="-0.4 5.6000000000000005 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_8" type="box" pos="-0.4 6.4 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_9" type="box" pos="-0.4 7.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_10" type="box" pos="0.4 0.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_11" type="box" pos="0.4 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_12" type="box" pos="0.4 2.4000000000000004 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_13" type="box" pos="0.4 5.6000000000000005 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_14" type="box" pos="0.4 6.4 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_15" type="box" pos="1.2000000000000002 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_16" type="box" pos="1.2000000000000002 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_17" type="box" pos="1.2000000000000002 4.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_18" type="box" pos="1.2000000000000002 4.800000000000001 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_19" type="box" pos="1.2000000000000002 6.4 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_20" type="box" pos="1.2000000000000002 7.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_21" type="box" pos="2.0 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_22" type="box" pos="2.8000000000000003 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_23" type="box" pos="2.8000000000000003 2.4000000000000004 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_24" type="box" pos="2.8000000000000003 3.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_25" type="box" pos="2.8000000000000003 5.6000000000000005 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_26" type="box" pos="2.8000000000000003 6.4 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_27" type="box" pos="3.6 0.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_28" type="box" pos="3.6 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_29" type="box" pos="3.6 4.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_30" type="box" pos="3.6 5.6000000000000005 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_31" type="box" pos="4.4 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_32" type="box" pos="4.4 2.4000000000000004 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_33" type="box" pos="4.4 3.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_34" type="box" pos="4.4 4.800000000000001 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_35" type="box" pos="4.4 5.6000000000000005 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_36" type="box" pos="4.4 6.4 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_37" type="box" pos="5.2 0.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_38" type="box" pos="5.2 4.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_39" type="box" pos="6.0 3.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_40" type="box" pos="6.0 7.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_41" type="box" pos="6.800000000000001 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_42" type="box" pos="6.800000000000001 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_43" type="box" pos="6.800000000000001 2.4000000000000004 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_44" type="box" pos="6.800000000000001 4.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_45" type="box" pos="6.800000000000001 4.800000000000001 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_46" type="box" pos="7.6000000000000005 0.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_47" type="box" pos="7.6000000000000005 0.8 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_48" type="box" pos="7.6000000000000005 1.6 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_49" type="box" pos="7.6000000000000005 2.4000000000000004 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_50" type="box" pos="7.6000000000000005 3.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_51" type="box" pos="7.6000000000000005 4.0 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_52" type="box" pos="7.6000000000000005 4.800000000000001 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_53" type="box" pos="7.6000000000000005 5.6000000000000005 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_54" type="box" pos="7.6000000000000005 6.4 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_55" type="box" pos="7.6000000000000005 7.2 0.15" size="0.02 0.42000000000000004 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_56" type="box" pos="0.0 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_57" type="box" pos="0.8 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_58" type="box" pos="1.6 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_59" type="box" pos="2.4000000000000004 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_60" type="box" pos="3.2 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_61" type="box" pos="4.0 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_62" type="box" pos="4.800000000000001 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_63" type="box" pos="5.6000000000000005 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_64" type="box" pos="6.4 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_65" type="box" pos="7.2 -0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_66" type="box" pos="0.8 0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_67" type="box" pos="2.4000000000000004 0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_68" type="box" pos="6.4 0.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_69" type="box" pos="0.0 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_70" type="box" pos="2.4000000000000004 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_71" type="box" pos="3.2 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_72" type="box" pos="4.0 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_73" type="box" pos="4.800000000000001 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_74" type="box" pos="5.6000000000000005 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_75" type="box" pos="6.4 1.2000000000000002 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_76" type="box" pos="1.6 2.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_77" type="box" pos="4.800000000000001 2.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_78" type="box" pos="5.6000000000000005 2.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_79" type="box" pos="0.8 2.8000000000000003 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_80" type="box" pos="1.6 2.8000000000000003 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_81" type="box" pos="2.4000000000000004 2.8000000000000003 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_82" type="box" pos="3.2 2.8000000000000003 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_83" type="box" pos="4.0 2.8000000000000003 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_84" type="box" pos="5.6000000000000005 2.8000000000000003 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_85" type="box" pos="6.4 2.8000000000000003 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_86" type="box" pos="0.8 3.6 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_87" type="box" pos="2.4000000000000004 3.6 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_88" type="box" pos="4.800000000000001 3.6 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_89" type="box" pos="0.0 4.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_90" type="box" pos="1.6 4.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_91" type="box" pos="2.4000000000000004 4.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_92" type="box" pos="3.2 4.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_93" type="box" pos="4.0 4.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_94" type="box" pos="5.6000000000000005 4.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_95" type="box" pos="6.4 4.4 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_96" type="box" pos="0.8 5.2 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_97" type="box" pos="1.6 5.2 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_98" type="box" pos="3.2 5.2 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_99" type="box" pos="5.6000000000000005 5.2 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_100" type="box" pos="6.4 5.2 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_101" type="box" pos="1.6 6.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_102" type="box" pos="2.4000000000000004 6.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_103" type="box" pos="4.800000000000001 6.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_104" type="box" pos="5.6000000000000005 6.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_105" type="box" pos="6.4 6.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_106" type="box" pos="7.2 6.0 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_107" type="box" pos="2.4000000000000004 6.800000000000001 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_108" type="box" pos="4.0 6.800000000000001 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_109" type="box" pos="4.800000000000001 6.800000000000001 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_110" type="box" pos="6.4 6.800000000000001 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_111" type="box" pos="0.0 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_112" type="box" pos="0.8 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_113" type="box" pos="1.6 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_114" type="box" pos="2.4000000000000004 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_115" type="box" pos="3.2 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_116" type="box" pos="4.0 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_117" type="box" pos="4.800000000000001 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_118" type="box" pos="5.6000000000000005 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_119" type="box" pos="6.4 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <geom name="course_wall_120" type="box" pos="7.2 7.6000000000000005 0.15" size="0.42000000000000004 0.02 0.15" rgba="0.36 0.46 0.57 1" />
+    <site name="course_start" type="box" pos="0.0 0.0 0.002" size=".12 .12 .002" rgba="0.1 0.4 0.95 0.5" />
+    <site name="course_goal" type="box" pos="7.2 7.2 0.002" size=".12 .12 .002" rgba="0.1 0.8 0.3 0.5" />
+  </worldbody>
+  <actuator>
+    <motor name="left_motor" joint="left_wheel_joint" gear="1" ctrlrange="-1 1" />
+    <motor name="right_motor" joint="right_wheel_joint" gear="1" ctrlrange="-1 1" />
+  </actuator>
+  <sensor>
+    <gyro name="gyro" site="imu_site" />
+    <accelerometer name="accelerometer" site="imu_site" />
+    <jointpos name="left_encoder" joint="left_wheel_joint" />
+    <jointvel name="left_wheel_speed" joint="left_wheel_joint" />
+    <jointpos name="right_encoder" joint="right_wheel_joint" />
+    <jointvel name="right_wheel_speed" joint="right_wheel_joint" />
+  </sensor>
+  <statistic center="3.6 3.6 0.1" extent="4.3" />
+  <custom>
+    <numeric name="course_maze_size" data="10 10" />
+    <numeric name="course_cell_size" data="0.8" />
+    <numeric name="course_max_seconds" data="3600" />
+  </custom>
+</mujoco>

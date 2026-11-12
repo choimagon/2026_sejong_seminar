@@ -38,12 +38,16 @@ class Lab:
         self._next_sample = 0
         self._was_viewed = bool(show)
         self._last_time = self.robot.time
+        self.max_sim_time = 240.
+        limit_id = mujoco.mj_name2id(self.robot.model, mujoco.mjtObj.mjOBJ_NUMERIC, "course_max_seconds")
+        if limit_id >= 0:
+            self.max_sim_time = float(self.robot.model.numeric(limit_id).data[0])
         self.robot._step_observer = self._observe_step
         if show:
             viewer = self.robot.view()
             viewer.cam.type = mujoco.mjtCamera.mjCAMERA_FREE
             viewer.cam.lookat[:] = self.robot.model.stat.center
-            viewer.cam.distance = 4.8
+            viewer.cam.distance = max(4.8, float(self.robot.model.stat.extent) * 3.2)
             viewer.cam.azimuth, viewer.cam.elevation = 90, -70
 
     def step(self, linear=0.0, angular=0.0):
@@ -133,8 +137,8 @@ class Lab:
         viewer = self.robot._viewer
         if self._was_viewed and (viewer is None or not viewer.is_running()):
             return False
-        if self.robot.time > 240:
-            raise RuntimeError("Maze did not finish within 240 simulation seconds; check the sensor if statements")
+        if self.robot.time > self.max_sim_time:
+            raise RuntimeError(f"Maze did not finish within {self.max_sim_time:g} simulation seconds; check the sensor if statements")
         return not self.result()["goal_reached"]
 
     def finish(self):

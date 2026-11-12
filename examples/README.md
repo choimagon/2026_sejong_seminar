@@ -28,3 +28,16 @@
 예: `w`→`i`, `s`→`k`, `q`→`j`, `e`→`l`. 저장 후 창을 닫고 다시 실행하세요.
 
 [코드 작성·센서 출력·XML 참고 설명](../docs/practice_reference.md)
+
+## 더 큰 미로로 바꾸기
+
+12·13번에서 `XML` 한 줄을 바꾸고 같은 명령으로 다시 실행하세요.
+
+| 난이도 | 12번 초음파 | 13번 라이다 |
+| --- | --- | --- |
+| 기본 3×3 | `XML = SCENES / "maze_sonic.xml"` | `XML = SCENES / "maze_lidar.xml"` |
+| 도전 5×5 | `XML = SCENES / "maze_5x5_sonic.xml"` | `XML = SCENES / "maze_5x5_lidar.xml"` |
+| 심화 10×10 | `XML = SCENES / "maze_10x10_sonic.xml"` | `XML = SCENES / "maze_10x10_lidar.xml"` |
+
+한 칸은 모두 0.8m입니다. 화면 범위와 제한 시간은 XML에 맞춰 자동으로 바뀝니다.
+큰 미로는 막다른길·갈림길·긴 우회 경로가 있는 추가 과제입니다. 기본 예제의 고정 시간 이동은 오차가 쌓여 부딪힐 수 있으므로, 센서로 다시 확인하며 회전·전진을 개선해 보세요.

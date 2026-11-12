@@ -8,7 +8,8 @@ import xml.etree.ElementTree as ET
 from module.models import resolve_xml
 
 SCENES = Path(__file__).resolve().parent / "scenes"
-MAPS = ("pillar", "straight", "left_corner", "right_corner", "obstacle", "maze")
+MAPS = ("pillar", "straight", "left_corner", "right_corner", "obstacle", "maze",
+        "maze_5x5", "maze_10x10")
 MODELS = ("basic", "sonic", "lidar", "all")
 
 
@@ -18,14 +19,27 @@ def build_world(name="pillar", kind="all"):
         raise ValueError("Unknown route or model")
     SCENES.mkdir(exist_ok=True)
     path = SCENES / f"{name}_{kind}.xml"
-    if name == "maze":
+    if name in ("maze", "maze_5x5", "maze_10x10"):
         from module.course import random_maze
-        prepared = random_maze(kind, seed=7, width=3, height=3, cell_size=.8)
+        size = {"maze": 3, "maze_5x5": 5, "maze_10x10": 10}[name]
+        prepared = random_maze(kind, seed=7, width=size, height=size, cell_size=.8)
         maze = ET.parse(prepared.path)
         for label in ("start", "goal"):
             marker = maze.getroot().find(f"worldbody/site[@name='course_{label}']")
             marker.set("type", "box")
             marker.set("size", ".12 .12 .002")
+        if size > 3:
+            root = maze.getroot()
+            root.set("model", f"examples_{name}_{kind}")
+            floor = root.find("worldbody/geom[@name='floor']")
+            floor.set("pos", f"{(size-1)*.4} {(size-1)*.4} 0")
+            floor.set("size", f"{size*.4+1} {size*.4+1} .1")
+            custom = root.find("custom")
+            if custom is None:
+                custom = ET.SubElement(root, "custom")
+            ET.SubElement(custom, "numeric", name="course_maze_size", data=f"{size} {size}")
+            ET.SubElement(custom, "numeric", name="course_cell_size", data="0.8")
+            ET.SubElement(custom, "numeric", name="course_max_seconds", data=str(size * size * 36))
         ET.indent(maze)
         maze.write(path, encoding="utf-8", xml_declaration=True)
         return path
