@@ -97,3 +97,5 @@ source seminar_mujoco/bin/activate
 [실습 참고 설명](docs/practice_reference.md)
 
 [5×5·10×10 미로로 바꾸기](examples/README.md#더-큰-미로로-바꾸기)
+
+[Mac·Windows 실행 검증 결과](docs/verification.md)
