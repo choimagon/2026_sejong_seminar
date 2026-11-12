@@ -148,3 +148,5 @@
 `add_points(reading, x, y, yaw, points)`에서 추정 센서 원점과 거리·각도를 이용해 `points.append((point_x, point_y))`로 누적합니다.
 초음파 reading은 float 하나, 라이다 reading은 각도·거리 배열을 가진 dict입니다.
 WSQE 운전, M 지도 보기, P PNG/NPZ 저장, R 로봇·지도 초기화입니다.
+
+`move(robot, linear, angular, seconds)`의 네 번째 값은 실행 시간(s)입니다. 생략하면 기존처럼 속도 목표만 설정합니다.

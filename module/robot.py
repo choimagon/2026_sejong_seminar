@@ -30,6 +30,7 @@ class Robot:
         self._mode = "idle"
         self._closed = False
         self._viewer = None
+        self._step_observer = None
         mujoco.mj_forward(self.model, self.data)
 
     @property
@@ -123,7 +124,11 @@ class Robot:
                 else:
                     self._viewer.close()
                     self._viewer = None
-        mujoco.mj_forward(self.model, self.data)
+            if self._step_observer is not None:
+                mujoco.mj_forward(self.model, self.data)
+                self._step_observer()
+        if count == 0 or self._step_observer is None:
+            mujoco.mj_forward(self.model, self.data)
 
     def run_for(self, seconds):
         """Advance simulation seconds, rounded up to a whole physics step."""
@@ -146,6 +151,7 @@ class Robot:
 
     def close(self):
         """Release this session; safe to call more than once."""
+        self._step_observer = None
         self.data.ctrl[:] = 0
         if self._controller is not None:
             self._controller.cancel("Robot closed")
