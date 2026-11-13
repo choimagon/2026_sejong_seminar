@@ -25,3 +25,10 @@ GitHub를 별도 폴더에 새로 클론하고 `seminar_mujoco` 가상환경을 
 내부 50×50 벽 검사의 최신 MuJoCo 전용 호출을 공통 mj_ray API로 수정했습니다. 생산 LiDAR의 버전 호환 분기는 정상입니다.
 
 추가 5×5·10×10은 제어 개선 과제입니다. GUI 로딩·센서·짧은 이동 검증은 전체 완주 검증과 구분합니다. 기본 고정 시간 if 예제는 Mac에서 라이다 5×5를 충돌 없이 완주했지만, 초음파 5×5와 두 10×10에서는 누적 이동 오차로 접촉이 발생했습니다. 모든 추가 미로를 자동 완주한다고 보장하지 않습니다.
+
+
+## Homebrew Python 추가 검증 — 2026-11-13
+
+기존 Homebrew가 설치된 Apple Silicon Mac에서 `brew install python@3.12`를 실행해 Python 3.12.16 설치를 확인했습니다. Homebrew의 Python으로 새 `seminar_mujoco` 환경을 만들고 requirements 설치·pip check·학생용 8개 검사·`python show.py`·별도 완성본의 `mjpython examples/01_move.py` 실제 창과 정상 종료를 확인했습니다.
+
+Homebrew 자체의 신규 설치는 재실행하지 않았습니다. 공식 설치 스크립트를 다운로드해 Bash 문법 검사를 통과했고, Homebrew 경로 등록 후 Python 선택을 실제 확인했습니다. 학생용 번호 파일은 수정하지 않았습니다.

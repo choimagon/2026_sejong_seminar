@@ -18,6 +18,28 @@ winget install --id Python.Python.3.12 -e --source winget
 
 설치 후 **PowerShell을 닫고 새로 열어** 아래 순서로 진행하세요.
 
+## Mac에서 `python3.12`가 안 될 때
+
+Mac에서는 `python3.12` 명령을 사용합니다. `py`는 위 Windows 명령입니다.
+
+`brew`가 없으면 [Homebrew](https://brew.sh/)부터 설치합니다.
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+설치 화면 마지막 **Next steps에 나오는 명령도 실행**해 Homebrew 경로를 등록하세요.
+이미 `brew` 명령이 되면 Homebrew 설치는 건너뜁니다.
+
+[Python 3.12](https://formulae.brew.sh/formula/python@3.12)를 설치하고 버전을 확인합니다.
+
+```bash
+brew install python@3.12
+python3.12 --version
+```
+
+`Python 3.12.x`가 나오면 아래 다운로드·Mac 가상환경 설치 순서로 진행하세요.
+
 ## 1. 다운로드
 
 ```bash
